@@ -1,6 +1,6 @@
 {
   "name": "@radicalbit/formbit",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "Lightweight state form library",
   "author": "https://github.com/radicalbit",
   "license": "MIT",
