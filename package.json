@@ -1,0 +1,90 @@
+{
+  "name": "@radicalbit/formbit",
+  "version": "0.9.0",
+  "description": "Lightweight state form library",
+  "author": "https://github.com/radicalbit",
+  "license": "MIT",
+  "repository": "https://github.com/radicalbit/formbit",
+  "main": "dist/index.js",
+  "module": "dist/index.modern.js",
+  "source": "src/index.ts",
+  "type": "module",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "build": "microbundle-crl --no-compress --format modern,cjs",
+    "start": "microbundle-crl watch --no-compress --format modern,cjs",
+    "prepare": "run-s build && husky",
+    "test": "run-s test:unit test:lint test:build",
+    "test:build": "run-s build",
+    "test:lint": "eslint \"**/*.{ts,tsx}\"",
+    "test:unit": "cross-env CI=1 react-scripts test  --env=jsdom",
+    "test:watch": "react-scripts test --env=jsdom",
+    "test:coverage": "cross-env CI=1 react-scripts test --coverage",
+    "predeploy": "cd example && yarn install && yarn run build",
+    "deploy": "gh-pages -d example/build",
+    "yalc:publish": "yalc publish --push --sig",
+    "docs:gen": "typedoc --excludePrivate --plugin typedoc-plugin-markdown --hideInPageTOC true --hideBreadcrumbs true --hidePageTitle true --out docs src/types/index.ts",
+    "docs:merge": "node scripts/readme-merge.js",
+    "docs:toc": "doctoc --maxlevel 3 README.md --github",
+    "docs:clean": "rimraf docs",
+    "docs": "yarn docs:gen && yarn docs:merge && yarn docs:toc && yarn docs:clean"
+  },
+  "peerDependencies": {
+    "lodash": "^4.0.0",
+    "react": "^18.2.0",
+    "yup": "^1.4.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@testing-library/react": "^14.2.2",
+    "@types/jest": "^29.5.12",
+    "@types/lodash": "^4.0.0",
+    "@types/react": "^18.2.71",
+    "@types/react-dom": "^18.2.22",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
+    "babel-eslint": "^10.0.3",
+    "cross-env": "^7.0.2",
+    "doctoc": "^2.2.1",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-config-standard-react": "^13.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jest": "^27.9.0",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-refresh": "^0.4.7",
+    "eslint-plugin-sonarjs": "^0.25.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "gh-pages": "^2.2.0",
+    "husky": "^9.0.11",
+    "microbundle-crl": "^0.13.11",
+    "npm-run-all": "^4.1.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-scripts": "5.0.1",
+    "rimraf": "^5.0.5",
+    "typedoc": "^0.25.12",
+    "typedoc-plugin-markdown": "^3.17.1",
+    "typescript": "^5.4.3",
+    "typescript-eslint": "^7.4.0"
+  },
+  "dependencies": {
+    "yup": "^1.4.0"
+  },
+  "resolutions": {
+    "**/typescript": "^5.4.3",
+    "**/@typescript-eslint/eslint-plugin": "^5.4.3",
+    "**/@typescript-eslint/parser": "^5.4.3"
+  },
+  "files": [
+    "dist"
+  ]
+}

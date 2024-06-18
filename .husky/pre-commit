@@ -1,0 +1,8 @@
+TYPES_FILE="src/types/index.ts"
+README_FILE="README.md"
+
+if git diff --cached --name-only | grep --quiet "$TYPES_FILE" || git diff --cached --name-only | grep --quiet "$README_FILE"
+then
+  yarn docs
+  git add README.md
+fi

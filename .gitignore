@@ -1,0 +1,12 @@
+dist/
+node_modules/
+example/node_modules/
+example/build/
+.idea/
+.vscode/
+coverage/
+docs/
+yarn-error.log
+example/.npmrc
+yarn-error.log
+
