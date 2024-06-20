@@ -1,5 +1,5 @@
 import { useFormbitContext } from "formbit";
-import { Button, FormField, InputNumber, SectionTitle } from "rbit-design-system-os";
+import { Button, FormField, InputNumber, SectionTitle } from "@radicalbit/radicalbit-design-system";
 import { useAutoFocus } from "../../helpers/use-autofocus";
 import { FormData } from "./schema";
 import { useHandleNextStep } from "./use-handle-next-step";

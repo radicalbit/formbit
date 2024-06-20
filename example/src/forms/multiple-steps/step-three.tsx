@@ -1,5 +1,5 @@
 import { useFormbitContext } from "formbit";
-import { Button, FormField, Input, SectionTitle } from "rbit-design-system-os";
+import { Button, FormField, Input, SectionTitle } from "@radicalbit/radicalbit-design-system";
 import { InputRef } from 'rc-input';
 import { ChangeEvent } from "react";
 import { useAutoFocus } from "../../helpers/use-autofocus";

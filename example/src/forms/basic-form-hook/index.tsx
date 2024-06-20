@@ -3,7 +3,7 @@ import {
   Button,
   FormField, Input,
   SectionTitle,
-} from "rbit-design-system-os";
+} from "@radicalbit/radicalbit-design-system";
 import { InputRef } from 'rc-input';
 import { ChangeEvent } from 'react';
 import { usePost } from '../context/api-context';
