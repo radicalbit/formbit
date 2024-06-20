@@ -1,4 +1,4 @@
-import { Tabs } from "rbit-design-system-os"
+import { Tabs } from "@radicalbit/radicalbit-design-system"
 import { BasicFormContext } from './forms/basic-form-context'
 import { BasicFormHook } from './forms/basic-form-hook'
 import { MultipleStepsForm } from './forms/multiple-steps'

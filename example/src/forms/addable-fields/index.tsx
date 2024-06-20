@@ -5,7 +5,7 @@ import {
   FontAwesomeIcon,
   FormField, FormMultiple, Input,
   SectionTitle
-} from "rbit-design-system-os";
+} from "@radicalbit/radicalbit-design-system";
 import { InputRef } from 'rc-input';
 import { ChangeEvent, ChangeEventHandler, useRef, useState } from 'react';
 import * as yup from 'yup';
