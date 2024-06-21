@@ -1,8 +1,9 @@
 import { act, renderHook } from '@testing-library/react'
+import { Form } from 'src/types'
 import useFormbit from 'src/use-formbit'
 import * as Yup from 'yup'
 
-const initialValues = { age: 12 }
+const initialValues = { age: 12, __metadata: { name: 'Jane' } }
 const yup = Yup.object({
   age: Yup.number(),
   new: Yup.boolean()
@@ -15,7 +16,7 @@ describe('initialize fn', () => {
 
     act(() => result.current.initialize(newInitialValues))
 
-    expect(result.current.form).toStrictEqual(newInitialValues)
+    expect(result.current.form).toMatchObject(newInitialValues)
 
     unmount()
   })
@@ -30,7 +31,7 @@ describe('initialize fn', () => {
 
     act(() => result.current.initialize(newInitialValues))
 
-    expect(result.current.form).toStrictEqual(newInitialValues)
+    expect(result.current.form).toMatchObject(newInitialValues)
 
     expect(result.current.isDirty).toBe(false)
 
@@ -45,7 +46,7 @@ describe('initialize fn', () => {
 
     act(() => result.current.initialize(newInitialValues))
 
-    expect(result.current.form).toStrictEqual(newInitialValues)
+    expect(result.current.form).toMatchObject(newInitialValues)
 
     expect(result.current.errors).toStrictEqual({})
 
@@ -62,9 +63,36 @@ describe('initialize fn', () => {
 
     act(() => result.current.initialize(newInitialValues))
 
-    expect(result.current.form).toStrictEqual(newInitialValues)
+    expect(result.current.form).toMatchObject(newInitialValues)
 
     expect(result.current.liveValidation('age')).toBe(undefined)
+
+    unmount()
+  })
+
+  it('Should not reset __metadata after initialize', () => {
+    const newInitialValues = { new: true }
+    const { result, unmount } = renderHook(() => useFormbit({ initialValues, yup }))
+
+    act(() => result.current.write('age', 'oneYear', { pathsToValidate: ['age'] }))
+
+    act(() => result.current.initialize(newInitialValues))
+
+    expect((result.current.form as Form).__metadata).toStrictEqual(initialValues.__metadata)
+
+    unmount()
+  })
+
+  it('Should override __metadata after initialize', () => {
+    const newInitialValues = { new: true, __metadata: { name: 'John' } }
+
+    const { result, unmount } = renderHook(() => useFormbit({ initialValues, yup }))
+
+    act(() => result.current.write('age', 'oneYear', { pathsToValidate: ['age'] }))
+
+    act(() => result.current.initialize(newInitialValues))
+
+    expect((result.current.form as Form).__metadata).toStrictEqual(newInitialValues.__metadata)
 
     unmount()
   })

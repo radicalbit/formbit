@@ -49,11 +49,11 @@ describe('useFormbitContext', () => {
 
     act(() => result.current.initialize(newInitialValues))
 
-    expect(result.current.form).toStrictEqual(newInitialValues)
+    expect(result.current.form).toMatchObject(newInitialValues)
 
     act(() => result.current.resetForm()) // resetting to check if also initialValues was overwritten
 
-    expect(result.current.form).toStrictEqual(newInitialValues)
+    expect(result.current.form).toMatchObject(newInitialValues)
 
     unmount()
   })
