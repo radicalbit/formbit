@@ -30,6 +30,7 @@ import { isValidationError } from './types/helpers'
 import { validateSyncAll } from './validate-sync-all'
 import useExecuteCallbacks from './use-execute-callbacks'
 import { cloneDeep, get, isEmpty, omit, set } from 'lodash'
+import { v4 as uuidv4 } from 'uuid'
 
 type UseFormbitParams<Values extends InitialValues> = {
   initialValues?: Partial<Values>,
@@ -105,6 +106,8 @@ export default <Values extends InitialValues>({
     } = {},
     action
   ) => {
+    const newUUID = uuidv4()
+
     setWriter((w) => {
       const liveValidationPaths = noLiveValidation ? [] : Object.keys(w.liveValidation)
       const paths = pathsToValidate.concat(liveValidationPaths)
@@ -122,7 +125,7 @@ export default <Values extends InitialValues>({
       const newWriter: Writer<Partial<Values>> = { ...w, form, isDirty: true }
 
       if (paths.length === 0) {
-        executeCb(successCallback)
+        executeCb(newUUID, successCallback)
 
         return newWriter
       }
@@ -139,7 +142,7 @@ export default <Values extends InitialValues>({
       if (isEmpty(inner)) {
         const neww = { ...newWriter, errors: cleanErrors }
 
-        executeCb(successCallback)
+        executeCb(newUUID, successCallback)
 
         return neww
       }
@@ -156,7 +159,7 @@ export default <Values extends InitialValues>({
 
       const neww = { ...newWriter, errors, liveValidation }
 
-      executeCb(errorCallback)
+      executeCb(newUUID, errorCallback)
 
       return neww
     })
@@ -178,6 +181,8 @@ export default <Values extends InitialValues>({
       options = {}
     } = {}
   ) => {
+    const newUUID = uuidv4()
+
     setWriter((w) => {
       const liveValidationPaths = noLiveValidation ? [] : Object.keys(w.liveValidation)
       const paths = pathsToValidate.concat(liveValidationPaths)
@@ -190,7 +195,7 @@ export default <Values extends InitialValues>({
       const newWriter = { ...w, form, isDirty: true }
 
       if (paths.length === 0) {
-        executeCb(successCallback)
+        executeCb(newUUID, successCallback)
 
         return newWriter
       }
@@ -207,7 +212,7 @@ export default <Values extends InitialValues>({
       if (isEmpty(inner)) {
         const neww = { ...newWriter, errors: cleanErrors }
 
-        executeCb(successCallback)
+        executeCb(newUUID, successCallback)
 
         return neww
       }
@@ -224,7 +229,7 @@ export default <Values extends InitialValues>({
 
       const neww = { ...newWriter, errors, liveValidation }
 
-      executeCb(errorCallback)
+      executeCb(newUUID, errorCallback)
 
       return neww
     })
@@ -238,6 +243,8 @@ export default <Values extends InitialValues>({
       options
     } = {}
   ) => {
+    const newUUID = uuidv4()
+
     setWriter((w) => {
       // Teardown errors
       const cleanErrors = set(cloneDeep(w.errors), path, undefined)
@@ -248,7 +255,7 @@ export default <Values extends InitialValues>({
       if (isEmpty(inner)) {
         const neww = { ...w, errors: cleanErrors }
 
-        executeCb(successCallback)
+        executeCb(newUUID, successCallback)
 
         return neww
       }
@@ -265,7 +272,7 @@ export default <Values extends InitialValues>({
 
       const neww = { ...w, errors, liveValidation }
 
-      executeCb(errorCallback)
+      executeCb(newUUID, errorCallback)
 
       return neww
     })
@@ -275,6 +282,8 @@ export default <Values extends InitialValues>({
     paths,
     { successCallback, errorCallback, options } = {}
   ) => {
+    const newUUID = uuidv4()
+
     setWriter((w) => {
       // Teardown errors
       const cleanErrors = paths.reduce(
@@ -288,7 +297,7 @@ export default <Values extends InitialValues>({
       if (isEmpty(inner)) {
         const neww = { ...w, errors: cleanErrors }
 
-        executeCb(successCallback)
+        executeCb(newUUID, successCallback)
 
         return neww
       }
@@ -305,7 +314,7 @@ export default <Values extends InitialValues>({
 
       const neww = { ...w, errors, liveValidation }
 
-      executeCb(errorCallback)
+      executeCb(newUUID, errorCallback)
 
       return neww
     })
@@ -342,12 +351,14 @@ export default <Values extends InitialValues>({
     errorCallback,
     { isDirty: _, options } = {}
   ) => {
+    const newUUID = uuidv4()
+
     setWriter((w) => {
       try {
         // abortEarly: false as default is to be retrocompatible
         schemaRef.current.validateSync(w.form, { abortEarly: false, ...options })
 
-        executeCb(successCallback)
+        executeCb(newUUID, successCallback)
 
         return { ...w, errors: {} }
       } catch (e) {
@@ -371,7 +382,7 @@ export default <Values extends InitialValues>({
 
         const newWriter = { ...w, errors, liveValidation }
 
-        executeCb(errorCallback)
+        executeCb(newUUID, errorCallback)
 
         return newWriter
       }
