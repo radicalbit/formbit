@@ -22,7 +22,6 @@ export function StepTwo() {
 function Age() {
     const { form, error, write } = useMultipleStepsForm()
 
-    
     const [handleOnNext] = useHandleNextStep(['age'])
 
     const handleOnChangeInputNumber = (value?: number | null) => write('age', value);
@@ -48,7 +47,7 @@ function Age() {
 function Actions() {
     const { form: { __metadata } } = useMultipleStepsForm();
 
-    const [handleOnNext, isStepInvalid] = useHandleNextStep(['age'])
+    const [handleOnNext, isStepInvalid] = useHandleNextStep(['age']);
 
     const prevStep = __metadata?.prevStep;
 
