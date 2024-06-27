@@ -43,6 +43,7 @@
     "@types/lodash": "^4.0.0",
     "@types/react": "^18.2.71",
     "@types/react-dom": "^18.2.22",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^7.4.0",
     "@typescript-eslint/parser": "^7.4.0",
     "babel-eslint": "^10.0.3",
@@ -77,6 +78,7 @@
     "typescript-eslint": "^7.4.0"
   },
   "dependencies": {
+    "uuid": "^10.0.0",
     "yup": "^1.4.0"
   },
   "resolutions": {

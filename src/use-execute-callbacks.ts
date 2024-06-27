@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { GenericCallback, InitialValues, SetError, Writer } from './types'
-
-type CbTypes<Values extends InitialValues> = GenericCallback<Values> | undefined
-
-type RefsStore<Values extends InitialValues> = CbTypes<Values>[]
+import isEmpty from 'lodash/isEmpty'
 
 /**
  * useExecuteCallbacks
@@ -14,17 +11,20 @@ type RefsStore<Values extends InitialValues> = CbTypes<Values>[]
  *
  */
 export default <Values extends InitialValues>(writer: Writer<Values>, setError: SetError) => {
-  const callbacksStore = useRef<RefsStore<Partial<Values>>>([])
+  const callbacksStore = useRef<Object>({})
 
   useEffect(() => {
-    if (callbacksStore.current.length) {
-      callbacksStore.current.forEach((cb) => {
-        if (cb) {
-          cb(writer, setError)
-        }
-      })
-      callbacksStore.current = []
+    if (isEmpty(callbacksStore.current)) {
+      return
     }
+
+    Object.entries(callbacksStore.current).forEach(([, cb]) => {
+      if (cb) {
+        cb(writer, setError)
+      }
+    })
+
+    callbacksStore.current = {}
   }, [setError, writer])
 
   /**
@@ -32,9 +32,9 @@ export default <Values extends InitialValues>(writer: Writer<Values>, setError: 
     * @param cb Callback that needs to be executed.
     *
     */
-  return useCallback((cb?: GenericCallback<Partial<Values>>) => {
+  return useCallback((uuid: string, cb?: GenericCallback<Partial<Values>>) => {
     if (cb) {
-      callbacksStore.current.push(cb)
+      callbacksStore.current = { ...callbacksStore.current, [uuid]: cb }
     }
   }, [])
 }
