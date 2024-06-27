@@ -51,14 +51,34 @@ export default <Values extends InitialValues>({
   })
 
   const initialize = useCallback((values: Partial<Values>) => {
-    setWriter((w) => ({
-      ...w,
-      initialValues: values,
-      form: values,
-      errors: {},
-      liveValidation: {},
-      isDirty: false
-    }))
+    const { __metadata } = values
+
+    if (__metadata) {
+      setWriter((w) => ({
+        ...w,
+        initialValues: values,
+        form: values,
+        errors: {},
+        liveValidation: {},
+        isDirty: false
+      }))
+
+      return
+    }
+
+    setWriter((w) => {
+      const { form: { __metadata } } = w
+      const newValues = { ...values, __metadata }
+
+      return {
+        ...w,
+        initialValues: newValues,
+        form: newValues,
+        errors: {},
+        liveValidation: {},
+        isDirty: false
+      }
+    })
   }, [])
 
   const setSchema = useCallback((newSchema: ValidationSchema<Values>) => { schemaRef.current = newSchema }, [])
