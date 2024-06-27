@@ -213,7 +213,7 @@ export default <Values extends InitialValues>({
 
   const removeAll: RemoveAll<Values> = useCallback(
     (
-      paths,
+      arr,
       {
         noLiveValidation = false,
         pathsToValidate = [],
@@ -224,16 +224,16 @@ export default <Values extends InitialValues>({
     ) => {
       setWriter((w) => {
         const liveValidationPaths = noLiveValidation ? [] : Object.keys(w.liveValidation)
-        const pathsToRemove = paths.concat(pathsToValidate, liveValidationPaths)
+        const paths = pathsToValidate.concat(liveValidationPaths)
 
-        const form = pathsToRemove.reduce(
+        const form = arr.reduce(
           (acc, path) => set(acc, path, undefined),
           cloneDeep(w.form)
         )
 
         const newWriter = { ...w, form, isDirty: true }
 
-        if (pathsToValidate.length === 0) {
+        if (paths.length === 0) {
           executeCb(successCallback)
           return newWriter
         }
