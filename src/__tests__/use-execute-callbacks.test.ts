@@ -2,11 +2,6 @@ import { act, renderHook } from '@testing-library/react'
 import useFormbit from 'src/use-formbit'
 import * as yup from 'yup'
 
-const initialValues = {
-  name: '',
-  email: ''
-}
-
 const name = 'John Doe'
 const email = 'john@doe.com'
 
@@ -17,6 +12,8 @@ const schema = yup.object().shape({
 
 describe('useExecuteCallbacks', () => {
   it('write can be used inside successCallbacks', () => {
+    const initialValues = { name: '', email: '' }
+
     const { result } = renderHook(() => useFormbit({ initialValues, yup: schema }))
 
     act(() => result.current.write('name', name))
@@ -27,27 +24,38 @@ describe('useExecuteCallbacks', () => {
     expect(result.current.form.name).toBe('after-success-callback')
   })
 
-  it('Subsequent calls with different successCallbacks are executed', () => {
+  it('Subsequent calls of write and writeAll with different successCallbacks are executed correctly', () => {
+    const initialValues = { name: '', email: '' }
+
     const { result } = renderHook(() => useFormbit({ initialValues, yup: schema }))
 
     act(() => result.current.write('name', name))
     act(() => result.current.write('email', email))
 
-    act(() => result.current.validateForm(() => result.current.write('name', 'first-validation')))
-    act(() => result.current.validateForm(() => result.current.write('email', 'second-validation')))
+    act(() => result.current.validateForm(() => result.current.write('name', 'Al')))
+    act(() => result.current.validateForm(() => result.current.writeAll([
+      ['name', 'John'],
+      ['email', 'john@foo.com']
+    ])))
 
-    expect(result.current.form).toStrictEqual({ name: 'first-validation', email: 'second-validation' })
+    expect(result.current.form).toStrictEqual({ name: 'John', email: 'john@foo.com' })
   })
 
-  it('successCallbacks are called only once', () => {
+  it('successCallbacks and errorCallbacks are called correctly', () => {
+    const initialValues = { name: '', email: '' }
+
     const successCallback = jest.fn()
+    const errorCallback = jest.fn()
+
     const { result } = renderHook(() => useFormbit({ initialValues, yup: schema }))
 
-    act(() => result.current.write('name', name))
-    act(() => result.current.write('email', email))
+    act(() => result.current.write('name', name, { successCallback, errorCallback }))
+    act(() => result.current.validateForm(successCallback, errorCallback))
 
-    act(() => result.current.validateForm(successCallback))
+    act(() => result.current.write('email', email, { successCallback, errorCallback }))
+    act(() => result.current.validateForm(successCallback, errorCallback))
 
-    expect(successCallback).toHaveBeenCalledTimes(1)
+    expect(successCallback).toHaveBeenCalledTimes(3)
+    expect(errorCallback).toHaveBeenCalledTimes(1)
   })
 })
