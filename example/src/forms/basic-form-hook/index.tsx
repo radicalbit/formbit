@@ -1,15 +1,15 @@
-import useFormbit from 'formbit';
+import useFormbit from 'formbit'
 import {
   Button,
   FormField, Input,
-  SectionTitle,
-} from "@radicalbit/radicalbit-design-system";
-import { InputRef } from 'rc-input';
-import { ChangeEvent } from 'react';
-import { usePost } from '../context/api-context';
-import { useAutoFocus } from '../../helpers/use-autofocus';
-import { success } from '../../helpers/message';
-import { schema } from './schema';
+  SectionTitle
+} from '@radicalbit/radicalbit-design-system'
+import { InputRef } from 'rc-input'
+import { ChangeEvent } from 'react'
+import { usePost } from '../context/api-context'
+import { useAutoFocus } from '../../helpers/use-autofocus'
+import { success } from '../../helpers/message'
+import { schema } from './schema'
 
 type FieldProps = {
   value?: string,
@@ -28,22 +28,30 @@ type ActionsProps = {
 export function BasicFormHook() {
   const [triggerMutation, isLoading] = usePost()
 
-  const { form, error, write, resetForm, submitForm, isFormInvalid, isDirty } = useFormbit({ initialValues: {}, yup: schema });
+  const {
+    form,
+    error,
+    write,
+    resetForm,
+    submitForm,
+    isFormInvalid,
+    isDirty
+  } = useFormbit({ initialValues: {}, yup: schema })
 
-  const handleOnChangeName = (e: ChangeEvent<HTMLInputElement>) => write('name', e.target.value);
-  const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value);
+  const handleOnChangeName = (e: ChangeEvent<HTMLInputElement>) => write('name', e.target.value)
+  const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value)
 
   const isSubmitDisabled = isFormInvalid() || !isDirty
 
   const handleOnSubmit = () => {
-    if (isSubmitDisabled || isLoading) return;
+    if (isSubmitDisabled || isLoading) return
 
     submitForm(async ({ form }) => {
       await triggerMutation(form)
       success(form)
       resetForm()
-    });
-  };
+    })
+  }
 
   return (
     <div className='flex flex-col gap-4 max-w-96 justify-center p-8 m-auto'>
@@ -51,14 +59,18 @@ export function BasicFormHook() {
 
       <Name value={form.name} error={error('name')} onChange={handleOnChangeName} onSubmit={handleOnSubmit} />
 
-      <Surname value={form.surname} error={error('surname')} onChange={handleOnChangeSurname} onSubmit={handleOnSubmit} />
+      <Surname
+        value={form.surname}
+        error={error('surname')}
+        onChange={handleOnChangeSurname}
+        onSubmit={handleOnSubmit}
+      />
 
       <Actions onReset={resetForm} onSubmit={handleOnSubmit} isLoading={isLoading} isDisabled={isSubmitDisabled} />
 
     </div >
-  );
+  )
 }
-
 
 function Name({ value, error, onChange, onSubmit }: FieldProps) {
   const ref = useAutoFocus<InputRef>()
@@ -74,7 +86,7 @@ function Name({ value, error, onChange, onSubmit }: FieldProps) {
         required
       />
     </FormField>
-  );
+  )
 }
 
 function Surname({ value, error, onChange, onSubmit }: FieldProps) {
@@ -89,7 +101,6 @@ function Surname({ value, error, onChange, onSubmit }: FieldProps) {
       />
     </FormField>
   )
-
 }
 
 function Actions({ onSubmit, onReset, isLoading, isDisabled }: ActionsProps) {

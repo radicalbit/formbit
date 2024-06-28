@@ -1,10 +1,10 @@
-import { FormbitContextProvider } from 'formbit';
-import { Steps } from "@radicalbit/radicalbit-design-system";
-import { useState } from 'react';
-import { schema } from './schema';
-import { StepOne } from './step-one';
-import { StepThree } from './step-three';
-import { StepTwo } from './step-two';
+import { FormbitContextProvider } from 'formbit'
+import { Steps } from '@radicalbit/radicalbit-design-system'
+import { useState } from 'react'
+import { schema } from './schema'
+import { StepOne } from './step-one'
+import { StepThree } from './step-three'
+import { StepTwo } from './step-two'
 
 const items = [{
   title: 'Step One',
@@ -53,8 +53,5 @@ export function MultipleStepsForm() {
       </div>
     </FormbitContextProvider>
 
-  );
+  )
 }
-
-
-

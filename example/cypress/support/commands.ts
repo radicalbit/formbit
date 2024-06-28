@@ -36,16 +36,12 @@
 //   }
 // }
 
+const getTab = (tab: string) => cy.get('[role="tab"]').contains(tab, { matchCase: false })
 
-
-
-const getTab = (tab: string) => cy.get(`[role="tab"]`).contains(tab, { matchCase: false })
-
-const shouldSubmit = (...args: unknown[]) => cy.get('@console-log').should('be.calledWith','Submitted Form', ...args)
+const shouldSubmit = (...args: unknown[]) => cy.get('@console-log').should('be.calledWith', 'Submitted Form', ...args)
 
 const shouldNotSubmit = () => { cy.get('@console-log').should('not.be.called') }
 
 const button = (text: string) => cy.get('button').contains(text, { matchCase: false }).parent()
 
-
-Cypress.Commands.addAll({ button, getTab, shouldSubmit, shouldNotSubmit})
+Cypress.Commands.addAll({ button, getTab, shouldSubmit, shouldNotSubmit })
