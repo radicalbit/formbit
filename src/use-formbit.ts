@@ -14,6 +14,7 @@ import {
   LiveValidationFn,
   PrivateValidateForm,
   Remove,
+  RemoveAll,
   SetError,
   SubmitForm,
   SuccessCallback,
@@ -235,6 +236,68 @@ export default <Values extends InitialValues>({
     })
   }, [executeCb])
 
+  const removeAll: RemoveAll<Values> = useCallback(
+    (
+      arr,
+      {
+        noLiveValidation = false,
+        pathsToValidate = [],
+        successCallback,
+        errorCallback,
+        options = {}
+      } = {}
+    ) => {
+      const newUUID = uuidv4()
+
+      setWriter((w) => {
+        const liveValidationPaths = noLiveValidation ? [] : Object.keys(w.liveValidation)
+        const paths = pathsToValidate.concat(liveValidationPaths)
+
+        const form = arr.reduce(
+          (acc, path) => set(acc, path, undefined),
+          cloneDeep(w.form)
+        )
+
+        const newWriter = { ...w, form, isDirty: true }
+
+        if (paths.length === 0) {
+          executeCb(newUUID, successCallback)
+          return newWriter
+        }
+
+        const cleanErrors = pathsToValidate.reduce(
+          (acc, key) => set(acc, key, undefined),
+          cloneDeep(newWriter.errors)
+        )
+
+        const inner = validateSyncAll(pathsToValidate, schemaRef.current, newWriter.form, options)
+
+        if (isEmpty(inner)) {
+          const neww = { ...newWriter, errors: cleanErrors }
+          executeCb(newUUID, successCallback)
+          return neww
+        }
+
+        const errors = inner.reduce(
+          (acc, { path = '', message }) => set(acc, path, message),
+          cleanErrors
+        )
+
+        const liveValidation: LiveValidation = inner.reduce(
+          (acc, { path = '' }) => ({ ...acc, [path]: true }),
+          newWriter.liveValidation
+        )
+
+        const neww = { ...newWriter, errors, liveValidation }
+
+        executeCb(newUUID, errorCallback)
+
+        return neww
+      })
+    },
+    [executeCb]
+  )
+
   const validate: Validate<Values> = useCallback((
     path,
     {
@@ -455,6 +518,7 @@ export default <Values extends InitialValues>({
     isFormValid,
     liveValidation,
     remove,
+    removeAll,
     resetForm,
     setError,
     setSchema,

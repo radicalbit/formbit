@@ -270,6 +270,13 @@ export type Write<Values extends InitialValues> =
  */
 export type WriteAll<Values extends InitialValues> =
     (arr: WriteAllValue<Values>[], options?: WriteFnOptions<Values>) => void
+/**
+*
+* This method updates the form state deleting multiple values, setting isDirty to true.
+*
+*/
+export type RemoveAll<Values extends InitialValues> =
+    (arr: string[], options?: WriteFnOptions<Values>) => void
 
 /**
  * Tuple of [key, value] pair.
@@ -486,4 +493,10 @@ export type FormbitObject<Values extends InitialValues> = {
      * the fields that have the live validation active.
      */
     writeAll: WriteAll<Values>,
+    /**
+     *
+     * This method updates the form state deleting multiple values, setting isDirty to true.
+     *
+     */
+    removeAll: RemoveAll<Values>
 }
