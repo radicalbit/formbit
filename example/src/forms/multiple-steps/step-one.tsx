@@ -25,7 +25,7 @@ export function StepOne() {
 function Name() {
     const { form, error, write } = useMultipleStepsForm();
 
-    const [handleOnNext] = useHandleNextStep()
+    const [handleOnNext] = useHandleNextStep(['name', 'surname'])
 
     const handleOnChangeName = (e: ChangeEvent<HTMLInputElement>) => write('name', e.target.value);
 
@@ -48,7 +48,7 @@ function Name() {
 function Surname() {
     const { form, error, write } = useMultipleStepsForm();
 
-    const [handleOnNext] = useHandleNextStep()
+    const [handleOnNext] = useHandleNextStep(['name', 'surname'])
 
     const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value);
 

@@ -108,14 +108,20 @@ function Example() {
     yup: schema
   });
 
-  const handleChangeName = ({ target: { value } }) => write('name', value);
-  const handleChangeAge = ({ target: { value } }) => write('age', value);
-  const onSubmit = () => console.log('Form Submitted!');
-  const onError = () => console.error('Form is invalid');
-  const handleSubmit = () => submitForm(onSubmit, onError);
+  const handleChangeName = ({ target: { value } }) => { write('name', value); }
+  const handleChangeAge = ({ target: { value } }) => { write('age', value); }
+  const handleSubmit = () => {
+    submitForm(
+      (writer) => {
+        console.log("Your validated form is: ", writer.form)
+      }, 
+      (writer) => {
+        console.error("The validation errors are: ", writer.errors)
+      });
+    }
 
   return (
-    <>
+    <div>
       <label name="name">Name</label>
       <input
         name="name"
@@ -137,7 +143,7 @@ function Example() {
       <button disabled={isFormInvalid()} onClick={handleSubmit} type="button">
         Submit
       </button>
-    </>
+    </div>
   );
 }
 
@@ -180,7 +186,7 @@ It returns undefined if the json is valid.
 
 #### Defined in
 
-[index.ts:14](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L14)
+[index.ts:14](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L14)
 
 ___
 
@@ -206,7 +212,7 @@ Options object to change the behavior of the check method
 
 #### Defined in
 
-[index.ts:309](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L309)
+[index.ts:309](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L309)
 
 ___
 
@@ -226,7 +232,7 @@ Reset isDirty value to false
 
 #### Defined in
 
-[index.ts:20](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L20)
+[index.ts:20](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L20)
 
 ___
 
@@ -259,7 +265,7 @@ Invoked in case of errors raised by validation
 
 #### Defined in
 
-[index.ts:25](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L25)
+[index.ts:25](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L25)
 
 ___
 
@@ -294,7 +300,7 @@ Invoked in case of errors raised by validation of check method
 
 #### Defined in
 
-[index.ts:31](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L31)
+[index.ts:31](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L31)
 
 ___
 
@@ -321,7 +327,7 @@ It doesn't trigger any validation
 
 #### Defined in
 
-[index.ts:39](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L39)
+[index.ts:39](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L39)
 
 ___
 
@@ -349,7 +355,7 @@ and age is a non valid field, errors object will look like this
 
 #### Defined in
 
-[index.ts:60](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L60)
+[index.ts:60](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L60)
 
 ___
 
@@ -361,7 +367,7 @@ Object containing the updated form
 
 #### Defined in
 
-[index.ts:65](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L65)
+[index.ts:65](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L65)
 
 ___
 
@@ -405,7 +411,7 @@ It contains all the data and methods needed to handle the form.
 
 #### Defined in
 
-[index.ts:348](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L348)
+[index.ts:348](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L348)
 
 ___
 
@@ -421,7 +427,7 @@ ___
 
 #### Defined in
 
-[index.ts:67](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L67)
+[index.ts:67](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L67)
 
 ___
 
@@ -433,7 +439,7 @@ InitialValues used to setup formbit, used also to reset the form to the original
 
 #### Defined in
 
-[index.ts:77](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L77)
+[index.ts:77](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L77)
 
 ___
 
@@ -465,7 +471,7 @@ Initialize the form with new initial values
 
 #### Defined in
 
-[index.ts:71](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L71)
+[index.ts:71](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L71)
 
 ___
 
@@ -477,7 +483,7 @@ Returns true if the form is Dirty (user already interacted with the form), false
 
 #### Defined in
 
-[index.ts:83](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L83)
+[index.ts:83](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L83)
 
 ___
 
@@ -498,7 +504,7 @@ It doesn't perform any validation, it checks if any errors are present
 
 #### Defined in
 
-[index.ts:89](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L89)
+[index.ts:89](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L89)
 
 ___
 
@@ -519,7 +525,7 @@ It doesn't perform any validation, it checks if any errors are present
 
 #### Defined in
 
-[index.ts:95](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L95)
+[index.ts:95](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L95)
 
 ___
 
@@ -552,7 +558,7 @@ and age is a field that is being live-validated, liveValidation object will look
 
 #### Defined in
 
-[index.ts:121](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L121)
+[index.ts:121](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L121)
 
 ___
 
@@ -578,7 +584,7 @@ Returns true if live validation is active for the given path
 
 #### Defined in
 
-[index.ts:127](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L127)
+[index.ts:127](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L127)
 
 ___
 
@@ -590,7 +596,7 @@ Generic object with string as keys
 
 #### Defined in
 
-[index.ts:133](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L133)
+[index.ts:133](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L133)
 
 ___
 
@@ -626,7 +632,7 @@ and all the fields that have the live validation active.
 
 #### Defined in
 
-[index.ts:152](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L152)
+[index.ts:152](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L152)
 
 ___
 
@@ -659,7 +665,7 @@ This method updates the form state deleting multiple values, setting isDirty to 
 
 #### Defined in
 
-[index.ts:278](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L278)
+[index.ts:278](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L278)
 
 ___
 
@@ -681,7 +687,7 @@ isDirty is set back to false
 
 #### Defined in
 
-[index.ts:160](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L160)
+[index.ts:160](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L160)
 
 ___
 
@@ -708,7 +714,7 @@ Set a message(value) to the given error path.
 
 #### Defined in
 
-[index.ts:175](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L175)
+[index.ts:175](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L175)
 
 ___
 
@@ -740,7 +746,7 @@ Override the current schema with the given one.
 
 #### Defined in
 
-[index.ts:181](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L181)
+[index.ts:181](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L181)
 
 ___
 
@@ -775,7 +781,7 @@ otherwise it executes the errorCallback
 
 #### Defined in
 
-[index.ts:188](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L188)
+[index.ts:188](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L188)
 
 ___
 
@@ -808,7 +814,7 @@ Success callback invoked by some formbit methods when the operation is successfu
 
 #### Defined in
 
-[index.ts:197](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L197)
+[index.ts:197](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L197)
 
 ___
 
@@ -842,7 +848,7 @@ Success callback invoked by the check method when the operation is successful.
 
 #### Defined in
 
-[index.ts:203](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L203)
+[index.ts:203](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L203)
 
 ___
 
@@ -877,7 +883,7 @@ Is the right place to send your data to the backend.
 
 #### Defined in
 
-[index.ts:211](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L211)
+[index.ts:211](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L211)
 
 ___
 
@@ -911,7 +917,7 @@ live validation active.
 
 #### Defined in
 
-[index.ts:222](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L222)
+[index.ts:222](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L222)
 
 ___
 
@@ -945,7 +951,7 @@ live validation active.
 
 #### Defined in
 
-[index.ts:229](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L229)
+[index.ts:229](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L229)
 
 ___
 
@@ -971,7 +977,7 @@ Options object to change the behavior of the validate methods
 
 #### Defined in
 
-[index.ts:319](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L319)
+[index.ts:319](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L319)
 
 ___
 
@@ -1005,7 +1011,7 @@ This method validates the entire form and set the corresponding errors if any.
 
 #### Defined in
 
-[index.ts:235](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L235)
+[index.ts:235](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L235)
 
 ___
 
@@ -1020,7 +1026,7 @@ Link to the Yup documentation [https://github.com/jquense/yup](https://github.co
 
 #### Defined in
 
-[index.ts:249](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L249)
+[index.ts:249](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L249)
 
 ___
 
@@ -1035,7 +1041,7 @@ Link to the Yup documentation [https://github.com/jquense/yup](https://github.co
 
 #### Defined in
 
-[index.ts:332](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L332)
+[index.ts:332](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L332)
 
 ___
 
@@ -1045,7 +1051,7 @@ ___
 
 #### Defined in
 
-[index.ts:240](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L240)
+[index.ts:240](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L240)
 
 ___
 
@@ -1066,7 +1072,7 @@ Link to the Yup documentation [https://github.com/jquense/yup](https://github.co
 
 #### Defined in
 
-[index.ts:169](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L169)
+[index.ts:169](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L169)
 
 ___
 
@@ -1103,7 +1109,7 @@ and all the fields that have the live validation active.
 
 #### Defined in
 
-[index.ts:258](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L258)
+[index.ts:258](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L258)
 
 ___
 
@@ -1142,7 +1148,7 @@ the fields that have the live validation active.
 
 #### Defined in
 
-[index.ts:271](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L271)
+[index.ts:271](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L271)
 
 ___
 
@@ -1160,7 +1166,7 @@ Tuple of [key, value] pair.
 
 #### Defined in
 
-[index.ts:285](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L285)
+[index.ts:285](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L285)
 
 ___
 
@@ -1178,7 +1184,7 @@ Options object to change the behavior of the write methods
 
 #### Defined in
 
-[index.ts:338](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L338)
+[index.ts:338](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L338)
 
 ___
 
@@ -1206,7 +1212,7 @@ Internal form state storing all the data of the form (except the validation sche
 
 #### Defined in
 
-[index.ts:297](https://github.com/radicalbit/formbit/blob/3d8c9e0/src/types/index.ts#L297)
+[index.ts:297](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L297)
 
 <!-- END_TYPES_DOC -->
 

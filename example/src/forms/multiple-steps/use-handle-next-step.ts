@@ -8,14 +8,14 @@ type Context = {
     }
  }
 
-export const useHandleNextStep = (fields?: string[]) => {
+export const useHandleNextStep = (fields: string[]) => {
     const { form: { __metadata }, validateAll, error } = useFormbitContext<Context>();
 
     const nextStep = __metadata?.nextStep
 
     const handleOnNext = useCallback(
-        () => validateAll(['name', 'surname'], { successCallback: nextStep }),
-        [nextStep, validateAll]
+        () => validateAll(fields, { successCallback: nextStep }),
+        [fields, nextStep, validateAll]
     );
 
     const isStepInvalid = fields?.some(field => error(field))
