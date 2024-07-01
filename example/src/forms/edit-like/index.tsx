@@ -1,17 +1,17 @@
-import { FormbitContextProvider, useFormbitContext } from 'formbit';
+import { FormbitContextProvider, useFormbitContext } from 'formbit'
 import {
   Button,
   FormField,
   Input,
   SectionTitle
-} from "@radicalbit/radicalbit-design-system";
-import { InputRef } from 'rc-input';
-import { ChangeEvent, useEffect } from 'react';
-import * as yup from 'yup';
-import { FakeApiProvider, useGetUser } from '../context/api-context';
-import { useAutoFocus } from '../../helpers/use-autofocus';
-import { useHandleOnSubmit } from '../context/use-handle-on-submit';
-import { schema } from './schema';
+} from '@radicalbit/radicalbit-design-system'
+import { InputRef } from 'rc-input'
+import { ChangeEvent, useEffect } from 'react'
+import * as yup from 'yup'
+import { FakeApiProvider, useGetUser } from '../context/api-context'
+import { useAutoFocus } from '../../helpers/use-autofocus'
+import { useHandleOnSubmit } from '../context/use-handle-on-submit'
+import { schema } from './schema'
 
 type FormData = yup.InferType<typeof schema> & {
   __metadata?: {
@@ -19,7 +19,7 @@ type FormData = yup.InferType<typeof schema> & {
   }
 }
 
-const useEditLikeContext = () => useFormbitContext<FormData>();
+const useEditLikeContext = () => useFormbitContext<FormData>()
 
 export function EditLikeForm() {
   return (
@@ -28,7 +28,7 @@ export function EditLikeForm() {
         <EditLikeInner />
       </FormbitContextProvider>
     </FakeApiProvider>
-  );
+  )
 }
 
 function EditLikeInner() {
@@ -53,17 +53,17 @@ function EditLikeInner() {
 
       <Actions />
     </div>
-  );
+  )
 }
 
 function Name() {
   const [, isLoading] = useGetUser()
 
-  const { form, error, write } = useEditLikeContext();
+  const { form, error, write } = useEditLikeContext()
 
-  const [handleOnSubmit] = useHandleOnSubmit();
+  const [handleOnSubmit] = useHandleOnSubmit()
 
-  const handleOnChangeName = (e: ChangeEvent<HTMLInputElement>) => write('name', e.target.value);
+  const handleOnChangeName = (e: ChangeEvent<HTMLInputElement>) => write('name', e.target.value)
 
   const ref = useAutoFocus<InputRef>(isLoading)
 
@@ -79,16 +79,16 @@ function Name() {
         ref={ref}
       />
     </FormField>
-  );
+  )
 }
 
 function Surname() {
   const [, isLoading] = useGetUser()
-  const { form, error, write } = useEditLikeContext();
+  const { form, error, write } = useEditLikeContext()
 
-  const [handleOnSubmit] = useHandleOnSubmit();
+  const [handleOnSubmit] = useHandleOnSubmit()
 
-  const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value);
+  const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value)
 
   return (
     <FormField label="Surname" message={error('surname')}>
@@ -108,9 +108,9 @@ function Email() {
   const [, isLoading] = useGetUser()
   const { form, error, write } = useEditLikeContext()
 
-  const [handleOnSubmit] = useHandleOnSubmit();
+  const [handleOnSubmit] = useHandleOnSubmit()
 
-  const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => write('email', e.target.value);
+  const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => write('email', e.target.value)
 
   return (
     <FormField label="Email" message={error('email')}>
@@ -140,5 +140,4 @@ function Actions() {
       Submit
     </Button>
   )
-
 }

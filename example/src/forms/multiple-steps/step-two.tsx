@@ -1,14 +1,13 @@
-import { useFormbitContext } from "formbit";
-import { Button, FormField, InputNumber, SectionTitle } from "@radicalbit/radicalbit-design-system";
-import { useAutoFocus } from "../../helpers/use-autofocus";
-import { FormData } from "./schema";
-import { useHandleNextStep } from "./use-handle-next-step";
+import { useFormbitContext } from 'formbit'
+import { Button, FormField, InputNumber, SectionTitle } from '@radicalbit/radicalbit-design-system'
+import { useAutoFocus } from '../../helpers/use-autofocus'
+import { FormData } from './schema'
+import { useHandleNextStep } from './use-handle-next-step'
 
-
-const useMultipleStepsForm = () => useFormbitContext<FormData>();
+const useMultipleStepsForm = () => useFormbitContext<FormData>()
 
 export function StepTwo() {
-    return <>
+  return <>
         <div className='flex flex-col gap-4 w-96 justify-center p-8 m-auto'>
             <SectionTitle title='Step 2' />
 
@@ -20,15 +19,15 @@ export function StepTwo() {
 }
 
 function Age() {
-    const { form, error, write } = useMultipleStepsForm()
+  const { form, error, write } = useMultipleStepsForm()
 
-    const [handleOnNext] = useHandleNextStep(['age'])
+  const [handleOnNext] = useHandleNextStep(['age'])
 
-    const handleOnChangeInputNumber = (value?: number | null) => write('age', value);
+  const handleOnChangeInputNumber = (value?: number | null) => write('age', value)
 
-    const ref = useAutoFocus<HTMLInputElement>()
+  const ref = useAutoFocus<HTMLInputElement>()
 
-    return (
+  return (
         <FormField label="Age" message={error('age')}>
             <InputNumber
                 type="number"
@@ -45,13 +44,13 @@ function Age() {
 }
 
 function Actions() {
-    const { form: { __metadata } } = useMultipleStepsForm();
+  const { form: { __metadata } } = useMultipleStepsForm()
 
-    const [handleOnNext, isStepInvalid] = useHandleNextStep(['age']);
+  const [handleOnNext, isStepInvalid] = useHandleNextStep(['age'])
 
-    const prevStep = __metadata?.prevStep;
+  const prevStep = __metadata?.prevStep
 
-    return (
+  return (
         <>
             <Button
                 disabled={isStepInvalid}
@@ -68,5 +67,5 @@ function Actions() {
                 Prev
             </Button>
         </>
-    )
+  )
 }

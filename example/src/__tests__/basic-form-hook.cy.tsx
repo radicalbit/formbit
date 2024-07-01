@@ -1,11 +1,9 @@
-import App from "../App"
-
+import App from '../App'
 
 describe('<BasicFormHook />', () => {
   beforeEach(() => {
     cy.mount(<App />)
     cy.getTab('hook').click()
-
   })
 
   it('Name input should exist', () => {
@@ -28,7 +26,7 @@ describe('<BasicFormHook />', () => {
       })
 
       it('Submit button should be disabled when form is rendered', () => {
-        cy.button('submit').should("be.disabled")
+        cy.button('submit').should('be.disabled')
       })
 
       it('Should be submittable', () => {
