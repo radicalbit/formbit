@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { GenericCallback, InitialValues, SetError, Writer } from './types'
-import isEmpty from 'lodash/isEmpty'
+import { isEmpty } from 'lodash'
 
 /**
  * useExecuteCallbacks
