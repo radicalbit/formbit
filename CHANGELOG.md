@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/radicalbit/formbit/compare/v1.2.0...v1.2.1) (2024-07-11)
+
+
+### Bug Fixes
+
+* **ui:** fix isEmpty import ([#13](https://github.com/radicalbit/formbit/issues/13)) ([7a5deb3](https://github.com/radicalbit/formbit/commit/7a5deb3706c9cc150e254916021fee70aab580c1))
+
 ## [1.2.0](https://github.com/radicalbit/formbit/compare/v1.1.0...v1.2.0) (2024-07-02)
 
 
