@@ -1,28 +1,28 @@
-import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { FormbitContextProvider, useFormbitContext } from 'formbit';
+import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { FormbitContextProvider, useFormbitContext } from 'formbit'
 import {
   Button,
   FontAwesomeIcon,
   FormField, FormMultiple, Input,
   SectionTitle
-} from "@radicalbit/radicalbit-design-system";
-import { InputRef } from 'rc-input';
-import { ChangeEvent, ChangeEventHandler, useRef, useState } from 'react';
-import * as yup from 'yup';
-import { useAutoFocus } from '../../helpers/use-autofocus';
-import { useHandleOnSubmit } from '../context/use-handle-on-submit';
-import { schema } from './schema';
+} from '@radicalbit/radicalbit-design-system'
+import { InputRef } from 'rc-input'
+import { ChangeEvent, ChangeEventHandler, useRef, useState } from 'react'
+import * as yup from 'yup'
+import { useAutoFocus } from '../../helpers/use-autofocus'
+import { useHandleOnSubmit } from '../context/use-handle-on-submit'
+import { schema } from './schema'
 
 type FormData = yup.InferType<typeof schema>
 
-const useAddableFieldsForm = () => useFormbitContext<FormData>();
+const useAddableFieldsForm = () => useFormbitContext<FormData>()
 
 export function AddableFieldsForm() {
   return (
     <FormbitContextProvider initialValues={{}} schema={schema}>
       <BasicFormInner />
     </FormbitContextProvider>
-  );
+  )
 }
 
 function BasicFormInner() {
@@ -38,24 +38,22 @@ function BasicFormInner() {
 
       <Surname />
 
-
       <div className='flex flex-col gap-2 m-auto'>
         <FriendInput />
         {friends?.map((_, i) => <Friend index={i} />)}
       </div>
 
-
       <Actions />
     </div>
-  );
+  )
 }
 
 function Name() {
-  const { form, error, write } = useAddableFieldsForm();
+  const { form, error, write } = useAddableFieldsForm()
 
-  const [handleOnSubmit] = useHandleOnSubmit();
+  const [handleOnSubmit] = useHandleOnSubmit()
 
-  const handleOnChangeName = (e: ChangeEvent<HTMLInputElement>) => write('name', e.target.value);
+  const handleOnChangeName = (e: ChangeEvent<HTMLInputElement>) => write('name', e.target.value)
 
   const ref = useAutoFocus<InputRef>()
 
@@ -70,14 +68,14 @@ function Name() {
         ref={ref}
       />
     </FormField>
-  );
+  )
 }
 
 function Surname() {
-  const { form, error, write } = useAddableFieldsForm();
-  const [handleOnSubmit] = useHandleOnSubmit();
+  const { form, error, write } = useAddableFieldsForm()
+  const [handleOnSubmit] = useHandleOnSubmit()
 
-  const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value);
+  const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value)
 
   return (
     <FormField label="Surname" message={error('surname')}>
@@ -95,14 +93,14 @@ function Surname() {
 function FriendInput() {
   const inputNameRef = useRef<InputRef>(null)
 
-  const { write, form, error } = useAddableFieldsForm();
+  const { write, form, error } = useAddableFieldsForm()
   const friends = form?.friends ?? []
 
   const [name, setName] = useState<string>()
   const [surname, setSurname] = useState<string>()
 
-  const handleChangeName: ChangeEventHandler<HTMLInputElement> = ({ target: { value } }) => setName(value);
-  const handleChangeSurname: ChangeEventHandler<HTMLInputElement> = ({ target: { value } }) => setSurname(value);
+  const handleChangeName: ChangeEventHandler<HTMLInputElement> = ({ target: { value } }) => setName(value)
+  const handleChangeSurname: ChangeEventHandler<HTMLInputElement> = ({ target: { value } }) => setSurname(value)
 
   const handleAddFriend = () => {
     write('friends', [...friends, { name, surname }])
@@ -110,7 +108,6 @@ function FriendInput() {
     setSurname('')
     inputNameRef.current?.focus()
   }
-
 
   return (
     <FormMultiple
@@ -138,7 +135,7 @@ function FriendInput() {
         />
       </FormField>
     </FormMultiple>
-  );
+  )
 }
 
 function Friend({ index }: { index: number }) {
@@ -147,16 +144,15 @@ function Friend({ index }: { index: number }) {
   const name = form.friends?.[index].name
   const surname = form.friends?.[index].surname
 
-
-  const handleOnBlurFriendName = () => validate(`headers[${index}].name`);
-  const handleOnBlurFriendSurname = () => validate(`headers[${index}].surname`);
+  const handleOnBlurFriendName = () => validate(`headers[${index}].name`)
+  const handleOnBlurFriendSurname = () => validate(`headers[${index}].surname`)
 
   const handleOnChangeFriendName: ChangeEventHandler<HTMLInputElement> =
-    ({ target }) => write(`friends[${index}].key`, target.value);
+    ({ target }) => write(`friends[${index}].key`, target.value)
   const handleOnChangeFriendSurname: ChangeEventHandler<HTMLInputElement> =
-    ({ target }) => write(`friends[${index}].key`, target.value);
+    ({ target }) => write(`friends[${index}].key`, target.value)
 
-  const handleOnRemoveFriend = () => write('friends', form.friends?.filter((_, i) => index !== i));
+  const handleOnRemoveFriend = () => write('friends', form.friends?.filter((_, i) => index !== i))
 
   const errorMessage = error(`headers[${index}].name`) || error(`headers[${index}].surname`)
 
@@ -182,9 +178,8 @@ function Friend({ index }: { index: number }) {
   )
 }
 
-
 function Actions() {
-  const { resetForm } = useAddableFieldsForm();
+  const { resetForm } = useAddableFieldsForm()
 
   const [handleOnSubmit, isSubmitDisabled, isLoading] = useHandleOnSubmit()
 
@@ -197,5 +192,4 @@ function Actions() {
       Reset
     </Button>
   </>
-
 }

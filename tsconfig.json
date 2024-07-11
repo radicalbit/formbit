@@ -5,6 +5,7 @@
         "declarationDir": "./dist/",
         "target": "es5",
         "lib": [
+            "ES2020",
             "dom",
             "dom.iterable",
             "esnext",
@@ -20,7 +21,11 @@
         "moduleResolution": "node",
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "jsx": "preserve"
+        "jsx": "preserve",
+        "types": [
+            "dom",
+            "cypress"
+        ]
     },
     "include": [
         "src",

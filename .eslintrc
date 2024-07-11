@@ -1,18 +1,31 @@
 {
+  "overrides": [
+    {
+      "files": [
+        "example/**/*.ts",
+        "example/**/*.tsx"
+      ]
+    }
+  ],
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "sonarjs",
     "@typescript-eslint",
-    "jest"
+    "jest",
+    "cypress"
   ],
   "extends": [
     "standard",
     "standard-react",
     "plugin:sonarjs/recommended",
+    "plugin:cypress/recommended"
   ],
   "env": {
+    "browser": true,
+    "es2021": true,
     "node": true,
-    "jest": true
+    "jest": true,
+    "cypress/globals": true
   },
   "parserOptions": {
     "ecmaVersion": 2020,
@@ -28,6 +41,8 @@
   },
   "rules": {
     "no-unused-vars": "off",
+    "cypress/unsafe-to-chain-command": "off",
+    "sonarjs/no-duplicate-string": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {

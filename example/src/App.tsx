@@ -1,12 +1,12 @@
-import { Tabs } from "@radicalbit/radicalbit-design-system"
+import { Tabs } from '@radicalbit/radicalbit-design-system'
 import { BasicFormContext } from './forms/basic-form-context'
 import { BasicFormHook } from './forms/basic-form-hook'
 import { MultipleStepsForm } from './forms/multiple-steps'
 import { AddableFieldsForm } from './forms/addable-fields'
 import { EditLikeForm } from './forms/edit-like'
-import { FakeApiProvider } from "./forms/context/api-context"
-import FormbitLogo from "./img/formbit-logo.svg"
-import { WriteRemoveAllForm } from "./forms/remove-all"
+import { FakeApiProvider } from './forms/context/api-context'
+import FormbitLogo from './img/formbit-logo.svg'
+import { WriteRemoveAllForm } from './forms/remove-all'
 
 enum EXAMPLES {
   CONTEXT = 'context',
@@ -60,7 +60,7 @@ function App() {
               label: 'Write/Remove All Form',
               key: EXAMPLES.WRITEREMOVEALL,
               children: <WriteRemoveAllForm />
-            },
+            }
           ]} />
       </FakeApiProvider>
     </div>

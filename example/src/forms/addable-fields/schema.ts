@@ -6,11 +6,9 @@ export const schema = yup.object().shape({
   friends: yup.array().of(
     yup.object().shape({
       name: yup.string().min(2).required(),
-    surname: yup.string().min(2).required(),
+      surname: yup.string().min(2).required()
     })
   ).required()
-});
+})
 
-
-export type FormData = yup.InferType<typeof schema> 
-
+export type FormData = yup.InferType<typeof schema>

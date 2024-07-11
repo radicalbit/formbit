@@ -1,4 +1,5 @@
-import { mount } from "cypress/react18";
+/* eslint-disable no-undef */
+import { mount } from 'cypress/react18'
 
 declare global {
     namespace Cypress {
