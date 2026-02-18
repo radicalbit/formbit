@@ -31,8 +31,6 @@ export const useFormbitContext = <Values extends InitialValues>() => {
   const context = useContext(createFormbitContext<Values>())
 
   if (!context) {
-    // This error can only be thrown if this hook is called outside the context,
-    // and it should only happen during develop.
     throw new Error(MISSING_CONTEXT_ERROR)
   }
 
