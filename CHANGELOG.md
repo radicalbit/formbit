@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/radicalbit/formbit/compare/v1.2.1...v2.0.0) (2026-02-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* support React 19 ([#16](https://github.com/radicalbit/formbit/issues/16))
+
+### Features
+
+* support React 19 ([#16](https://github.com/radicalbit/formbit/issues/16)) ([85835d4](https://github.com/radicalbit/formbit/commit/85835d4675b46b618bcdc7c2d574695389c88f80))
+
 ## [1.2.1](https://github.com/radicalbit/formbit/compare/v1.2.0...v1.2.1) (2024-07-11)
 
 
