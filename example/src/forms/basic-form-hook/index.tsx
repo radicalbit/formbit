@@ -9,7 +9,7 @@ import { ChangeEvent } from 'react';
 import { usePost } from '../context/api-context';
 import { useAutoFocus } from '../../helpers/use-autofocus';
 import { success } from '../../helpers/message';
-import { schema } from './schema';
+import { FormData, schema } from './schema';
 
 type FieldProps = {
   value?: string,
@@ -28,7 +28,7 @@ type ActionsProps = {
 export function BasicFormHook() {
   const [triggerMutation, isLoading] = usePost()
 
-  const { form, error, write, resetForm, submitForm, isFormInvalid, isDirty } = useFormbit({ initialValues: {}, yup: schema });
+  const { form, error, write, resetForm, submitForm, isFormInvalid, isDirty } = useFormbit<FormData>({ initialValues: {}, yup: schema });
 
   const handleOnChangeName = (e: ChangeEvent<HTMLInputElement>) => write('name', e.target.value);
   const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value);

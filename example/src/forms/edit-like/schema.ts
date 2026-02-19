@@ -5,3 +5,5 @@ export const schema = yup.object().shape({
   surname: yup.string().min(2).required(),
   email: yup.string().email().required()
 });
+
+export type FormData = yup.InferType<typeof schema>

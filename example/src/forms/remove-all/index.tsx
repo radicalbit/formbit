@@ -6,12 +6,9 @@ import {
 } from "@radicalbit/radicalbit-design-system";
 import { InputRef } from 'rc-input';
 import { ChangeEvent } from 'react';
-import * as yup from 'yup';
 import { useAutoFocus } from '../../helpers/use-autofocus';
 import { useHandleOnSubmit } from '../context/use-handle-on-submit';
-import { schema } from './schema';
-
-type FormData = yup.InferType<typeof schema>
+import { FormData, schema } from './schema';
 
 const useBasicFormContext = () => useFormbitContext<FormData>();
 

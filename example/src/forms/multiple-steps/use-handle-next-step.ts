@@ -1,12 +1,11 @@
-import { useFormbitContext } from "formbit";
+import { useFormbitContext, type FormbitValues } from "formbit";
 import { useCallback } from "react";
 
-
-type Context = {
+type Context = FormbitValues & {
     __metadata: {
         nextStep?: () => void
     }
- }
+}
 
 export const useHandleNextStep = (fields: string[]) => {
     const { form: { __metadata }, validateAll, error } = useFormbitContext<Context>();

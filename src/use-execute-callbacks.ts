@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react'
-import { GenericCallback, InitialValues, SetError, Writer } from './types'
+import { FormState, GenericCallback, InitialValues, SetError } from './types'
 import { isEmpty } from 'lodash'
 
 /**
@@ -10,8 +10,8 @@ import { isEmpty } from 'lodash'
  *
  *
  */
-export default <Values extends InitialValues>(writer: Writer<Values>, setError: SetError) => {
-  const callbacksStore = useRef<Object>({})
+export default <Values extends InitialValues>(writer: FormState<Values>, setError: SetError) => {
+  const callbacksStore = useRef<Record<string, GenericCallback<Partial<Values>> | undefined>>({})
 
   useEffect(() => {
     if (isEmpty(callbacksStore.current)) {

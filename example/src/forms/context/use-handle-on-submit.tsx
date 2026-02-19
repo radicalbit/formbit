@@ -1,9 +1,9 @@
-import { useFormbitContext } from "formbit";
+import { useFormbitContext, type FormbitValues } from "formbit";
 import { success } from "../../helpers/message";
 import { usePost } from "./api-context";
 
-type Context = {
-    __metadata: {
+type Context = FormbitValues & {
+    __metadata?: {
         resetSteps?: () => void
     }
 }
@@ -20,10 +20,11 @@ export const useHandleOnSubmit = () => {
     const handleOnSubmit = () => {
         if (isSubmitDisabled || isLoading) return;
 
-        submitForm(async ({ form }) => {
+        submitForm(async ({ form }, _setError, clearIsDirty) => {
             await triggerMutation(form);
             success(form);
             resetForm();
+            clearIsDirty();
             resetSteps?.();
         });
     };

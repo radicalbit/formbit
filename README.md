@@ -15,14 +15,19 @@ Formbit is a **lightweight React state form library** designed to simplify form 
 - [Local Development](#local-development)
 - [Type Aliases](#type-aliases)
   - [Check](#check)
+  - [CheckErrorCallback](#checkerrorcallback)
   - [CheckFnOptions](#checkfnoptions)
+  - [CheckSuccessCallback](#checksuccesscallback)
   - [ClearIsDirty](#clearisdirty)
   - [ErrorCallback](#errorcallback)
   - [ErrorCheckCallback](#errorcheckcallback)
   - [ErrorFn](#errorfn)
   - [Errors](#errors)
   - [Form](#form)
+  - [FormState](#formstate)
   - [FormbitObject](#formbitobject)
+  - [FormbitRecord](#formbitrecord)
+  - [FormbitValues](#formbitvalues)
   - [GenericCallback](#genericcallback)
   - [InitialValues](#initialvalues)
   - [Initialize](#initialize)
@@ -38,6 +43,7 @@ Formbit is a **lightweight React state form library** designed to simplify form 
   - [SetError](#seterror)
   - [SetSchema](#setschema)
   - [SubmitForm](#submitform)
+  - [SubmitSuccessCallback](#submitsuccesscallback)
   - [SuccessCallback](#successcallback)
   - [SuccessCheckCallback](#successcheckcallback)
   - [SuccessSubmitCallback](#successsubmitcallback)
@@ -160,8 +166,7 @@ For local development we suggest using [Yalc](https://github.com/wclr/yalc) to t
 
 Ƭ **Check**\<`Values`\>: (`json`: [`Form`](#form), `options?`: [`CheckFnOptions`](#checkfnoptions)\<`Values`\>) => [`ValidationError`](#validationerror)[] \| `undefined`
 
-Checks the given json against the form schema and returns and array of errors.
-It returns undefined if the json is valid.
+See [FormbitObject.check](#check).
 
 #### Type parameters
 
@@ -186,94 +191,15 @@ It returns undefined if the json is valid.
 
 #### Defined in
 
-[index.ts:14](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L14)
+[index.ts:216](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L216)
 
 ___
 
-### CheckFnOptions
+### CheckErrorCallback
 
-Ƭ **CheckFnOptions**\<`Values`\>: `Object`
+Ƭ **CheckErrorCallback**\<`Values`\>: (`json`: [`Form`](#form), `inner`: [`ValidationError`](#validationerror)[], `writer`: [`FormState`](#formstate)\<`Values`\>, `setError`: [`SetError`](#seterror)) => `void`
 
-Options object to change the behavior of the check method
-
-#### Type parameters
-
-| Name | Type |
-| :------ | :------ |
-| `Values` | extends [`InitialValues`](#initialvalues) |
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `errorCallback?` | [`ErrorCheckCallback`](#errorcheckcallback)\<`Values`\> |
-| `options?` | [`ValidateOptions`](#validateoptions) |
-| `successCallback?` | [`SuccessCheckCallback`](#successcheckcallback)\<`Values`\> |
-
-#### Defined in
-
-[index.ts:309](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L309)
-
-___
-
-### ClearIsDirty
-
-Ƭ **ClearIsDirty**: () => `void`
-
-Reset isDirty value to false
-
-#### Type declaration
-
-▸ (): `void`
-
-##### Returns
-
-`void`
-
-#### Defined in
-
-[index.ts:20](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L20)
-
-___
-
-### ErrorCallback
-
-Ƭ **ErrorCallback**\<`Values`\>: (`writer`: [`Writer`](#writer)\<`Values`\>, `setError`: [`SetError`](#seterror)) => `void`
-
-Invoked in case of errors raised by validation
-
-#### Type parameters
-
-| Name | Type |
-| :------ | :------ |
-| `Values` | extends [`InitialValues`](#initialvalues) |
-
-#### Type declaration
-
-▸ (`writer`, `setError`): `void`
-
-##### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `writer` | [`Writer`](#writer)\<`Values`\> |
-| `setError` | [`SetError`](#seterror) |
-
-##### Returns
-
-`void`
-
-#### Defined in
-
-[index.ts:25](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L25)
-
-___
-
-### ErrorCheckCallback
-
-Ƭ **ErrorCheckCallback**\<`Values`\>: (`json`: [`Form`](#form), `inner`: [`ValidationError`](#validationerror)[], `writer`: [`Writer`](#writer)\<`Values`\>, `setError`: [`SetError`](#seterror)) => `void`
-
-Invoked in case of errors raised by validation of check method
+Invoked in case of errors raised by validation of check method.
 
 #### Type parameters
 
@@ -291,7 +217,7 @@ Invoked in case of errors raised by validation of check method
 | :------ | :------ |
 | `json` | [`Form`](#form) |
 | `inner` | [`ValidationError`](#validationerror)[] |
-| `writer` | [`Writer`](#writer)\<`Values`\> |
+| `writer` | [`FormState`](#formstate)\<`Values`\> |
 | `setError` | [`SetError`](#seterror) |
 
 ##### Returns
@@ -300,7 +226,142 @@ Invoked in case of errors raised by validation of check method
 
 #### Defined in
 
-[index.ts:31](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L31)
+[index.ts:171](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L171)
+
+___
+
+### CheckFnOptions
+
+Ƭ **CheckFnOptions**\<`Values`\>: `Object`
+
+Options object to change the behavior of the check method.
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `Values` | extends [`InitialValues`](#initialvalues) |
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `errorCallback?` | [`CheckErrorCallback`](#checkerrorcallback)\<`Values`\> |
+| `options?` | [`ValidateOptions`](#validateoptions) |
+| `successCallback?` | [`CheckSuccessCallback`](#checksuccesscallback)\<`Values`\> |
+
+#### Defined in
+
+[index.ts:271](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L271)
+
+___
+
+### CheckSuccessCallback
+
+Ƭ **CheckSuccessCallback**\<`Values`\>: (`json`: [`Form`](#form), `writer`: [`FormState`](#formstate)\<`Values`\>, `setError`: [`SetError`](#seterror)) => `void`
+
+Success callback invoked by the check method when the operation is successful.
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `Values` | extends [`InitialValues`](#initialvalues) |
+
+#### Type declaration
+
+▸ (`json`, `writer`, `setError`): `void`
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `json` | [`Form`](#form) |
+| `writer` | [`FormState`](#formstate)\<`Values`\> |
+| `setError` | [`SetError`](#seterror) |
+
+##### Returns
+
+`void`
+
+#### Defined in
+
+[index.ts:162](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L162)
+
+___
+
+### ClearIsDirty
+
+Ƭ **ClearIsDirty**: () => `void`
+
+**`Deprecated`**
+
+Inlined into [FormbitObject](#formbitobject).
+
+#### Type declaration
+
+▸ (): `void`
+
+##### Returns
+
+`void`
+
+#### Defined in
+
+[index.ts:202](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L202)
+
+___
+
+### ErrorCallback
+
+Ƭ **ErrorCallback**\<`Values`\>: (`writer`: [`FormState`](#formstate)\<`Values`\>, `setError`: [`SetError`](#seterror)) => `void`
+
+Invoked in case of errors raised by validation.
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `Values` | extends [`InitialValues`](#initialvalues) |
+
+#### Type declaration
+
+▸ (`writer`, `setError`): `void`
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `writer` | [`FormState`](#formstate)\<`Values`\> |
+| `setError` | [`SetError`](#seterror) |
+
+##### Returns
+
+`void`
+
+#### Defined in
+
+[index.ts:157](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L157)
+
+___
+
+### ErrorCheckCallback
+
+Ƭ **ErrorCheckCallback**\<`Values`\>: [`CheckErrorCallback`](#checkerrorcallback)\<`Values`\>
+
+**`Deprecated`**
+
+Use [CheckErrorCallback](#checkerrorcallback) instead.
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `Values` | extends [`InitialValues`](#initialvalues) |
+
+#### Defined in
+
+[index.ts:175](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L175)
 
 ___
 
@@ -308,8 +369,9 @@ ___
 
 Ƭ **ErrorFn**: (`path`: `string`) => `string` \| `undefined`
 
-Returns the error message for the given path if any.
-It doesn't trigger any validation
+**`Deprecated`**
+
+Inlined into [FormbitObject](#formbitobject).
 
 #### Type declaration
 
@@ -327,7 +389,7 @@ It doesn't trigger any validation
 
 #### Defined in
 
-[index.ts:39](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L39)
+[index.ts:193](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L193)
 
 ___
 
@@ -335,7 +397,7 @@ ___
 
 Ƭ **Errors**: `Record`\<`string`, `string`\>
 
-Object including all the registered errors messages since the last validation.
+Object including all the registered error messages since the last validation.
 Errors are stored using the same path of the corresponding form values.
 
 **`Example`**
@@ -355,19 +417,47 @@ and age is a non valid field, errors object will look like this
 
 #### Defined in
 
-[index.ts:60](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L60)
+[index.ts:78](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L78)
 
 ___
 
 ### Form
 
-Ƭ **Form**: \{ `__metadata?`: [`Object`](#object)  } & [`Object`](#object)
+Ƭ **Form**: [`FormbitValues`](#formbitvalues)
 
-Object containing the updated form
+Object containing the updated form.
 
 #### Defined in
 
-[index.ts:65](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L65)
+[index.ts:55](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L55)
+
+___
+
+### FormState
+
+Ƭ **FormState**\<`Values`\>: `Object`
+
+Internal form state storing all the data of the form (except the validation schema).
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `Values` | extends [`InitialValues`](#initialvalues) |
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `errors` | [`Errors`](#errors) |
+| `form` | `Values` |
+| `initialValues` | `Values` |
+| `isDirty` | `boolean` |
+| `liveValidation` | [`LiveValidation`](#livevalidation) |
+
+#### Defined in
+
+[index.ts:110](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L110)
 
 ___
 
@@ -375,7 +465,7 @@ ___
 
 Ƭ **FormbitObject**\<`Values`\>: `Object`
 
-Object returned by useFormbit() and useFormbitContextHook()
+Object returned by useFormbit() and useFormbitContextHook().
 It contains all the data and methods needed to handle the form.
 
 #### Type parameters
@@ -388,30 +478,54 @@ It contains all the data and methods needed to handle the form.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `check` | [`Check`](#check)\<`Partial`\<`Values`\>\> | Checks the given json against the form schema and returns and array of errors. It returns undefined if the json is valid. |
-| `error` | [`ErrorFn`](#errorfn) | Returns the error message for the given path if any. It doesn't trigger any validation |
-| `errors` | [`Errors`](#errors) | Object including all the registered errors messages since the last validation. Errors are stored using the same path of the corresponding form values. **`Example`** If the form object has this structure: ```json { "age": 1 } ``` and age is a non valid field, errors object will look like this ```json { "age": "Age must be greater then 18" } ``` |
-| `form` | `Partial`\<`Values`\> | Object containing the updated form |
-| `initialize` | [`Initialize`](#initialize)\<`Values`\> | Initialize the form with new initial values |
+| `check` | [`Check`](#check)\<`Partial`\<`Values`\>\> | Checks the given json against the form schema and returns an array of errors. It returns undefined if the json is valid. |
+| `error` | (`path`: `string`) => `string` \| `undefined` | - |
+| `errors` | [`Errors`](#errors) | Object including all the registered error messages since the last validation. Errors are stored using the same path of the corresponding form values. **`Example`** If the form object has this structure: ```json { "age": 1 } ``` and age is a non valid field, errors object will look like this ```json { "age": "Age must be greater then 18" } ``` |
+| `form` | `Partial`\<`Values`\> | Object containing the updated form. |
+| `initialize` | [`Initialize`](#initialize)\<`Values`\> | Initialize the form with new initial values. |
 | `isDirty` | `boolean` | Returns true if the form is Dirty (user already interacted with the form), false otherwise. |
-| `isFormInvalid` | [`IsFormInvalid`](#isforminvalid) | Returns true if the form is NOT valid It doesn't perform any validation, it checks if any errors are present |
-| `isFormValid` | [`IsFormValid`](#isformvalid) | Returns true id the form is valid It doesn't perform any validation, it checks if any errors are present |
-| `liveValidation` | [`LiveValidationFn`](#livevalidationfn) | Returns true if live validation is active for the given path |
+| `isFormInvalid` | () => `boolean` | - |
+| `isFormValid` | () => `boolean` | - |
+| `liveValidation` | (`path`: `string`) => ``true`` \| `undefined` | - |
 | `remove` | [`Remove`](#remove)\<`Values`\> | This method updates the form state deleting value, setting isDirty to true. After writing, it validates all the paths contained into pathsToValidate (if any) and all the fields that have the live validation active. |
 | `removeAll` | [`RemoveAll`](#removeall)\<`Values`\> | This method updates the form state deleting multiple values, setting isDirty to true. |
-| `resetForm` | [`ResetForm`](#resetform) | Reset form to the initial state. Errors and liveValidation are set back to empty objects. isDirty is set back to false |
-| `setError` | [`SetError`](#seterror) | Set a message(value) to the given error path. |
+| `resetForm` | () => `void` | - |
+| `setError` | [`SetError`](#seterror) | Set a message (value) to the given error path. |
 | `setSchema` | [`SetSchema`](#setschema)\<`Values`\> | Override the current schema with the given one. |
-| `submitForm` | [`SubmitForm`](#submitform)\<`Values`\> | Perform a validation against the current form object, and execute the successCallback if the validation pass otherwise it executes the errorCallback |
-| `validate` | [`Validate`](#validate)\<`Values`\> | This method only validate the specified path. Do not check for fields that have the live validation active. |
-| `validateAll` | [`ValidateAll`](#validateall)\<`Values`\> | This method only validate the specified paths. Do not check for fields that have the live validation active. |
-| `validateForm` | [`ValidateForm`](#validateform)\<`Partial`\<`Values`\>\> | This method validates the entire form and set the corresponding errors if any. |
-| `write` | [`Write`](#write)\<`Values`\> | This method update the form state writing $value into the $path, setting isDirty to true. After writing, it validates all the paths contained into $pathsToValidate (if any) and all the fields that have the live validation active. |
-| `writeAll` | [`WriteAll`](#writeall)\<`Values`\> | This method takes an array of [path, value] and update the form state writing all those values into the specified paths. It set isDirty to true. After writing, it validate all the paths contained into $pathToValidate and all the fields that have the live validation active. |
+| `submitForm` | [`SubmitForm`](#submitform)\<`Values`\> | Perform a validation against the current form object, and execute the successCallback if the validation passes, otherwise it executes the errorCallback. |
+| `validate` | [`Validate`](#validate)\<`Values`\> | This method only validates the specified path. Does not check for fields that have the live validation active. |
+| `validateAll` | [`ValidateAll`](#validateall)\<`Values`\> | This method only validates the specified paths. Does not check for fields that have the live validation active. |
+| `validateForm` | [`ValidateForm`](#validateform)\<`Partial`\<`Values`\>\> | This method validates the entire form and sets the corresponding errors if any. |
+| `write` | [`Write`](#write)\<`Values`\> | This method updates the form state writing $value into the $path, setting isDirty to true. After writing, it validates all the paths contained into $pathsToValidate (if any) and all the fields that have the live validation active. |
+| `writeAll` | [`WriteAll`](#writeall)\<`Values`\> | This method takes an array of [path, value] and updates the form state writing all those values into the specified paths. It sets isDirty to true. After writing, it validates all the paths contained into $pathToValidate and all the fields that have the live validation active. |
 
 #### Defined in
 
-[index.ts:348](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L348)
+[index.ts:300](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L300)
+
+___
+
+### FormbitRecord
+
+Ƭ **FormbitRecord**: `Record`\<`string`, `unknown`\>
+
+Generic object with string keys.
+
+#### Defined in
+
+[index.ts:16](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L16)
+
+___
+
+### FormbitValues
+
+Ƭ **FormbitValues**: \{ `__metadata?`: [`FormbitRecord`](#formbitrecord)  } & [`FormbitRecord`](#formbitrecord)
+
+Base type for form values: a record of string keys with an optional `__metadata` field.
+
+#### Defined in
+
+[index.ts:52](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L52)
 
 ___
 
@@ -427,19 +541,19 @@ ___
 
 #### Defined in
 
-[index.ts:67](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L67)
+[index.ts:24](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L24)
 
 ___
 
 ### InitialValues
 
-Ƭ **InitialValues**: \{ `__metadata?`: [`Object`](#object)  } & [`Object`](#object)
+Ƭ **InitialValues**: [`FormbitValues`](#formbitvalues)
 
-InitialValues used to setup formbit, used also to reset the form to the original version.
+InitialValues used to set up formbit; also used to reset the form to its original version.
 
 #### Defined in
 
-[index.ts:77](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L77)
+[index.ts:58](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L58)
 
 ___
 
@@ -447,7 +561,7 @@ ___
 
 Ƭ **Initialize**\<`Values`\>: (`values`: `Partial`\<`Values`\>) => `void`
 
-Initialize the form with new initial values
+See [FormbitObject.initialize](#initialize).
 
 #### Type parameters
 
@@ -471,7 +585,7 @@ Initialize the form with new initial values
 
 #### Defined in
 
-[index.ts:71](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L71)
+[index.ts:220](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L220)
 
 ___
 
@@ -479,11 +593,13 @@ ___
 
 Ƭ **IsDirty**: `boolean`
 
-Returns true if the form is Dirty (user already interacted with the form), false otherwise.
+**`Deprecated`**
+
+Inlined into [FormbitObject](#formbitobject).
 
 #### Defined in
 
-[index.ts:83](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L83)
+[index.ts:211](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L211)
 
 ___
 
@@ -491,8 +607,9 @@ ___
 
 Ƭ **IsFormInvalid**: () => `boolean`
 
-Returns true if the form is NOT valid
-It doesn't perform any validation, it checks if any errors are present
+**`Deprecated`**
+
+Inlined into [FormbitObject](#formbitobject).
 
 #### Type declaration
 
@@ -504,7 +621,7 @@ It doesn't perform any validation, it checks if any errors are present
 
 #### Defined in
 
-[index.ts:89](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L89)
+[index.ts:199](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L199)
 
 ___
 
@@ -512,8 +629,9 @@ ___
 
 Ƭ **IsFormValid**: () => `boolean`
 
-Returns true id the form is valid
-It doesn't perform any validation, it checks if any errors are present
+**`Deprecated`**
+
+Inlined into [FormbitObject](#formbitobject).
 
 #### Type declaration
 
@@ -525,7 +643,7 @@ It doesn't perform any validation, it checks if any errors are present
 
 #### Defined in
 
-[index.ts:95](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L95)
+[index.ts:196](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L196)
 
 ___
 
@@ -534,12 +652,12 @@ ___
 Ƭ **LiveValidation**: `Record`\<`string`, ``true``\>
 
 Object including all the values that are being live validated.
-Usually fields that fail validation (using one of the method that triggers validation)
-will automatically set to be live-validated.
+Usually fields that fail validation (using one of the methods that triggers validation)
+will automatically be set to live-validated.
 
 A value/path is live-validated when validated at every change of the form.
 
-By default no field is live-validated
+By default no field is live-validated.
 
 **`Example`**
 
@@ -552,13 +670,13 @@ If the form object has this structure:
 and age is a field that is being live-validated, liveValidation object will look like this
 ```json
 {
-  "age": "Age must be greater then 18"
+  "age": true
 }
 ```
 
 #### Defined in
 
-[index.ts:121](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L121)
+[index.ts:103](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L103)
 
 ___
 
@@ -566,7 +684,9 @@ ___
 
 Ƭ **LiveValidationFn**: (`path`: `string`) => ``true`` \| `undefined`
 
-Returns true if live validation is active for the given path
+**`Deprecated`**
+
+Inlined into [FormbitObject](#formbitobject).
 
 #### Type declaration
 
@@ -584,19 +704,21 @@ Returns true if live validation is active for the given path
 
 #### Defined in
 
-[index.ts:127](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L127)
+[index.ts:208](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L208)
 
 ___
 
 ### Object
 
-Ƭ **Object**: `Record`\<`string`, `unknown`\>
+Ƭ **Object**: [`FormbitRecord`](#formbitrecord)
 
-Generic object with string as keys
+**`Deprecated`**
+
+Use [FormbitRecord](#formbitrecord) instead. Renamed to avoid shadowing the global `Object`.
 
 #### Defined in
 
-[index.ts:133](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L133)
+[index.ts:19](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L19)
 
 ___
 
@@ -604,10 +726,7 @@ ___
 
 Ƭ **Remove**\<`Values`\>: (`path`: `string`, `options?`: [`WriteFnOptions`](#writefnoptions)\<`Values`\>) => `void`
 
-This method updates the form state deleting value and set isDirty to true.
-
-After writing, it validates all the paths contained into pathsToValidate (if any)
-and all the fields that have the live validation active.
+See [FormbitObject.remove](#remove).
 
 #### Type parameters
 
@@ -632,7 +751,7 @@ and all the fields that have the live validation active.
 
 #### Defined in
 
-[index.ts:152](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L152)
+[index.ts:223](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L223)
 
 ___
 
@@ -640,7 +759,7 @@ ___
 
 Ƭ **RemoveAll**\<`Values`\>: (`arr`: `string`[], `options?`: [`WriteFnOptions`](#writefnoptions)\<`Values`\>) => `void`
 
-This method updates the form state deleting multiple values, setting isDirty to true.
+See [FormbitObject.removeAll](#removeall).
 
 #### Type parameters
 
@@ -665,7 +784,7 @@ This method updates the form state deleting multiple values, setting isDirty to 
 
 #### Defined in
 
-[index.ts:278](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L278)
+[index.ts:258](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L258)
 
 ___
 
@@ -673,9 +792,9 @@ ___
 
 Ƭ **ResetForm**: () => `void`
 
-Reset form to the initial state.
-Errors and liveValidation are set back to empty objects.
-isDirty is set back to false
+**`Deprecated`**
+
+Inlined into [FormbitObject](#formbitobject).
 
 #### Type declaration
 
@@ -687,7 +806,7 @@ isDirty is set back to false
 
 #### Defined in
 
-[index.ts:160](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L160)
+[index.ts:205](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L205)
 
 ___
 
@@ -695,7 +814,7 @@ ___
 
 Ƭ **SetError**: (`path`: `string`, `value`: `string`) => `void`
 
-Set a message(value) to the given error path.
+See [FormbitObject.setError](#seterror).
 
 #### Type declaration
 
@@ -714,7 +833,7 @@ Set a message(value) to the given error path.
 
 #### Defined in
 
-[index.ts:175](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L175)
+[index.ts:226](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L226)
 
 ___
 
@@ -722,7 +841,7 @@ ___
 
 Ƭ **SetSchema**\<`Values`\>: (`newSchema`: [`ValidationSchema`](#validationschema)\<`Values`\>) => `void`
 
-Override the current schema with the given one.
+See [FormbitObject.setSchema](#setschema).
 
 #### Type parameters
 
@@ -746,16 +865,15 @@ Override the current schema with the given one.
 
 #### Defined in
 
-[index.ts:181](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L181)
+[index.ts:229](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L229)
 
 ___
 
 ### SubmitForm
 
-Ƭ **SubmitForm**\<`Values`\>: (`successCallback`: [`SuccessSubmitCallback`](#successsubmitcallback)\<`Values`\>, `errorCallback?`: [`ErrorCallback`](#errorcallback)\<`Partial`\<`Values`\>\>, `options?`: [`ValidateOptions`](#validateoptions)) => `void`
+Ƭ **SubmitForm**\<`Values`\>: (`successCallback`: [`SubmitSuccessCallback`](#submitsuccesscallback)\<`Values`\>, `errorCallback?`: [`ErrorCallback`](#errorcallback)\<`Partial`\<`Values`\>\>, `options?`: [`ValidateOptions`](#validateoptions)) => `void`
 
-Perform a validation against the current form object, and execute the successCallback if the validation pass
-otherwise it executes the errorCallback
+See [FormbitObject.submitForm](#submitform).
 
 #### Type parameters
 
@@ -771,7 +889,7 @@ otherwise it executes the errorCallback
 
 | Name | Type |
 | :------ | :------ |
-| `successCallback` | [`SuccessSubmitCallback`](#successsubmitcallback)\<`Values`\> |
+| `successCallback` | [`SubmitSuccessCallback`](#submitsuccesscallback)\<`Values`\> |
 | `errorCallback?` | [`ErrorCallback`](#errorcallback)\<`Partial`\<`Values`\>\> |
 | `options?` | [`ValidateOptions`](#validateoptions) |
 
@@ -781,80 +899,13 @@ otherwise it executes the errorCallback
 
 #### Defined in
 
-[index.ts:188](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L188)
+[index.ts:232](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L232)
 
 ___
 
-### SuccessCallback
+### SubmitSuccessCallback
 
-Ƭ **SuccessCallback**\<`Values`\>: (`writer`: [`Writer`](#writer)\<`Values`\>, `setError`: [`SetError`](#seterror)) => `void`
-
-Success callback invoked by some formbit methods when the operation is successful.
-
-#### Type parameters
-
-| Name | Type |
-| :------ | :------ |
-| `Values` | extends [`InitialValues`](#initialvalues) |
-
-#### Type declaration
-
-▸ (`writer`, `setError`): `void`
-
-##### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `writer` | [`Writer`](#writer)\<`Values`\> |
-| `setError` | [`SetError`](#seterror) |
-
-##### Returns
-
-`void`
-
-#### Defined in
-
-[index.ts:197](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L197)
-
-___
-
-### SuccessCheckCallback
-
-Ƭ **SuccessCheckCallback**\<`Values`\>: (`json`: [`Form`](#form), `writer`: [`Writer`](#writer)\<`Values`\>, `setError`: [`SetError`](#seterror)) => `void`
-
-Success callback invoked by the check method when the operation is successful.
-
-#### Type parameters
-
-| Name | Type |
-| :------ | :------ |
-| `Values` | extends [`InitialValues`](#initialvalues) |
-
-#### Type declaration
-
-▸ (`json`, `writer`, `setError`): `void`
-
-##### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `json` | [`Form`](#form) |
-| `writer` | [`Writer`](#writer)\<`Values`\> |
-| `setError` | [`SetError`](#seterror) |
-
-##### Returns
-
-`void`
-
-#### Defined in
-
-[index.ts:203](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L203)
-
-___
-
-### SuccessSubmitCallback
-
-Ƭ **SuccessSubmitCallback**\<`Values`\>: (`writer`: [`Writer`](#writer)\<`Values` \| `Omit`\<`Values`, ``"__metadata"``\>\>, `setError`: [`SetError`](#seterror), `clearIsDirty`: [`ClearIsDirty`](#clearisdirty)) => `void`
+Ƭ **SubmitSuccessCallback**\<`Values`\>: (`writer`: [`FormState`](#formstate)\<`Values` \| `Omit`\<`Values`, ``"__metadata"``\>\>, `setError`: [`SetError`](#seterror), `clearIsDirty`: () => `void`) => `void`
 
 Success callback invoked by the submit method when the validation is successful.
 Is the right place to send your data to the backend.
@@ -873,9 +924,9 @@ Is the right place to send your data to the backend.
 
 | Name | Type |
 | :------ | :------ |
-| `writer` | [`Writer`](#writer)\<`Values` \| `Omit`\<`Values`, ``"__metadata"``\>\> |
+| `writer` | [`FormState`](#formstate)\<`Values` \| `Omit`\<`Values`, ``"__metadata"``\>\> |
 | `setError` | [`SetError`](#seterror) |
-| `clearIsDirty` | [`ClearIsDirty`](#clearisdirty) |
+| `clearIsDirty` | () => `void` |
 
 ##### Returns
 
@@ -883,7 +934,80 @@ Is the right place to send your data to the backend.
 
 #### Defined in
 
-[index.ts:211](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L211)
+[index.ts:181](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L181)
+
+___
+
+### SuccessCallback
+
+Ƭ **SuccessCallback**\<`Values`\>: (`writer`: [`FormState`](#formstate)\<`Values`\>, `setError`: [`SetError`](#seterror)) => `void`
+
+Success callback invoked by some formbit methods when the operation is successful.
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `Values` | extends [`InitialValues`](#initialvalues) |
+
+#### Type declaration
+
+▸ (`writer`, `setError`): `void`
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `writer` | [`FormState`](#formstate)\<`Values`\> |
+| `setError` | [`SetError`](#seterror) |
+
+##### Returns
+
+`void`
+
+#### Defined in
+
+[index.ts:152](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L152)
+
+___
+
+### SuccessCheckCallback
+
+Ƭ **SuccessCheckCallback**\<`Values`\>: [`CheckSuccessCallback`](#checksuccesscallback)\<`Values`\>
+
+**`Deprecated`**
+
+Use [CheckSuccessCallback](#checksuccesscallback) instead.
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `Values` | extends [`InitialValues`](#initialvalues) |
+
+#### Defined in
+
+[index.ts:166](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L166)
+
+___
+
+### SuccessSubmitCallback
+
+Ƭ **SuccessSubmitCallback**\<`Values`\>: [`SubmitSuccessCallback`](#submitsuccesscallback)\<`Values`\>
+
+**`Deprecated`**
+
+Use [SubmitSuccessCallback](#submitsuccesscallback) instead.
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `Values` | extends [`InitialValues`](#initialvalues) |
+
+#### Defined in
+
+[index.ts:188](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L188)
 
 ___
 
@@ -891,8 +1015,7 @@ ___
 
 Ƭ **Validate**\<`Values`\>: (`path`: `string`, `options?`: [`ValidateFnOptions`](#validatefnoptions)\<`Values`\>) => `void`
 
-This method only validate the specified path. Do not check for fields that have the
-live validation active.
+See [FormbitObject.validate](#validate).
 
 #### Type parameters
 
@@ -917,7 +1040,7 @@ live validation active.
 
 #### Defined in
 
-[index.ts:222](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L222)
+[index.ts:238](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L238)
 
 ___
 
@@ -925,8 +1048,7 @@ ___
 
 Ƭ **ValidateAll**\<`Values`\>: (`paths`: `string`[], `options?`: [`ValidateFnOptions`](#validatefnoptions)\<`Values`\>) => `void`
 
-This method only validate the specified paths. Do not check for fields that have the
-live validation active.
+See [FormbitObject.validateAll](#validateall).
 
 #### Type parameters
 
@@ -951,7 +1073,7 @@ live validation active.
 
 #### Defined in
 
-[index.ts:229](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L229)
+[index.ts:241](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L241)
 
 ___
 
@@ -959,7 +1081,7 @@ ___
 
 Ƭ **ValidateFnOptions**\<`Values`\>: `Object`
 
-Options object to change the behavior of the validate methods
+Options object to change the behavior of the validate methods.
 
 #### Type parameters
 
@@ -977,7 +1099,7 @@ Options object to change the behavior of the validate methods
 
 #### Defined in
 
-[index.ts:319](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L319)
+[index.ts:280](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L280)
 
 ___
 
@@ -985,7 +1107,7 @@ ___
 
 Ƭ **ValidateForm**\<`Values`\>: (`successCallback?`: [`SuccessCallback`](#successcallback)\<`Values`\>, `errorCallback?`: [`ErrorCallback`](#errorcallback)\<`Values`\>, `options?`: [`ValidateOptions`](#validateoptions)) => `void`
 
-This method validates the entire form and set the corresponding errors if any.
+See [FormbitObject.validateForm](#validateform).
 
 #### Type parameters
 
@@ -1011,7 +1133,7 @@ This method validates the entire form and set the corresponding errors if any.
 
 #### Defined in
 
-[index.ts:235](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L235)
+[index.ts:244](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L244)
 
 ___
 
@@ -1020,13 +1142,13 @@ ___
 Ƭ **ValidateOptions**: `YupValidateOptions`
 
 Type imported from the yup library.
-It represents the object with all the options that can be passed to the internal yup validation method,
+It represents the object with all the options that can be passed to the internal yup validation method.
 
 Link to the Yup documentation [https://github.com/jquense/yup](https://github.com/jquense/yup)
 
 #### Defined in
 
-[index.ts:249](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L249)
+[index.ts:137](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L137)
 
 ___
 
@@ -1035,13 +1157,13 @@ ___
 Ƭ **ValidationError**: `YupValidationError`
 
 Type imported from the yup library.
-It represents the error object returned when a validation fails
+It represents the error object returned when a validation fails.
 
 Link to the Yup documentation [https://github.com/jquense/yup](https://github.com/jquense/yup)
 
 #### Defined in
 
-[index.ts:332](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L332)
+[index.ts:145](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L145)
 
 ___
 
@@ -1051,7 +1173,7 @@ ___
 
 #### Defined in
 
-[index.ts:240](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L240)
+[index.ts:29](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L29)
 
 ___
 
@@ -1060,7 +1182,7 @@ ___
 Ƭ **ValidationSchema**\<`Values`\>: `ObjectSchema`\<`Values`\>
 
 Type imported from the yup library.
-It represents any validation schema created with the yup.object() method
+It represents any validation schema created with the yup.object() method.
 
 Link to the Yup documentation [https://github.com/jquense/yup](https://github.com/jquense/yup)
 
@@ -1072,7 +1194,7 @@ Link to the Yup documentation [https://github.com/jquense/yup](https://github.co
 
 #### Defined in
 
-[index.ts:169](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L169)
+[index.ts:129](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L129)
 
 ___
 
@@ -1080,10 +1202,7 @@ ___
 
 Ƭ **Write**\<`Values`\>: (`path`: keyof `Values` \| `string`, `value`: `unknown`, `options?`: [`WriteFnOptions`](#writefnoptions)\<`Values`\>) => `void`
 
-This method update the form state writing $value into the $path, setting isDirty to true.
-
-After writing, it validates all the paths contained into $pathsToValidate (if any)
-and all the fields that have the live validation active.
+See [FormbitObject.write](#write).
 
 #### Type parameters
 
@@ -1109,7 +1228,7 @@ and all the fields that have the live validation active.
 
 #### Defined in
 
-[index.ts:258](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L258)
+[index.ts:250](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L250)
 
 ___
 
@@ -1117,13 +1236,7 @@ ___
 
 Ƭ **WriteAll**\<`Values`\>: (`arr`: [`WriteAllValue`](#writeallvalue)\<`Values`\>[], `options?`: [`WriteFnOptions`](#writefnoptions)\<`Values`\>) => `void`
 
-This method takes an array of [path, value] and update the form state writing
-all those values into the specified paths.
-
-It set isDirty to true.
-
-After writing, it validate all the paths contained into $pathToValidate and all
-the fields that have the live validation active.
+See [FormbitObject.writeAll](#writeall).
 
 #### Type parameters
 
@@ -1148,7 +1261,7 @@ the fields that have the live validation active.
 
 #### Defined in
 
-[index.ts:271](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L271)
+[index.ts:254](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L254)
 
 ___
 
@@ -1166,7 +1279,7 @@ Tuple of [key, value] pair.
 
 #### Defined in
 
-[index.ts:285](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L285)
+[index.ts:264](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L264)
 
 ___
 
@@ -1174,7 +1287,7 @@ ___
 
 Ƭ **WriteFnOptions**\<`Values`\>: \{ `noLiveValidation?`: `boolean` ; `pathsToValidate?`: `string`[]  } & [`ValidateFnOptions`](#validatefnoptions)\<`Values`\>
 
-Options object to change the behavior of the write methods
+Options object to change the behavior of the write methods.
 
 #### Type parameters
 
@@ -1184,15 +1297,17 @@ Options object to change the behavior of the write methods
 
 #### Defined in
 
-[index.ts:338](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L338)
+[index.ts:289](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L289)
 
 ___
 
 ### Writer
 
-Ƭ **Writer**\<`Values`\>: `Object`
+Ƭ **Writer**\<`Values`\>: [`FormState`](#formstate)\<`Values`\>
 
-Internal form state storing all the data of the form (except the validation schema)
+**`Deprecated`**
+
+Use [FormState](#formstate) instead.
 
 #### Type parameters
 
@@ -1200,19 +1315,9 @@ Internal form state storing all the data of the form (except the validation sche
 | :------ | :------ |
 | `Values` | extends [`InitialValues`](#initialvalues) |
 
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `errors` | [`Errors`](#errors) |
-| `form` | `Values` |
-| `initialValues` | `Values` |
-| `isDirty` | [`IsDirty`](#isdirty) |
-| `liveValidation` | [`LiveValidation`](#livevalidation) |
-
 #### Defined in
 
-[index.ts:297](https://github.com/radicalbit/formbit/blob/a28ef40/src/types/index.ts#L297)
+[index.ts:119](https://github.com/radicalbit/formbit/blob/676b526/src/types/index.ts#L119)
 
 <!-- END_TYPES_DOC -->
 
