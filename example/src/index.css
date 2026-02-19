@@ -1,6 +1,2 @@
 @tailwind components;
 @tailwind utilities;
-
-body {
-    background: url(./img/background-image.svg) bottom left no-repeat;
-}

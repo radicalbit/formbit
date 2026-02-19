@@ -190,7 +190,7 @@ function Actions() {
       Submit
     </Button>
 
-    <Button onClick={resetForm} type="ghost">
+    <Button onClick={resetForm}>
       Reset
     </Button>
   </>

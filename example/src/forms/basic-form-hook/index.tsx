@@ -99,7 +99,7 @@ function Actions({ onSubmit, onReset, isLoading, isDisabled }: ActionsProps) {
         Submit
       </Button>
 
-      <Button onClick={onReset} disabled={isDisabled} type="ghost">
+      <Button onClick={onReset} disabled={isDisabled}>
         Reset
       </Button>
     </div>

@@ -55,7 +55,7 @@ function Actions() {
             Submit
         </Button>
 
-        <Button onClick={handleReset} type="ghost">
+        <Button onClick={handleReset}>
             Reset
         </Button>
     </>

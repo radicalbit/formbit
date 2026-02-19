@@ -121,15 +121,15 @@ function Actions() {
         Submit
       </Button>
 
-      <Button onClick={resetForm} type="ghost">
+      <Button onClick={resetForm}>
         Reset
       </Button>
 
-      <Button onClick={handleRemoveAll} type="ghost">
+      <Button onClick={handleRemoveAll}>
         Remove Name, Surname
       </Button>
 
-      <Button onClick={handlWriteAll} type="ghost">
+      <Button onClick={handlWriteAll}>
         Write Name, Surname
       </Button>
 
