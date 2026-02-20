@@ -184,9 +184,6 @@ export type SubmitSuccessCallback<Values extends InitialValues> =
         setError: SetError, clearIsDirty: () => void
     ) => void
 
-/** @deprecated Use {@link SubmitSuccessCallback} instead. */
-export type SuccessSubmitCallback<Values extends InitialValues> = SubmitSuccessCallback<Values>
-
 // ─── Deprecated Single-Use Aliases (kept for backward compatibility) ─────────
 
 /** @deprecated Inlined into {@link FormbitObject}. */
@@ -355,6 +352,12 @@ export type FormbitObject<Values extends InitialValues> = {
      */
     liveValidation: (path: string) => true | undefined,
 
+    /**
+     * Checks the given json against the form schema and returns an array of errors.
+     * It returns undefined if the json is valid.
+     */
+    check: Check<Partial<Values>>,
+
     // --- Mutations ---
 
     /**
@@ -433,10 +436,4 @@ export type FormbitObject<Values extends InitialValues> = {
      * otherwise it executes the errorCallback.
      */
     submitForm: SubmitForm<Values>,
-
-    /**
-     * Checks the given json against the form schema and returns an array of errors.
-     * It returns undefined if the json is valid.
-     */
-    check: Check<Partial<Values>>,
 }

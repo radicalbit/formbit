@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react'
-import { SuccessSubmitCallback } from 'src/types'
+import { SubmitSuccessCallback } from 'src/types'
 import useFormbit from 'src/use-formbit'
 import * as Yup from 'yup'
 
@@ -40,7 +40,7 @@ describe('submitForm fn', () => {
   })
 
   it('ClearIsDirty should reset isDirty value', () => {
-    const successCallback: SuccessSubmitCallback<Form> = (_, __, clearIsDirty) => clearIsDirty()
+    const successCallback: SubmitSuccessCallback<Form> = (_, __, clearIsDirty) => clearIsDirty()
 
     const { result, unmount } = renderHook(() => useFormbit({ initialValues, yup }))
 
