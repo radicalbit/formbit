@@ -63,7 +63,7 @@ function Actions() {
 
             <Button
                 onClick={prevStep}
-                type="ghost"
+                
             >
                 Prev
             </Button>

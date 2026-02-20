@@ -25,7 +25,7 @@
     "predeploy": "cd example && yarn install && yarn run build",
     "deploy": "gh-pages -d example/build",
     "yalc:publish": "yalc publish --push --sig",
-    "docs:gen": "typedoc --excludePrivate --plugin typedoc-plugin-markdown --hideInPageTOC true --hideBreadcrumbs true --hidePageTitle true --out docs src/types/index.ts",
+    "docs:gen": "typedoc --excludePrivate --excludeInternal --plugin typedoc-plugin-markdown --hideInPageTOC true --hideBreadcrumbs true --hidePageTitle true --out docs src/types/index.ts",
     "docs:merge": "node scripts/readme-merge.js",
     "docs:toc": "doctoc --maxlevel 3 README.md --github",
     "docs:clean": "rimraf docs",

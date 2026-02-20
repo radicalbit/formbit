@@ -12,10 +12,10 @@
     "cypress:components": "cypress run --component"
   },
   "dependencies": {
-    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "6.7.2",
+    "@radicalbit/radicalbit-design-system": "2.13.1",
     "cypress": "^13.7.3",
     "formbit": "link:..",
-    "@radicalbit/radicalbit-design-system": "1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "yup": "^1.4.0"

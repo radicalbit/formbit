@@ -5,13 +5,10 @@ import {
 import { ACTIONS } from './helpers/constants'
 import {
   Check,
-  ErrorFn,
   FormbitObject,
+  FormState,
   InitialValues,
-  IsFormInvalid,
-  IsFormValid,
   LiveValidation,
-  LiveValidationFn,
   PrivateValidateForm,
   Remove,
   RemoveAll,
@@ -24,8 +21,7 @@ import {
   ValidationSchema,
   Write,
   WriteAll,
-  WriteOrRemove,
-  Writer
+  WriteOrRemove
 } from './types'
 import { isValidationError } from './types/helpers'
 import { validateSyncAll } from './validate-sync-all'
@@ -44,7 +40,7 @@ export default <Values extends InitialValues>({
 }: UseFormbitParams<Values>): FormbitObject<Values> => {
   const schemaRef = useRef<ValidationSchema<Values>>(schema)
 
-  const [writer, setWriter] = useState<Writer<Partial<Values>>>({
+  const [writer, setWriter] = useState<FormState<Partial<Values>>>({
     form: initialValues,
     initialValues,
     errors: {},
@@ -129,7 +125,7 @@ export default <Values extends InitialValues>({
         }
       }())
 
-      const newWriter: Writer<Partial<Values>> = { ...w, form, isDirty: true }
+      const newWriter: FormState<Partial<Values>> = { ...w, form, isDirty: true }
 
       if (paths.length === 0) {
         newUUID && executeCb(newUUID, successCallback)
@@ -500,8 +496,8 @@ export default <Values extends InitialValues>({
       const fn = () => setWriter((w) => ({ ...w, isDirty: false }))
 
       const successCallbackAndClearIsDirty: SuccessCallback<Partial<Values>> = (a, b) => {
-        // Success callback is called only if the form is valid so we can safely cast a as Writer<Values>
-        const writer = a as Writer<Values>
+        // Success callback is called only if the form is valid so we can safely cast a as FormState<Values>
+        const writer = a as FormState<Values>
 
         // __metadata is a field used to store metadata about the form and should not be submitted
         const { __metadata: _, ...form } = writer.form
@@ -526,43 +522,48 @@ export default <Values extends InitialValues>({
     }))
   }, [])
 
-  const isFormValid: IsFormValid = useCallback(() => {
+  const isFormValid = useCallback(() => {
     const { silent: _, ...e } = writer.errors
     return objLeaves(e).every((leaf) => !get(e, leaf))
   }, [writer.errors])
 
-  const isFormInvalid: IsFormInvalid = useCallback(() => {
+  const isFormInvalid = useCallback(() => {
     const { silent: _, ...e } = writer.errors
     return objLeaves(e).some((leaf) => get(e, leaf))
   }, [writer.errors])
 
-  const error: ErrorFn = useCallback((path: string) => get(writer.errors, path, undefined), [writer.errors])
+  const error = useCallback((path: string): string | undefined => get(writer.errors, path, undefined), [writer.errors])
 
-  const liveValidation: LiveValidationFn = useCallback(
-    (path: string) => get(writer.liveValidation, path, undefined),
+  const liveValidation = useCallback(
+    (path: string): true | undefined => get(writer.liveValidation, path, undefined),
     [writer.liveValidation]
   )
 
   return {
-    check,
-    error,
-    errors: writer.errors,
+    // State
     form: writer.form,
-    initialize,
+    errors: writer.errors,
     isDirty: writer.isDirty,
-    isFormInvalid,
+
+    // Queries
+    error,
     isFormValid,
+    isFormInvalid,
     liveValidation,
+
+    // Mutations
+    write,
+    writeAll,
     remove,
     removeAll,
+    initialize,
     resetForm,
     setError,
     setSchema,
-    submitForm,
     validate,
     validateAll,
     validateForm,
-    write,
-    writeAll
+    submitForm,
+    check
   }
 }

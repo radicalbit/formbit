@@ -7,17 +7,10 @@ import {
 } from "@radicalbit/radicalbit-design-system";
 import { InputRef } from 'rc-input';
 import { ChangeEvent, useEffect } from 'react';
-import * as yup from 'yup';
 import { FakeApiProvider, useGetUser } from '../context/api-context';
 import { useAutoFocus } from '../../helpers/use-autofocus';
 import { useHandleOnSubmit } from '../context/use-handle-on-submit';
-import { schema } from './schema';
-
-type FormData = yup.InferType<typeof schema> & {
-  __metadata?: {
-    isLoading?: boolean
-  }
-}
+import { FormData, schema } from './schema';
 
 const useEditLikeContext = () => useFormbitContext<FormData>();
 
