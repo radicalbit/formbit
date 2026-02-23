@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/radicalbit/formbit/compare/v2.0.0...v2.1.0) (2026-02-20)
+
+
+### Features
+
+* improve TS typing and refactor examples ([#18](https://github.com/radicalbit/formbit/issues/18)) ([32f4ba4](https://github.com/radicalbit/formbit/commit/32f4ba4d7d47622b7e6adfa0eda486cb9a89b881))
+
 ## [2.0.0](https://github.com/radicalbit/formbit/compare/v1.2.1...v2.0.0) (2026-02-18)
 
 
