@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/radicalbit/formbit/compare/v2.1.0...v2.2.0) (2026-02-26)
+
+
+### Features
+
+* improve Formbit examples ([#20](https://github.com/radicalbit/formbit/issues/20)) ([88ed9e4](https://github.com/radicalbit/formbit/commit/88ed9e42cacef49abb8d8df885234bb10a8503e4))
+
 ## [2.1.0](https://github.com/radicalbit/formbit/compare/v2.0.0...v2.1.0) (2026-02-20)
 
 
