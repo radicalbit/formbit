@@ -1,38 +1,87 @@
-import { FormbitContextProvider, useFormbitContext } from 'formbit';
 import {
   Button,
   FormField,
   Input,
-  SectionTitle
-} from "@radicalbit/radicalbit-design-system";
-import { InputRef } from 'rc-input';
-import { ChangeEvent, useEffect } from 'react';
-import { FakeApiProvider, useGetUser } from '../context/api-context';
-import { useAutoFocus } from '../../helpers/use-autofocus';
-import { useHandleOnSubmit } from '../context/use-handle-on-submit';
-import { FormData, schema } from './schema';
-
-const useEditLikeContext = () => useFormbitContext<FormData>();
+  SectionTitle,
+  Void
+} from '@radicalbit/radicalbit-design-system'
+import { FormbitContextProvider, useFormbitContext } from 'formbit'
+import { InputRef } from 'rc-input'
+import { ChangeEvent } from 'react'
+import { useAutoFocus } from '../../helpers/use-autofocus'
+import { useFakeApiContext } from '../fake-api-context'
+import { FormData, schema } from './schema'
+import { useHandleOnSubmit } from './use-handle-on-submit'
+import { useInitializeForm } from './use-initialize-form'
 
 export function EditLikeForm() {
   return (
-    <FakeApiProvider>
       <FormbitContextProvider initialValues={{}} schema={schema}>
         <EditLikeInner />
       </FormbitContextProvider>
-    </FakeApiProvider>
-  );
+  )
 }
 
 function EditLikeInner() {
-  const [user] = useGetUser()
-  const { initialize } = useEditLikeContext()
+  const { fakeUser } = useFakeApiContext()
+  const { isLoading, isSuccess, isError } = fakeUser
 
-  useEffect(() => {
-    if (user) {
-      initialize({ ...user })
-    }
-  }, [initialize, user])
+  if (isLoading) {
+    return <IsLoading />
+  }
+
+  if (isError) {
+    return <IsError />
+  }
+
+  if (isSuccess) {
+    return <IsSuccess />
+  }
+
+  return null
+}
+
+function IsLoading() {
+  return (
+    <div className='flex flex-col gap-4 max-w-96 justify-center p-8 m-auto'>
+      <SectionTitle title='Edit user' />
+
+      <FormField label="Name">
+        <Input placeholder="Name" skeleton required />
+      </FormField>
+
+      <FormField label="Surname">
+        <Input placeholder="Surname" skeleton required />
+      </FormField>
+
+      <FormField label="Email">
+        <Input placeholder="Email" skeleton required />
+      </FormField>
+    </div>
+  )
+}
+
+function IsError() {
+  const { fakeUser } = useFakeApiContext()
+  const { refetch, isLoading } = fakeUser
+
+  return (
+    <div className='flex flex-col gap-4 max-w-96 justify-center p-8 m-auto'>
+      <Void
+        title="Something went wrong"
+        description="Failed to load user data"
+        actions={
+          <Button onClick={refetch} loading={isLoading} type='primary'>
+            Retry
+          </Button>
+        }
+      />
+    </div>
+  )
+}
+
+function IsSuccess() {
+  useInitializeForm()
 
   return (
     <div className='flex flex-col gap-4 max-w-96 justify-center p-8 m-auto'>
@@ -46,19 +95,16 @@ function EditLikeInner() {
 
       <Actions />
     </div>
-  );
+  )
 }
 
 function Name() {
-  const [, isLoading] = useGetUser()
+  const ref = useAutoFocus<InputRef>()
+  const { form, error, write } = useFormbitContext<FormData>()
 
-  const { form, error, write } = useEditLikeContext();
+  const { handleOnSubmit } = useHandleOnSubmit()
 
-  const [handleOnSubmit] = useHandleOnSubmit();
-
-  const handleOnChangeName = (e: ChangeEvent<HTMLInputElement>) => write('name', e.target.value);
-
-  const ref = useAutoFocus<InputRef>(isLoading)
+  const handleOnChangeName = (e: ChangeEvent<HTMLInputElement>) => write('name', e.target.value)
 
   return (
     <FormField label="Name" message={error('name')}>
@@ -68,20 +114,18 @@ function Name() {
         onPressEnter={handleOnSubmit}
         value={form.name}
         required
-        skeleton={isLoading}
         ref={ref}
       />
     </FormField>
-  );
+  )
 }
 
 function Surname() {
-  const [, isLoading] = useGetUser()
-  const { form, error, write } = useEditLikeContext();
+  const { form, error, write } = useFormbitContext<FormData>()
 
-  const [handleOnSubmit] = useHandleOnSubmit();
+  const { handleOnSubmit } = useHandleOnSubmit()
 
-  const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value);
+  const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value)
 
   return (
     <FormField label="Surname" message={error('surname')}>
@@ -90,7 +134,6 @@ function Surname() {
         onChange={handleOnChangeSurname}
         onPressEnter={handleOnSubmit}
         value={form.surname}
-        skeleton={isLoading}
         required
       />
     </FormField>
@@ -98,12 +141,11 @@ function Surname() {
 }
 
 function Email() {
-  const [, isLoading] = useGetUser()
-  const { form, error, write } = useEditLikeContext()
+  const { form, error, write } = useFormbitContext<FormData>()
 
-  const [handleOnSubmit] = useHandleOnSubmit();
+  const { handleOnSubmit } = useHandleOnSubmit()
 
-  const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => write('email', e.target.value);
+  const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => write('email', e.target.value)
 
   return (
     <FormField label="Email" message={error('email')}>
@@ -112,20 +154,18 @@ function Email() {
         onChange={handleChangeEmail}
         onPressEnter={handleOnSubmit}
         value={form.email}
-        skeleton={isLoading}
         required
       />
     </FormField>
   )
 }
-function Actions() {
-  const [, isLoadingUser] = useGetUser()
 
-  const [handleOnSubmit, isSubmitDisabled, isLoading] = useHandleOnSubmit()
+function Actions() {
+  const { handleOnSubmit, isSubmitDisabled, args: { isLoading } } = useHandleOnSubmit()
 
   return (
     <Button
-      disabled={isSubmitDisabled || isLoadingUser}
+      disabled={isSubmitDisabled}
       onClick={handleOnSubmit}
       loading={isLoading}
       type='primary'
@@ -133,5 +173,4 @@ function Actions() {
       Submit
     </Button>
   )
-
 }

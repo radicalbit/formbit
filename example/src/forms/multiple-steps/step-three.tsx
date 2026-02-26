@@ -1,35 +1,34 @@
-import { useFormbitContext } from "formbit";
-import { Button, FormField, Input, SectionTitle } from "@radicalbit/radicalbit-design-system";
-import { InputRef } from 'rc-input';
-import { ChangeEvent } from "react";
-import { useAutoFocus } from "../../helpers/use-autofocus";
-import { useHandleOnSubmit } from "../context/use-handle-on-submit";
-import { FormData } from "./schema";
+import { useFormbitContext } from 'formbit'
+import { Button, FormField, Input, SectionTitle } from '@radicalbit/radicalbit-design-system'
+import { InputRef } from 'rc-input'
+import { ChangeEvent } from 'react'
+import { useAutoFocus } from '../../helpers/use-autofocus'
+import { useHandleOnSubmit } from './use-handle-on-submit'
+import { FormData } from './schema'
 
-const useMultipleStepsForm = () => useFormbitContext<FormData>();
+const useMultipleStepsForm = () => useFormbitContext<FormData>()
 
 export function StepThree() {
-    return <>
+  return (
         <div className='flex flex-col gap-4 w-96 justify-center p-8 m-auto'>
             <SectionTitle title='Step 3' />
 
             <Email />
 
             <Actions />
-        </div>
-    </>
+        </div>)
 }
 
 function Email() {
-    const { form, error, write } = useMultipleStepsForm();
+  const { form, error, write } = useMultipleStepsForm()
 
-    const [handleOnSubmit] = useHandleOnSubmit();
+  const { handleOnSubmit } = useHandleOnSubmit()
 
-    const handleOnChangeEmail = (e: ChangeEvent<HTMLInputElement>) => write('email', e.target.value);
+  const handleOnChangeEmail = (e: ChangeEvent<HTMLInputElement>) => write('email', e.target.value)
 
-    const ref = useAutoFocus<InputRef>()
+  const ref = useAutoFocus<InputRef>()
 
-    return (
+  return (
         <FormField label="Email" message={error('email')}>
             <Input
                 placeholder="Email"
@@ -40,17 +39,17 @@ function Email() {
                 ref={ref}
             />
         </FormField>
-    );
+  )
 }
 
 function Actions() {
-    const { form: { __metadata } } = useMultipleStepsForm();
+  const { form: { __metadata } } = useMultipleStepsForm()
 
-    const handleReset = __metadata?.resetSteps;
+  const handleReset = __metadata?.resetSteps
 
-    const [handleOnSubmit, isSubmitDisabled, isLoading] = useHandleOnSubmit();
+  const { handleOnSubmit, isSubmitDisabled, args: { isLoading } } = useHandleOnSubmit()
 
-    return <>
+  return <>
         <Button disabled={isSubmitDisabled} onClick={handleOnSubmit} loading={isLoading} type='primary'>
             Submit
         </Button>
@@ -59,5 +58,4 @@ function Actions() {
             Reset
         </Button>
     </>
-
 }

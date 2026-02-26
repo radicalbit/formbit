@@ -1,23 +1,23 @@
-import { FormbitContextProvider, useFormbitContext } from 'formbit';
+import { FormbitContextProvider, useFormbitContext } from 'formbit'
 import {
   Button,
   FormField, Input, InputNumber,
   SectionTitle
-} from "@radicalbit/radicalbit-design-system";
-import { InputRef } from 'rc-input';
-import { ChangeEvent } from 'react';
-import { useAutoFocus } from '../../helpers/use-autofocus';
-import { useHandleOnSubmit } from '../context/use-handle-on-submit';
-import { FormData, schema } from './schema';
+} from '@radicalbit/radicalbit-design-system'
+import { InputRef } from 'rc-input'
+import { ChangeEvent } from 'react'
+import { useAutoFocus } from '../../helpers/use-autofocus'
+import { useHandleOnSubmit } from './use-handle-on-submit'
+import { FormData, schema } from './schema'
 
-const useBasicFormContext = () => useFormbitContext<FormData>();
+const useBasicFormContext = () => useFormbitContext<FormData>()
 
 export function BasicFormContext() {
   return (
     <FormbitContextProvider schema={schema}>
       <BasicFormInner />
     </FormbitContextProvider>
-  );
+  )
 }
 
 function BasicFormInner() {
@@ -33,15 +33,15 @@ function BasicFormInner() {
 
       <Actions />
     </div>
-  );
+  )
 }
 
 function Name() {
-  const { form, error, write } = useBasicFormContext();
+  const { form, error, write } = useBasicFormContext()
 
-  const [handleOnSubmit] = useHandleOnSubmit()
+  const { handleOnSubmit } = useHandleOnSubmit()
 
-  const handleOnChangeName = (e: ChangeEvent<HTMLInputElement>) => write('name', e.target.value);
+  const handleOnChangeName = (e: ChangeEvent<HTMLInputElement>) => write('name', e.target.value)
 
   const ref = useAutoFocus<InputRef>()
 
@@ -56,15 +56,15 @@ function Name() {
         required
       />
     </FormField>
-  );
+  )
 }
 
 function Surname() {
-  const { form, error, write } = useBasicFormContext();
+  const { form, error, write } = useBasicFormContext()
 
-  const [handleOnSubmit] = useHandleOnSubmit()
+  const { handleOnSubmit } = useHandleOnSubmit()
 
-  const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value);
+  const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value)
 
   return (
     <FormField label="Surname" message={error('surname')}>
@@ -82,9 +82,9 @@ function Surname() {
 function Age() {
   const { form, error, write } = useBasicFormContext()
 
-  const [handleOnSubmit] = useHandleOnSubmit()
+  const { handleOnSubmit } = useHandleOnSubmit()
 
-  const handleOnChangeAge = (value?: number | null) => write('age', value);
+  const handleOnChangeAge = (value?: number | null) => write('age', value)
 
   return (
     <FormField label="Age" message={error('age')}>
@@ -102,9 +102,9 @@ function Age() {
 }
 
 function Actions() {
-  const { resetForm } = useBasicFormContext();
+  const { resetForm } = useBasicFormContext()
 
-  const [handleOnSubmit, isSubmitDisabled, isLoading] = useHandleOnSubmit()
+  const { handleOnSubmit, isSubmitDisabled, args: { isLoading } } = useHandleOnSubmit()
 
   return (
     <>

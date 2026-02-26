@@ -1,15 +1,15 @@
-import { useFormbitContext } from "formbit";
-import { Button, FormField, Input, SectionTitle } from "@radicalbit/radicalbit-design-system";
-import { InputRef } from 'rc-input';
-import { ChangeEvent } from "react";
-import { useAutoFocus } from "../../helpers/use-autofocus";
-import { FormData } from "./schema";
-import { useHandleNextStep } from "./use-handle-next-step";
+import { useFormbitContext } from 'formbit'
+import { Button, FormField, Input, SectionTitle } from '@radicalbit/radicalbit-design-system'
+import { InputRef } from 'rc-input'
+import { ChangeEvent } from 'react'
+import { useAutoFocus } from '../../helpers/use-autofocus'
+import { FormData } from './schema'
+import { useHandleNextStep } from './use-handle-next-step'
 
-const useMultipleStepsForm = () => useFormbitContext<FormData>();
+const useMultipleStepsForm = () => useFormbitContext<FormData>()
 
 export function StepOne() {
-    return <>
+  return <>
         <div className='flex flex-col gap-4 w-96 justify-center p-8 m-auto'>
             <SectionTitle title='Step 1' />
 
@@ -23,15 +23,15 @@ export function StepOne() {
 }
 
 function Name() {
-    const { form, error, write } = useMultipleStepsForm();
+  const { form, error, write } = useMultipleStepsForm()
 
-    const [handleOnNext] = useHandleNextStep(['name', 'surname'])
+  const [handleOnNext] = useHandleNextStep(['name', 'surname'])
 
-    const handleOnChangeName = (e: ChangeEvent<HTMLInputElement>) => write('name', e.target.value);
+  const handleOnChangeName = (e: ChangeEvent<HTMLInputElement>) => write('name', e.target.value)
 
-    const ref = useAutoFocus<InputRef>()
+  const ref = useAutoFocus<InputRef>()
 
-    return (
+  return (
         <FormField label="Name" message={error('name')}>
             <Input
                 placeholder="Name"
@@ -42,17 +42,17 @@ function Name() {
                 required
             />
         </FormField>
-    );
+  )
 }
 
 function Surname() {
-    const { form, error, write } = useMultipleStepsForm();
+  const { form, error, write } = useMultipleStepsForm()
 
-    const [handleOnNext] = useHandleNextStep(['name', 'surname'])
+  const [handleOnNext] = useHandleNextStep(['name', 'surname'])
 
-    const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value);
+  const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value)
 
-    return (
+  return (
         <FormField label="Surname" message={error('surname')}>
             <Input
                 placeholder="Surname"
@@ -62,13 +62,13 @@ function Surname() {
                 required
             />
         </FormField>
-    )
+  )
 }
 
 function Actions() {
-    const [handleOnNext, isStepInvalid] = useHandleNextStep(['name', 'surname'])
+  const [handleOnNext, isStepInvalid] = useHandleNextStep(['name', 'surname'])
 
-    return (
+  return (
         <Button
             disabled={isStepInvalid}
             onClick={handleOnNext}
@@ -76,6 +76,5 @@ function Actions() {
         >
             Next
         </Button>
-    )
+  )
 }
-
