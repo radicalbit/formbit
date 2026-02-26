@@ -181,7 +181,8 @@ export type ErrorCheckCallback<Values extends InitialValues> = CheckErrorCallbac
 export type SubmitSuccessCallback<Values extends InitialValues> =
     (
         writer: FormState<Values | Omit<Values, '__metadata'>>,
-        setError: SetError, clearIsDirty: () => void
+        setError: SetError,
+        clearIsDirty: () => void
     ) => void
 
 // ─── Deprecated Single-Use Aliases (kept for backward compatibility) ─────────

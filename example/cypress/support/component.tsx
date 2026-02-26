@@ -1,6 +1,5 @@
 /// <reference types="./index.d.ts" />
 
-/* eslint-disable @typescript-eslint/no-namespace */
 // ***********************************************************
 // This example support/component.ts is processed and
 // loaded automatically before your test files.
@@ -19,20 +18,18 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 
+import { mount } from 'cypress/react18'
+
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-
-global.process = global.process || {};
-global.process.env = global.process.env || {};
-
-import { mount } from 'cypress/react18'
-
+global.process = global.process || {}
+global.process.env = global.process.env || {}
 
 Cypress.Commands.add('mount', mount)
 
 beforeEach(() => {
-    cy.spy(window.console, 'log').as('console-log')
+  cy.spy(window.console, 'log').as('console-log')
 })
 
 // Example use:
