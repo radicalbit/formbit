@@ -6,8 +6,6 @@ import { useAutoFocus } from '../../helpers/use-autofocus'
 import { useHandleOnSubmit } from './use-handle-on-submit'
 import { FormData } from './schema'
 
-const useMultipleStepsForm = () => useFormbitContext<FormData>()
-
 export function StepThree() {
   return (
         <div className='flex flex-col gap-4 w-96 justify-center p-8 m-auto'>
@@ -20,7 +18,7 @@ export function StepThree() {
 }
 
 function Email() {
-  const { form, error, write } = useMultipleStepsForm()
+  const { form, error, write } = useFormbitContext<FormData>()
 
   const { handleOnSubmit } = useHandleOnSubmit()
 
@@ -43,7 +41,7 @@ function Email() {
 }
 
 function Actions() {
-  const { form: { __metadata } } = useMultipleStepsForm()
+  const { form: { __metadata } } = useFormbitContext<FormData>()
 
   const handleReset = __metadata?.resetSteps
 

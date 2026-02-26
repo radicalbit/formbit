@@ -1,12 +1,12 @@
 import { Tabs } from '@radicalbit/radicalbit-design-system'
-import { BasicFormContext } from './forms/basic-form-context'
-import { BasicFormHook } from './forms/basic-form-hook'
-import { MultipleStepsForm } from './forms/multiple-steps'
-import { AddableFieldsForm } from './forms/addable-fields'
-import { EditLikeForm } from './forms/edit-like'
+import { BasicFormHook } from './forms/a-basic-form-hook'
+import { BasicFormContext } from './forms/b-basic-form-context'
+import { AddableFieldsForm } from './forms/c-addable-fields'
+import { EditLikeForm } from './forms/d-edit-like'
+import { MultipleStepsForm } from './forms/e-multiple-steps'
+import { WriteRemoveAllForm } from './forms/f-remove-all'
 import { FakeApiProvider } from './forms/fake-api-context'
 import Logo from './img/LogoRB_PositivoBN.png'
-import { WriteRemoveAllForm } from './forms/remove-all'
 
 enum EXAMPLES {
   CONTEXT = 'context',

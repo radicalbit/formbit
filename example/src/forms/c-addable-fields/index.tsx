@@ -12,8 +12,6 @@ import { useAutoFocus } from '../../helpers/use-autofocus'
 import { useHandleOnSubmit } from './use-handle-on-submit'
 import { FormData, schema } from './schema'
 
-const useAddableFieldsForm = () => useFormbitContext<FormData>()
-
 export function AddableFieldsForm() {
   return (
     <FormbitContextProvider initialValues={{}} schema={schema}>
@@ -23,9 +21,8 @@ export function AddableFieldsForm() {
 }
 
 function BasicFormInner() {
-  const { form } = useAddableFieldsForm()
-
-  const friends = form?.friends
+  const { form } = useFormbitContext<FormData>()
+  const friends = form?.friends ?? []
 
   return (
     <div className='flex flex-col gap-6 w-96 justify-center p-8 m-auto'>
@@ -37,7 +34,7 @@ function BasicFormInner() {
 
       <div className='flex flex-col gap-2 m-auto'>
         <FriendInput />
-        {friends?.map((_, i) => <Friend index={i} />)}
+        {friends.map((_, i) => <Friend index={i} />)}
       </div>
 
       <Actions />
@@ -46,7 +43,7 @@ function BasicFormInner() {
 }
 
 function Name() {
-  const { form, error, write } = useAddableFieldsForm()
+  const { form, error, write } = useFormbitContext<FormData>()
 
   const { handleOnSubmit } = useHandleOnSubmit()
 
@@ -69,7 +66,7 @@ function Name() {
 }
 
 function Surname() {
-  const { form, error, write } = useAddableFieldsForm()
+  const { form, error, write } = useFormbitContext<FormData>()
   const { handleOnSubmit } = useHandleOnSubmit()
 
   const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value)
@@ -90,7 +87,7 @@ function Surname() {
 function FriendInput() {
   const inputNameRef = useRef<InputRef>(null)
 
-  const { write, form, error } = useAddableFieldsForm()
+  const { write, form, error } = useFormbitContext<FormData>()
   const friends = form?.friends ?? []
 
   const [name, setName] = useState<string>()
@@ -136,7 +133,7 @@ function FriendInput() {
 }
 
 function Friend({ index }: { index: number }) {
-  const { error, write, validate, form } = useAddableFieldsForm()
+  const { error, write, validate, form } = useFormbitContext<FormData>()
 
   const name = form.friends?.[index].name
   const surname = form.friends?.[index].surname
@@ -176,7 +173,7 @@ function Friend({ index }: { index: number }) {
 }
 
 function Actions() {
-  const { resetForm } = useAddableFieldsForm()
+  const { resetForm } = useFormbitContext<FormData>()
 
   const { handleOnSubmit, isSubmitDisabled, args: { isLoading } } = useHandleOnSubmit()
 

@@ -10,8 +10,6 @@ import { useAutoFocus } from '../../helpers/use-autofocus'
 import { useHandleOnSubmit } from './use-handle-on-submit'
 import { FormData, schema } from './schema'
 
-const useBasicFormContext = () => useFormbitContext<FormData>()
-
 export function WriteRemoveAllForm() {
   return (
     <FormbitContextProvider schema={schema}>
@@ -37,7 +35,7 @@ function WriteRemoveAllInner() {
 }
 
 function Name() {
-  const { form, error, write } = useBasicFormContext()
+  const { form, error, write } = useFormbitContext<FormData>()
 
   const { handleOnSubmit } = useHandleOnSubmit()
 
@@ -60,7 +58,7 @@ function Name() {
 }
 
 function Surname() {
-  const { form, error, write } = useBasicFormContext()
+  const { form, error, write } = useFormbitContext<FormData>()
 
   const { handleOnSubmit } = useHandleOnSubmit()
 
@@ -80,7 +78,7 @@ function Surname() {
 }
 
 function Age() {
-  const { form, error, write } = useBasicFormContext()
+  const { form, error, write } = useFormbitContext<FormData>()
 
   const { handleOnSubmit } = useHandleOnSubmit()
 
@@ -102,7 +100,7 @@ function Age() {
 }
 
 function Actions() {
-  const { resetForm, removeAll, writeAll } = useBasicFormContext()
+  const { resetForm, removeAll, writeAll } = useFormbitContext<FormData>()
 
   const { handleOnSubmit, isSubmitDisabled, args: { isLoading } } = useHandleOnSubmit()
 

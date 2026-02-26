@@ -6,8 +6,6 @@ import { useAutoFocus } from '../../helpers/use-autofocus'
 import { FormData } from './schema'
 import { useHandleNextStep } from './use-handle-next-step'
 
-const useMultipleStepsForm = () => useFormbitContext<FormData>()
-
 export function StepOne() {
   return <>
         <div className='flex flex-col gap-4 w-96 justify-center p-8 m-auto'>
@@ -23,7 +21,7 @@ export function StepOne() {
 }
 
 function Name() {
-  const { form, error, write } = useMultipleStepsForm()
+  const { form, error, write } = useFormbitContext<FormData>()
 
   const [handleOnNext] = useHandleNextStep(['name', 'surname'])
 
@@ -46,7 +44,7 @@ function Name() {
 }
 
 function Surname() {
-  const { form, error, write } = useMultipleStepsForm()
+  const { form, error, write } = useFormbitContext<FormData>()
 
   const [handleOnNext] = useHandleNextStep(['name', 'surname'])
 

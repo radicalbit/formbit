@@ -4,8 +4,6 @@ import { useAutoFocus } from '../../helpers/use-autofocus'
 import { FormData } from './schema'
 import { useHandleNextStep } from './use-handle-next-step'
 
-const useMultipleStepsForm = () => useFormbitContext<FormData>()
-
 export function StepTwo() {
   return <>
         <div className='flex flex-col gap-4 w-96 justify-center p-8 m-auto'>
@@ -19,7 +17,7 @@ export function StepTwo() {
 }
 
 function Age() {
-  const { form, error, write } = useMultipleStepsForm()
+  const { form, error, write } = useFormbitContext<FormData>()
 
   const [handleOnNext] = useHandleNextStep(['age'])
 
@@ -44,7 +42,7 @@ function Age() {
 }
 
 function Actions() {
-  const { form: { __metadata } } = useMultipleStepsForm()
+  const { form: { __metadata } } = useFormbitContext<FormData>()
 
   const [handleOnNext, isStepInvalid] = useHandleNextStep(['age'])
 
