@@ -5,7 +5,6 @@ module.exports = {
     'sonarjs',
     '@typescript-eslint',
     'react-refresh',
-    'cypress',
   ],
   extends: [
     'standard',
