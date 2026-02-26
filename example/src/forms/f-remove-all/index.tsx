@@ -1,14 +1,17 @@
-import { FormbitContextProvider, useFormbitContext } from 'formbit'
 import {
   Button,
   FormField, Input, InputNumber,
-  SectionTitle
+  SectionTitle,
+  Void
 } from '@radicalbit/radicalbit-design-system'
+import { FormbitContextProvider, useFormbitContext } from 'formbit'
 import { InputRef } from 'rc-input'
 import { ChangeEvent } from 'react'
 import { useAutoFocus } from '../../helpers/use-autofocus'
-import { useHandleOnSubmit } from './use-handle-on-submit'
 import { FormData, schema } from './schema'
+import { useHandleOnSubmit } from './use-handle-on-submit'
+import { useInitializeForm } from './use-initialize-form'
+import { useFakeApiContext } from '../fake-api-context'
 
 export function WriteRemoveAllForm() {
   return (
@@ -19,6 +22,65 @@ export function WriteRemoveAllForm() {
 }
 
 function WriteRemoveAllInner() {
+  const { fakeUser } = useFakeApiContext()
+  const { isLoading, isSuccess, isError } = fakeUser
+
+  if (isLoading) {
+    return <IsLoading />
+  }
+
+  if (isError) {
+    return <IsError />
+  }
+
+  if (isSuccess) {
+    return <IsSuccess />
+  }
+
+  return null
+}
+
+function IsLoading() {
+  return (
+    <div className='flex flex-col gap-4 max-w-96 justify-center p-8 m-auto'>
+      <SectionTitle title='Edit user' />
+
+      <FormField label="Name">
+        <Input placeholder="Name" skeleton required />
+      </FormField>
+
+      <FormField label="Surname">
+        <Input placeholder="Surname" skeleton required />
+      </FormField>
+
+      <FormField label="Email">
+        <Input placeholder="Email" skeleton required />
+      </FormField>
+    </div>
+  )
+}
+
+function IsError() {
+  const { fakeUser } = useFakeApiContext()
+  const { refetch, isLoading } = fakeUser
+
+  return (
+    <div className='flex flex-col gap-4 max-w-96 justify-center p-8 m-auto'>
+      <Void
+        title="Something went wrong"
+        description="Failed to load user data"
+        actions={
+          <Button onClick={refetch} loading={isLoading} type='primary'>
+            Retry
+          </Button>
+        }
+      />
+    </div>
+  )
+}
+
+function IsSuccess() {
+  useInitializeForm()
   return (
     <div className='flex flex-col gap-4 max-w-96 justify-center p-8 m-auto'>
       <SectionTitle title='Write/Remove All' />
@@ -89,8 +151,6 @@ function Age() {
       <InputNumber
         type="number"
         placeholder="Age"
-        min={0}
-        max={200}
         onChange={handleOnChangeAge}
         onPressEnter={handleOnSubmit}
         value={form.age}
@@ -130,7 +190,6 @@ function Actions() {
       <Button onClick={handlWriteAll}>
         Write Name, Surname
       </Button>
-
     </>
   )
 }

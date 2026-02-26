@@ -63,11 +63,6 @@ function App() {
                 children: <BasicFormContext />
               },
               {
-                label: 'Multi-step Form',
-                key: EXAMPLES.MULTI,
-                children: <MultipleStepsForm />
-              },
-              {
                 label: 'Addable-Fields Form',
                 key: EXAMPLES.ADDABLE,
                 children: <AddableFieldsForm />
@@ -76,6 +71,11 @@ function App() {
                 label: 'Edit Form',
                 key: EXAMPLES.EDIT,
                 children: <EditLikeForm />
+              },
+              {
+                label: 'Multi-step Form',
+                key: EXAMPLES.MULTI,
+                children: <MultipleStepsForm />
               },
               {
                 label: 'Write/Remove All Form',

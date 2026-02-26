@@ -1,16 +1,16 @@
 import { useFormbitContext } from 'formbit'
 import { success } from '../../helpers/message'
 import { useFakeApiContext } from '../fake-api-context'
-import type { Context, UseHandleOnSubmitResult } from './use-handle-on-submit-types'
+import { FormData } from './schema'
+import type { UseHandleOnSubmitResult } from './use-handle-on-submit-types'
 
 export const useHandleOnSubmit = (): UseHandleOnSubmitResult => {
-  const { form: { __metadata }, submitForm, isFormInvalid, resetForm, isDirty } = useFormbitContext<Context>()
-  const resetSteps = __metadata?.resetSteps
+  const { submitForm, isFormInvalid, resetForm, isDirty } = useFormbitContext<FormData>()
 
   const { fakePost } = useFakeApiContext()
   const { mutate, ...args } = fakePost
 
-  const isSubmitDisabled = args.isLoading || isFormInvalid() || !isDirty
+  const isSubmitDisabled = isFormInvalid() || !isDirty
 
   const handleOnSubmit = () => {
     if (isSubmitDisabled) {
@@ -22,7 +22,6 @@ export const useHandleOnSubmit = (): UseHandleOnSubmitResult => {
       success(form)
       resetForm()
       clearIsDirty()
-      resetSteps?.()
     })
   }
 

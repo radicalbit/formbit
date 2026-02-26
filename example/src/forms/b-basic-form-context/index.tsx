@@ -89,8 +89,6 @@ function Age() {
       <InputNumber
         type="number"
         placeholder="Age"
-        min={0}
-        max={200}
         onChange={handleOnChangeAge}
         onPressEnter={handleOnSubmit}
         value={form.age}

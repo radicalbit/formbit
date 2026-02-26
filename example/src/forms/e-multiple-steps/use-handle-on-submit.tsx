@@ -10,7 +10,7 @@ export const useHandleOnSubmit = (): UseHandleOnSubmitResult => {
   const { fakePost } = useFakeApiContext()
   const { mutate, ...args } = fakePost
 
-  const isSubmitDisabled = args.isLoading || isFormInvalid() || !isDirty
+  const isSubmitDisabled = isFormInvalid() || !isDirty
 
   const handleOnSubmit = () => {
     if (isSubmitDisabled) {
