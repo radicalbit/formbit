@@ -51,7 +51,7 @@
     "@typescript-eslint/parser": "^7.4.0",
     "cross-env": "^7.0.2",
     "doctoc": "^2.2.1",
-    "eslint": "^8.57.0",
+    "eslint": "8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-config-standard": "^17.1.0",
