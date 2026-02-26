@@ -43,7 +43,7 @@ function WriteRemoveAllInner() {
 function IsLoading() {
   return (
     <div className='flex flex-col gap-4 max-w-96 justify-center p-8 m-auto'>
-      <SectionTitle title='Edit user' />
+      <SectionTitle title='Write/Remove All' subtitle="API may randomly trigger errors to demo error UI" />
 
       <FormField label="Name">
         <Input placeholder="Name" skeleton required />
@@ -54,7 +54,7 @@ function IsLoading() {
       </FormField>
 
       <FormField label="Email">
-        <Input placeholder="Email" skeleton required />
+        <Input placeholder="Age" skeleton required />
       </FormField>
     </div>
   )
@@ -67,10 +67,14 @@ function IsError() {
   return (
     <div className='flex flex-col gap-4 max-w-96 justify-center p-8 m-auto'>
       <Void
-        title="Something went wrong"
-        description="Failed to load user data"
+        title=":( Error"
+        description={<>
+          Something went wrong. Failed
+          <br/>
+          to load user data
+        </>}
         actions={
-          <Button onClick={refetch} loading={isLoading} type='primary'>
+          <Button onClick={refetch} loading={isLoading}>
             Retry
           </Button>
         }
@@ -83,7 +87,7 @@ function IsSuccess() {
   useInitializeForm()
   return (
     <div className='flex flex-col gap-4 max-w-96 justify-center p-8 m-auto'>
-      <SectionTitle title='Write/Remove All' />
+      <SectionTitle title='Write/Remove All' subtitle="API may randomly trigger errors to demo error UI" />
 
       <Name />
 

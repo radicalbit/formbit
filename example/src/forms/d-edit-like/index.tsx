@@ -44,7 +44,7 @@ function EditLikeInner() {
 function IsLoading() {
   return (
     <div className='flex flex-col gap-4 max-w-96 justify-center p-8 m-auto'>
-      <SectionTitle title='Edit user' />
+      <SectionTitle title="Edit user" subtitle="API may randomly trigger errors to demo error UI" />
 
       <FormField label="Name">
         <Input placeholder="Name" skeleton required />
@@ -68,10 +68,14 @@ function IsError() {
   return (
     <div className='flex flex-col gap-4 max-w-96 justify-center p-8 m-auto'>
       <Void
-        title="Something went wrong"
-        description="Failed to load user data"
+        title=":( Error"
+        description={<>
+          Something went wrong. Failed
+          <br />
+          to load user data
+        </>}
         actions={
-          <Button onClick={refetch} loading={isLoading} type='primary'>
+          <Button onClick={refetch} loading={isLoading}>
             Retry
           </Button>
         }
@@ -85,7 +89,7 @@ function IsSuccess() {
 
   return (
     <div className='flex flex-col gap-4 max-w-96 justify-center p-8 m-auto'>
-      <SectionTitle title='Edit user' />
+      <SectionTitle title="Edit user" subtitle="API may randomly trigger errors to demo error UI" />
 
       <Name />
 
