@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "6.7.2",
-    "@radicalbit/radicalbit-design-system": "2.13.1",
+    "@radicalbit/radicalbit-design-system": "2.19.5",
     "cypress": "^13.7.3",
     "formbit": "link:..",
     "react": "^18.2.0",

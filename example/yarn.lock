@@ -698,10 +698,10 @@
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
-"@radicalbit/radicalbit-design-system@2.13.1":
-  version "2.13.1"
-  resolved "https://registry.yarnpkg.com/@radicalbit/radicalbit-design-system/-/radicalbit-design-system-2.13.1.tgz#1017d2382033c24a1d5e795f58d67a9a1788bef0"
-  integrity sha512-QBR+UHDRfLh0TzRBnDLoKBKohgEGVb5vQ5rX4fsOTPe4BE1ZQ1x6H7srYZO1nHVRK6iumuAiQjkSki5ZbV2BbQ==
+"@radicalbit/radicalbit-design-system@2.19.5":
+  version "2.19.5"
+  resolved "https://registry.yarnpkg.com/@radicalbit/radicalbit-design-system/-/radicalbit-design-system-2.19.5.tgz#5099f2c7699b4b0a8f00ef0dee07a07c4335129d"
+  integrity sha512-jkkualwnXtf/lWjHpZ6ALJR/TQIHNfbltdxG1+tp4VcPs1BsZLGm/t+YPhLpEOSz8vSQhaCVeg2aozf2VOL2hA==
   dependencies:
     "@babel/polyfill" "7.12.1"
     "@fortawesome/fontawesome-svg-core" "6.7.2"
@@ -2502,7 +2502,7 @@ eslint-visitor-keys@^3.3.0, eslint-visitor-keys@^3.4.1, eslint-visitor-keys@^3.4
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-3.4.3.tgz#0cd72fe8550e3c2eae156a96a4dddcd1c8ac5800"
   integrity sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag==
 
-eslint@^8.57.0:
+eslint@8.57.0:
   version "8.57.0"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-8.57.0.tgz#c786a6fd0e0b68941aaf624596fb987089195668"
   integrity sha512-dZ6+mexnaTIbSBZWgou51U6OmzIhYM2VcNdtiTtI7qPNZm35Akpr0f6vtw3w1Kmn5PYo+tZVfh13WrhpS6oLqQ==
