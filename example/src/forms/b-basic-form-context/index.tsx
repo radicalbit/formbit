@@ -12,7 +12,7 @@ import { type FormValues, schema } from './schema'
 
 export function BasicFormContext() {
   return (
-    <FormbitContextProvider schema={schema}>
+    <FormbitContextProvider initialValues={{}} schema={schema}>
       <BasicFormInner />
     </FormbitContextProvider>
   )

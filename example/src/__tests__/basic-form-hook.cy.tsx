@@ -64,7 +64,7 @@ describe('<BasicFormHook />', () => {
           cy.get('@name').should('be.empty')
         })
 
-        it('Should reset name field', () => {
+        it('Should reset surname field', () => {
           cy.get('@surname').type('Lovelace')
           cy.button('reset').click()
 

@@ -15,7 +15,7 @@ import { useFakeApiContext } from '../fake-api-context'
 
 export function WriteRemoveAllForm() {
   return (
-    <FormbitContextProvider schema={schema}>
+    <FormbitContextProvider initialValues={{}} schema={schema}>
       <WriteRemoveAllInner />
     </FormbitContextProvider>
   )
@@ -53,7 +53,7 @@ function IsLoading() {
         <Input placeholder="Surname" skeleton required />
       </FormField>
 
-      <FormField label="Email">
+      <FormField label="Age">
         <Input placeholder="Age" skeleton required />
       </FormField>
     </div>

@@ -11,7 +11,9 @@ export const useInitializeForm = () => {
 
   useEffect(() => {
     if (user) {
-      initialize({ ...user })
+      // The fake user carries an `email` this form's schema doesn't have,
+      // so we only initialize the fields this form actually manages.
+      initialize({ name: user.name, surname: user.surname })
     }
   }, [initialize, user])
 }

@@ -34,7 +34,7 @@ function BasicFormInner() {
 
       <div className='flex flex-col gap-2 m-auto'>
         <FriendInput />
-        {friends.map((_, i) => <Friend index={i} />)}
+        {friends.map((_, i) => <Friend key={i} index={i} />)}
       </div>
 
       <Actions />
@@ -135,20 +135,20 @@ function FriendInput() {
 function Friend({ index }: { index: number }) {
   const { error, write, validate, form } = useFormbitContext<FormValues>()
 
-  const name = form.friends?.[index].name
-  const surname = form.friends?.[index].surname
+  const name = form.friends?.[index]?.name
+  const surname = form.friends?.[index]?.surname
 
-  const handleOnBlurFriendName = () => validate(`headers[${index}].name`)
-  const handleOnBlurFriendSurname = () => validate(`headers[${index}].surname`)
+  const handleOnBlurFriendName = () => validate(`friends[${index}].name`)
+  const handleOnBlurFriendSurname = () => validate(`friends[${index}].surname`)
 
   const handleOnChangeFriendName: ChangeEventHandler<HTMLInputElement> =
-    ({ target }) => write(`friends[${index}].key`, target.value)
+    ({ target }) => write(`friends[${index}].name`, target.value)
   const handleOnChangeFriendSurname: ChangeEventHandler<HTMLInputElement> =
-    ({ target }) => write(`friends[${index}].key`, target.value)
+    ({ target }) => write(`friends[${index}].surname`, target.value)
 
   const handleOnRemoveFriend = () => write('friends', form.friends?.filter((_, i) => index !== i))
 
-  const errorMessage = error(`headers[${index}].name`) || error(`headers[${index}].surname`)
+  const errorMessage = error(`friends[${index}].name`) || error(`friends[${index}].surname`)
 
   return (
     <FormField key={index} message={errorMessage}>
