@@ -128,38 +128,21 @@ function assemble(categorized) {
 
   sections.push('## API Reference\n')
 
-  // Hero: FormbitObject stays visible at ### level — it's the entry point users
-  // consult most, so it stays outside the collapsible block below.
+  // Only the FormbitObject hero is documented inline — it's the shape returned by
+  // the hook and the entry point users consult most. The full per-type catalogue
+  // (methods, callbacks, options) is intentionally NOT inlined here to keep the
+  // README scannable; refer to the source types for the complete reference.
   for (const block of heroBlocks) {
     sections.push(fixLinks(block.content))
   }
 
-  // Everything else (the full type catalogue) is wrapped in a <details> so the
-  // README stays scannable: ~700 generated lines collapse behind a single toggle
-  // instead of dominating the page. Same pattern already used for deprecated types.
-  sections.push('### All Types\n')
-  sections.push('<details>\n<summary>Show all types</summary>\n')
+  sections.push(
+    '\nFor the complete list of exported types (methods, callbacks, options), see ' +
+    '[`src/types/index.ts`](https://github.com/radicalbit/formbit/blob/main/src/types/index.ts).'
+  )
 
-  // Named groups
-  GROUPS.forEach((group, idx) => {
-    const bucket = groupBuckets[idx]
-    if (bucket.length === 0) return
-
-    sections.push(`#### ${group.heading}\n`)
-    for (const block of bucket) {
-      sections.push(fixLinks(demoteHeadings(block.content)))
-    }
-  })
-
-  // Other (fallback for any uncategorized, future-proof)
-  if (otherBlocks.length > 0) {
-    sections.push('#### Other Types\n')
-    for (const block of otherBlocks) {
-      sections.push(fixLinks(demoteHeadings(block.content)))
-    }
-  }
-
-  sections.push('</details>')
+  // NOTE: groupBuckets and otherBlocks are deliberately not rendered — the type
+  // catalogue is omitted from the README on purpose (see comment above).
 
   // Deprecated: wrapped in <details>
   if (deprecatedBlocks.length > 0) {
