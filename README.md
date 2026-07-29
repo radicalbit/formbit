@@ -402,22 +402,32 @@ members. For full type signatures see [`src/types/index.ts`](https://github.com/
 | `isFormInvalid()`     | `true` if there is at least one error.                  |
 | `check(json, opts?)`  | Validate an arbitrary object against the schema and return the errors, without touching form state. |
 
-**Mutations**
+**Writing values**
 
-| Member                          | Description                                                  |
-| ------------------------------- | ------------------------------------------------------------ |
-| `write(path, value, opts?)`     | Set the value at `path` and validate.                        |
-| `writeAll(entries, opts?)`      | Set several `[path, value]` pairs at once.                   |
-| `remove(path, opts?)`           | Remove the value at `path`.                                  |
-| `removeAll(paths, opts?)`       | Remove several paths at once.                                |
-| `validate(path, opts?)`         | Validate a single `path`.                                    |
-| `validateAll(paths, opts?)`     | Validate several paths.                                      |
-| `validateForm(onOk?, onErr?)`   | Validate the whole form against the schema.                  |
-| `submitForm(onOk, onErr?)`      | Validate, then run `onOk` with the completed form.           |
-| `initialize(values)`           | Replace form and initial values (e.g. with fetched data).    |
-| `resetForm()`                   | Revert the form to its initial values.                       |
-| `setError(path, message)`       | Set an error message manually.                               |
-| `setSchema(schema)`             | Swap the validation schema at runtime.                       |
+| Member                      | Description                                 |
+| --------------------------- | ------------------------------------------- |
+| `write(path, value, opts?)` | Set the value at `path` and validate.       |
+| `writeAll(entries, opts?)`  | Set several `[path, value]` pairs at once.  |
+| `remove(path, opts?)`       | Remove the value at `path`.                 |
+| `removeAll(paths, opts?)`   | Remove several paths at once.               |
+
+**Validation**
+
+| Member                        | Description                                        |
+| ----------------------------- | -------------------------------------------------- |
+| `validate(path, opts?)`       | Validate a single `path`.                          |
+| `validateAll(paths, opts?)`   | Validate several paths.                            |
+| `validateForm(onOk?, onErr?)` | Validate the whole form against the schema.        |
+| `submitForm(onOk, onErr?)`    | Validate, then run `onOk` with the completed form. |
+
+**Setup & lifecycle**
+
+| Member                    | Description                                                |
+| ------------------------- | ---------------------------------------------------------- |
+| `initialize(values)`      | Replace form and initial values (e.g. with fetched data).  |
+| `resetForm()`             | Revert the form to its initial values.                     |
+| `setError(path, message)` | Set an error message manually.                             |
+| `setSchema(schema)`       | Swap the validation schema at runtime.                     |
 
 ## License
 
