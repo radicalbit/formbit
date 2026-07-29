@@ -279,12 +279,12 @@ export default <Values extends InitialValues>({
           return newWriter
         }
 
-        const cleanErrors = pathsToValidate.reduce(
+        const cleanErrors = paths.reduce(
           (acc, key) => set(acc, key, undefined),
           cloneDeep(newWriter.errors)
         )
 
-        const inner = validateSyncAll(pathsToValidate, schemaRef.current, newWriter.form, options)
+        const inner = validateSyncAll(paths, schemaRef.current, newWriter.form, options)
 
         if (isEmpty(inner)) {
           const neww = { ...newWriter, errors: cleanErrors }
