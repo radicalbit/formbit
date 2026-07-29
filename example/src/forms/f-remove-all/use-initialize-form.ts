@@ -1,10 +1,10 @@
 import { useFormbitContext } from 'formbit'
 import { useEffect } from 'react'
 import { useFakeApiContext } from '../fake-api-context'
-import { FormData } from './schema'
+import type { FormValues } from './schema'
 
 export const useInitializeForm = () => {
-  const { initialize } = useFormbitContext<FormData>()
+  const { initialize } = useFormbitContext<FormValues>()
 
   const { fakeUser } = useFakeApiContext()
   const { data: user } = fakeUser

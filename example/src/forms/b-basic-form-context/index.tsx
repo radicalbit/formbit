@@ -8,7 +8,7 @@ import { InputRef } from 'rc-input'
 import { ChangeEvent } from 'react'
 import { useAutoFocus } from '../../helpers/use-autofocus'
 import { useHandleOnSubmit } from './use-handle-on-submit'
-import { FormData, schema } from './schema'
+import { type FormValues, schema } from './schema'
 
 export function BasicFormContext() {
   return (
@@ -35,7 +35,7 @@ function BasicFormInner() {
 }
 
 function Name() {
-  const { form, error, write } = useFormbitContext<FormData>()
+  const { form, error, write } = useFormbitContext<FormValues>()
 
   const { handleOnSubmit } = useHandleOnSubmit()
 
@@ -58,7 +58,7 @@ function Name() {
 }
 
 function Surname() {
-  const { form, error, write } = useFormbitContext<FormData>()
+  const { form, error, write } = useFormbitContext<FormValues>()
 
   const { handleOnSubmit } = useHandleOnSubmit()
 
@@ -78,7 +78,7 @@ function Surname() {
 }
 
 function Age() {
-  const { form, error, write } = useFormbitContext<FormData>()
+  const { form, error, write } = useFormbitContext<FormValues>()
 
   const { handleOnSubmit } = useHandleOnSubmit()
 
@@ -98,7 +98,7 @@ function Age() {
 }
 
 function Actions() {
-  const { resetForm } = useFormbitContext<FormData>()
+  const { resetForm } = useFormbitContext<FormValues>()
 
   const { handleOnSubmit, isSubmitDisabled, args: { isLoading } } = useHandleOnSubmit()
 

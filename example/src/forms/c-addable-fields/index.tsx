@@ -10,7 +10,7 @@ import { InputRef } from 'rc-input'
 import { ChangeEvent, ChangeEventHandler, useRef, useState } from 'react'
 import { useAutoFocus } from '../../helpers/use-autofocus'
 import { useHandleOnSubmit } from './use-handle-on-submit'
-import { FormData, schema } from './schema'
+import { type FormValues, schema } from './schema'
 
 export function AddableFieldsForm() {
   return (
@@ -21,7 +21,7 @@ export function AddableFieldsForm() {
 }
 
 function BasicFormInner() {
-  const { form } = useFormbitContext<FormData>()
+  const { form } = useFormbitContext<FormValues>()
   const friends = form?.friends ?? []
 
   return (
@@ -43,7 +43,7 @@ function BasicFormInner() {
 }
 
 function Name() {
-  const { form, error, write } = useFormbitContext<FormData>()
+  const { form, error, write } = useFormbitContext<FormValues>()
 
   const { handleOnSubmit } = useHandleOnSubmit()
 
@@ -66,7 +66,7 @@ function Name() {
 }
 
 function Surname() {
-  const { form, error, write } = useFormbitContext<FormData>()
+  const { form, error, write } = useFormbitContext<FormValues>()
   const { handleOnSubmit } = useHandleOnSubmit()
 
   const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value)
@@ -87,7 +87,7 @@ function Surname() {
 function FriendInput() {
   const inputNameRef = useRef<InputRef>(null)
 
-  const { write, form, error } = useFormbitContext<FormData>()
+  const { write, form, error } = useFormbitContext<FormValues>()
   const friends = form?.friends ?? []
 
   const [name, setName] = useState<string>()
@@ -133,7 +133,7 @@ function FriendInput() {
 }
 
 function Friend({ index }: { index: number }) {
-  const { error, write, validate, form } = useFormbitContext<FormData>()
+  const { error, write, validate, form } = useFormbitContext<FormValues>()
 
   const name = form.friends?.[index].name
   const surname = form.friends?.[index].surname
@@ -173,7 +173,7 @@ function Friend({ index }: { index: number }) {
 }
 
 function Actions() {
-  const { resetForm } = useFormbitContext<FormData>()
+  const { resetForm } = useFormbitContext<FormValues>()
 
   const { handleOnSubmit, isSubmitDisabled, args: { isLoading } } = useHandleOnSubmit()
 

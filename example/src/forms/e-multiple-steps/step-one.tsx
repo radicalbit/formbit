@@ -3,7 +3,7 @@ import { Button, FormField, Input, SectionTitle } from '@radicalbit/radicalbit-d
 import { InputRef } from 'rc-input'
 import { ChangeEvent } from 'react'
 import { useAutoFocus } from '../../helpers/use-autofocus'
-import { FormData } from './schema'
+import type { FormValues } from './schema'
 import { useHandleNextStep } from './use-handle-next-step'
 
 export function StepOne() {
@@ -21,7 +21,7 @@ export function StepOne() {
 }
 
 function Name() {
-  const { form, error, write } = useFormbitContext<FormData>()
+  const { form, error, write } = useFormbitContext<FormValues>()
 
   const [handleOnNext] = useHandleNextStep(['name', 'surname'])
 
@@ -44,7 +44,7 @@ function Name() {
 }
 
 function Surname() {
-  const { form, error, write } = useFormbitContext<FormData>()
+  const { form, error, write } = useFormbitContext<FormValues>()
 
   const [handleOnNext] = useHandleNextStep(['name', 'surname'])
 

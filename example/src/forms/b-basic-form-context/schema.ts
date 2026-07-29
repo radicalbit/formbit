@@ -6,4 +6,4 @@ export const schema = yup.object().shape({
   age: yup.number().min(18).max(200).required()
 })
 
-export type FormData = yup.InferType<typeof schema>
+export type FormValues = yup.InferType<typeof schema>

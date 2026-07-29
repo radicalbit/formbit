@@ -10,7 +10,7 @@ import { InputRef } from 'rc-input'
 import { ChangeEvent } from 'react'
 import { useAutoFocus } from '../../helpers/use-autofocus'
 import { useFakeApiContext } from '../fake-api-context'
-import { FormData, schema } from './schema'
+import { type FormValues, schema } from './schema'
 import { useHandleOnSubmit } from './use-handle-on-submit'
 import { useInitializeForm } from './use-initialize-form'
 
@@ -104,7 +104,7 @@ function IsSuccess() {
 
 function Name() {
   const ref = useAutoFocus<InputRef>()
-  const { form, error, write } = useFormbitContext<FormData>()
+  const { form, error, write } = useFormbitContext<FormValues>()
 
   const { handleOnSubmit } = useHandleOnSubmit()
 
@@ -125,7 +125,7 @@ function Name() {
 }
 
 function Surname() {
-  const { form, error, write } = useFormbitContext<FormData>()
+  const { form, error, write } = useFormbitContext<FormValues>()
 
   const { handleOnSubmit } = useHandleOnSubmit()
 
@@ -145,7 +145,7 @@ function Surname() {
 }
 
 function Email() {
-  const { form, error, write } = useFormbitContext<FormData>()
+  const { form, error, write } = useFormbitContext<FormValues>()
 
   const { handleOnSubmit } = useHandleOnSubmit()
 

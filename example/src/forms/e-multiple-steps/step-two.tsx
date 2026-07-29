@@ -1,7 +1,7 @@
 import { useFormbitContext } from 'formbit'
 import { Button, FormField, InputNumber, SectionTitle } from '@radicalbit/radicalbit-design-system'
 import { useAutoFocus } from '../../helpers/use-autofocus'
-import { FormData } from './schema'
+import type { FormValues } from './schema'
 import { useHandleNextStep } from './use-handle-next-step'
 
 export function StepTwo() {
@@ -17,7 +17,7 @@ export function StepTwo() {
 }
 
 function Age() {
-  const { form, error, write } = useFormbitContext<FormData>()
+  const { form, error, write } = useFormbitContext<FormValues>()
 
   const [handleOnNext] = useHandleNextStep(['age'])
 
@@ -40,7 +40,7 @@ function Age() {
 }
 
 function Actions() {
-  const { form: { __metadata } } = useFormbitContext<FormData>()
+  const { form: { __metadata } } = useFormbitContext<FormValues>()
 
   const [handleOnNext, isStepInvalid] = useHandleNextStep(['age'])
 

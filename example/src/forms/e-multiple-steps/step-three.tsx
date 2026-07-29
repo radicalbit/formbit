@@ -4,7 +4,7 @@ import { InputRef } from 'rc-input'
 import { ChangeEvent } from 'react'
 import { useAutoFocus } from '../../helpers/use-autofocus'
 import { useHandleOnSubmit } from './use-handle-on-submit'
-import { FormData } from './schema'
+import type { FormValues } from './schema'
 
 export function StepThree() {
   return (
@@ -18,7 +18,7 @@ export function StepThree() {
 }
 
 function Email() {
-  const { form, error, write } = useFormbitContext<FormData>()
+  const { form, error, write } = useFormbitContext<FormValues>()
 
   const { handleOnSubmit } = useHandleOnSubmit()
 
@@ -41,7 +41,7 @@ function Email() {
 }
 
 function Actions() {
-  const { form: { __metadata } } = useFormbitContext<FormData>()
+  const { form: { __metadata } } = useFormbitContext<FormValues>()
 
   const handleReset = __metadata?.resetSteps
 
