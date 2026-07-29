@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.0.0](https://github.com/radicalbit/formbit/compare/v2.1.0...v3.0.0) (2026-07-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* the deprecated type aliases are removed (Object, Writer, SuccessCheckCallback, ErrorCheckCallback, ErrorFn, IsFormValid, IsFormInvalid, ClearIsDirty, ResetForm, LiveValidationFn, IsDirty), together with the internal base types FormbitRecord, Form and InitialValues. Use FormbitValues instead.
+
+### Features
+
+* improve Formbit examples ([#20](https://github.com/radicalbit/formbit/issues/20)) ([88ed9e4](https://github.com/radicalbit/formbit/commit/88ed9e42cacef49abb8d8df885234bb10a8503e4))
+
+
+### Bug Fixes
+
+* validation bugs, simpler public types, and example cleanup ([#22](https://github.com/radicalbit/formbit/issues/22)) ([9f19936](https://github.com/radicalbit/formbit/commit/9f199369fb9dcfb2b28e803da8dcf98d4c3d16b4))
+
 ## [2.1.0](https://github.com/radicalbit/formbit/compare/v2.0.0...v2.1.0) (2026-02-20)
 
 
