@@ -5,7 +5,7 @@ export const isValidationError = (error: unknown): error is ValidationError => {
     const { path, message, inner } = error
 
     return (typeof path === 'string' || path === undefined) &&
-            (typeof message === 'string' || path === undefined) &&
+            (typeof message === 'string' || message === undefined) &&
             Array.isArray(inner)
   }
 
