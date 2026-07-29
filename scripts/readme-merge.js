@@ -128,17 +128,24 @@ function assemble(categorized) {
 
   sections.push('## API Reference\n')
 
-  // Hero: FormbitObject stays at ### level
+  // Hero: FormbitObject stays visible at ### level — it's the entry point users
+  // consult most, so it stays outside the collapsible block below.
   for (const block of heroBlocks) {
     sections.push(fixLinks(block.content))
   }
+
+  // Everything else (the full type catalogue) is wrapped in a <details> so the
+  // README stays scannable: ~700 generated lines collapse behind a single toggle
+  // instead of dominating the page. Same pattern already used for deprecated types.
+  sections.push('### All Types\n')
+  sections.push('<details>\n<summary>Show all types</summary>\n')
 
   // Named groups
   GROUPS.forEach((group, idx) => {
     const bucket = groupBuckets[idx]
     if (bucket.length === 0) return
 
-    sections.push(`### ${group.heading}\n`)
+    sections.push(`#### ${group.heading}\n`)
     for (const block of bucket) {
       sections.push(fixLinks(demoteHeadings(block.content)))
     }
@@ -146,11 +153,13 @@ function assemble(categorized) {
 
   // Other (fallback for any uncategorized, future-proof)
   if (otherBlocks.length > 0) {
-    sections.push('### Other Types\n')
+    sections.push('#### Other Types\n')
     for (const block of otherBlocks) {
       sections.push(fixLinks(demoteHeadings(block.content)))
     }
   }
+
+  sections.push('</details>')
 
   // Deprecated: wrapped in <details>
   if (deprecatedBlocks.length > 0) {
