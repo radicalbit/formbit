@@ -400,6 +400,7 @@ members. For full type signatures see [`src/types/index.ts`](https://github.com/
 | `liveValidation(path)`| Whether `path` is being re-validated on every change.   |
 | `isFormValid()`       | `true` if there are no errors.                          |
 | `isFormInvalid()`     | `true` if there is at least one error.                  |
+| `check(json, opts?)`  | Validate an arbitrary object against the schema and return the errors, without touching form state. |
 
 **Mutations**
 
@@ -413,7 +414,6 @@ members. For full type signatures see [`src/types/index.ts`](https://github.com/
 | `validateAll(paths, opts?)`     | Validate several paths.                                      |
 | `validateForm(onOk?, onErr?)`   | Validate the whole form against the schema.                  |
 | `submitForm(onOk, onErr?)`      | Validate, then run `onOk` with the completed form.           |
-| `check(json, opts?)`            | Validate an arbitrary object without touching form state.    |
 | `initialize(values)`           | Replace form and initial values (e.g. with fetched data).    |
 | `resetForm()`                   | Revert the form to its initial values.                       |
 | `setError(path, message)`       | Set an error message manually.                               |
