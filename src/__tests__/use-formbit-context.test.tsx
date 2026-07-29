@@ -1,11 +1,11 @@
 import { act, renderHook } from '@testing-library/react'
 import { PropsWithChildren } from 'react'
 import FormbitContextProvider, { useFormbitContext } from 'src/formbit-context'
-import { InitialValues, ValidationSchema } from 'src/types'
+import { FormbitValues, ValidationSchema } from 'src/types'
 import * as Yup from 'yup'
 import { TEST_ERROR_MESSAGES } from 'src/helpers/constants'
 
-const renderWithContext = (initialValues: InitialValues, schema: ValidationSchema<{}>) => {
+const renderWithContext = (initialValues: FormbitValues, schema: ValidationSchema<{}>) => {
   const wrapper = ({ children }: PropsWithChildren) =>
     <FormbitContextProvider initialValues={initialValues} schema={schema}>
         {children}

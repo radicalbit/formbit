@@ -7,7 +7,7 @@ import {
   Check,
   FormbitObject,
   FormState,
-  InitialValues,
+  FormbitValues,
   LiveValidation,
   PrivateValidateForm,
   Remove,
@@ -29,12 +29,12 @@ import useExecuteCallbacks from './use-execute-callbacks'
 import { cloneDeep, get, isEmpty, omit, set } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
-type UseFormbitParams<Values extends InitialValues> = {
+type UseFormbitParams<Values extends FormbitValues> = {
   initialValues?: Partial<Values>,
   yup: ValidationSchema<Values>
 }
 
-export default <Values extends InitialValues>({
+export default <Values extends FormbitValues>({
   initialValues = {},
   yup: schema
 }: UseFormbitParams<Values>): FormbitObject<Values> => {
@@ -438,7 +438,7 @@ export default <Values extends InitialValues>({
   const privateValidateForm: PrivateValidateForm<Partial<Values>> = useCallback((
     successCallback,
     errorCallback,
-    { isDirty: _, options } = {}
+    { options } = {}
   ) => {
     const newUUID = (function getUUID() {
       if (successCallback || errorCallback) {

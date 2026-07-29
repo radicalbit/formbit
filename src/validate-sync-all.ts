@@ -1,13 +1,13 @@
 import { isEmpty } from 'lodash'
-import { Form, InitialValues, ValidateOptions, ValidationFormbitError, ValidationSchema } from './types'
+import { FormbitValues, ValidateOptions, ValidationFormbitError, ValidationSchema } from './types'
 import { isValidationError } from './types/helpers'
 
 /* We implement the validateSyncAll because yup.pick won't work with
  * schema with nested values: https://github.com/jquense/yup/issues/1269 */
-export const validateSyncAll = <Values extends InitialValues> (
+export const validateSyncAll = <Values extends FormbitValues> (
   paths:string[],
   schema:ValidationSchema<Values>,
-  form: Form,
+  form: FormbitValues,
   options: ValidateOptions = {}
 ): ValidationFormbitError[] => {
   let errors: ValidationFormbitError[] = []
