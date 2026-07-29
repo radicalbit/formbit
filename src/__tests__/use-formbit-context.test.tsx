@@ -8,7 +8,7 @@ import { TEST_ERROR_MESSAGES } from 'src/helpers/constants'
 const renderWithContext = (initialValues: FormbitValues, schema: ValidationSchema<{}>) => {
   const wrapper = ({ children }: PropsWithChildren) =>
     <FormbitContextProvider initialValues={initialValues} schema={schema}>
-        {children}
+      {children}
     </FormbitContextProvider>
   return renderHook(() => useFormbitContext(), { wrapper })
 }

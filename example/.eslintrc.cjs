@@ -71,6 +71,8 @@ module.exports = {
     'react/jsx-handler-names': 0,
     'react/jsx-fragments': 0,
     'react/no-unused-prop-types': 0,
+    'react/jsx-indent': ['error', 2],
+    'react/jsx-indent-props': ['error', 2],
     'import/export': 0,
     'max-len': ['error', { code: 120 }],
   },

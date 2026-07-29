@@ -160,7 +160,8 @@ function Age() {
         value={form.age}
         required
       />
-    </FormField>)
+    </FormField>
+  )
 }
 
 function Actions() {
