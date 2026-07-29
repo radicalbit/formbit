@@ -8,14 +8,14 @@ import { FormbitContextProvider, useFormbitContext } from 'formbit'
 import { InputRef } from 'rc-input'
 import { ChangeEvent } from 'react'
 import { useAutoFocus } from '../../helpers/use-autofocus'
-import { FormData, schema } from './schema'
+import { type FormValues, schema } from './schema'
 import { useHandleOnSubmit } from './use-handle-on-submit'
 import { useInitializeForm } from './use-initialize-form'
 import { useFakeApiContext } from '../fake-api-context'
 
 export function WriteRemoveAllForm() {
   return (
-    <FormbitContextProvider schema={schema}>
+    <FormbitContextProvider initialValues={{}} schema={schema}>
       <WriteRemoveAllInner />
     </FormbitContextProvider>
   )
@@ -53,7 +53,7 @@ function IsLoading() {
         <Input placeholder="Surname" skeleton required />
       </FormField>
 
-      <FormField label="Email">
+      <FormField label="Age">
         <Input placeholder="Age" skeleton required />
       </FormField>
     </div>
@@ -101,7 +101,7 @@ function IsSuccess() {
 }
 
 function Name() {
-  const { form, error, write } = useFormbitContext<FormData>()
+  const { form, error, write } = useFormbitContext<FormValues>()
 
   const { handleOnSubmit } = useHandleOnSubmit()
 
@@ -124,7 +124,7 @@ function Name() {
 }
 
 function Surname() {
-  const { form, error, write } = useFormbitContext<FormData>()
+  const { form, error, write } = useFormbitContext<FormValues>()
 
   const { handleOnSubmit } = useHandleOnSubmit()
 
@@ -144,7 +144,7 @@ function Surname() {
 }
 
 function Age() {
-  const { form, error, write } = useFormbitContext<FormData>()
+  const { form, error, write } = useFormbitContext<FormValues>()
 
   const { handleOnSubmit } = useHandleOnSubmit()
 
@@ -160,11 +160,12 @@ function Age() {
         value={form.age}
         required
       />
-    </FormField>)
+    </FormField>
+  )
 }
 
 function Actions() {
-  const { resetForm, removeAll, writeAll } = useFormbitContext<FormData>()
+  const { resetForm, removeAll, writeAll } = useFormbitContext<FormValues>()
 
   const { handleOnSubmit, isSubmitDisabled, args: { isLoading } } = useHandleOnSubmit()
 

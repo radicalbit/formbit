@@ -1,440 +1,270 @@
 import { ObjectSchema, ValidationError as YupValidationError, ValidateOptions as YupValidateOptions } from 'yup'
 import { ACTIONS } from '../helpers/constants'
 
-// ─── Internal / Utility Types ────────────────────────────────────────────────
+// ─── Core value types ────────────────────────────────────────────────────────
 
 /**
- * @internal
- * @private
+ * Base shape of every form handled by formbit: an open record of values, plus an
+ * optional `__metadata` field formbit uses to carry data that must survive a
+ * reset/initialize but must NOT be submitted.
+ *
+ * The generic `T` you pass to `useFormbit<T>()` must extend this type.
  */
-export type Action = keyof typeof ACTIONS
+export type FormbitValues = Record<string, unknown> & { __metadata?: Record<string, unknown> }
 
 /**
- * @internal
- * Generic object with string keys.
- */
-export type FormbitRecord = Record<string, unknown>
-
-/** @deprecated Use {@link FormbitRecord} instead. Renamed to avoid shadowing the global `Object`. */
-export type Object = FormbitRecord
-
-/**
- * @internal
- */
-export type GenericCallback<Values extends InitialValues> = SuccessCallback<Values> | ErrorCallback<Values>
-
-/**
- * @internal
- */
-export type ValidationFormbitError = Pick<ValidationError, 'message' | 'path'>
-
-/**
- * @internal
- * @private
- */
-export type WriteOrRemove<Values extends Form> =
-    (path: keyof Values | string, value: unknown, options?: WriteFnOptions<Values>, action?: Action) => void
-
-/**
- * @internal
- * @private
- */
-export type PrivateValidateForm<Values extends InitialValues> = (
-    successCallback?: SuccessCallback<Values>,
-    errorCallback?: ErrorCallback<Partial<Values>>,
-    options?: { options?: ValidateOptions, isDirty?: boolean }) => void
-
-// ─── Core Value Types ────────────────────────────────────────────────────────
-
-/**
- * Base type for form values: a record of string keys with an optional `__metadata` field.
- */
-export type FormbitValues = { __metadata?: FormbitRecord } & FormbitRecord
-
-/** Object containing the updated form. */
-export type Form = FormbitValues
-
-/** InitialValues used to set up formbit; also used to reset the form to its original version. */
-export type InitialValues = FormbitValues
-
-/**
- * Object including all the registered error messages since the last validation.
- * Errors are stored using the same path of the corresponding form values.
+ * Error messages registered since the last validation, stored under the same
+ * dot-path as the corresponding form value.
  *
  * @example
- * If the form object has this structure:
- * ```json
- * {
- *   "age": 1
- * }
- * ```
- * and age is a non valid field, errors object will look like this
- * ```json
- * {
- *   "age": "Age must be greater then 18"
- * }
- * ```
+ * form:   { age: 1 }
+ * errors: { age: "Age must be greater than 18" }
  */
 export type Errors = Record<string, string>
 
 /**
- * Object including all the values that are being live validated.
- * Usually fields that fail validation (using one of the methods that triggers validation)
- * will automatically be set to live-validated.
- *
- * A value/path is live-validated when validated at every change of the form.
- *
- * By default no field is live-validated.
+ * Fields currently under live-validation (re-validated on every form change).
+ * A field is added here automatically when it fails a validation. Empty by default.
  *
  * @example
- * If the form object has this structure:
- * ```json
- * {
- *   "age": 1
- * }
- * ```
- * and age is a field that is being live-validated, liveValidation object will look like this
- * ```json
- * {
- *   "age": true
- * }
- * ```
+ * form:           { age: 1 }
+ * liveValidation: { age: true }
  */
 export type LiveValidation = Record<string, true>
 
-// ─── FormState (formerly Writer) ─────────────────────────────────────────────
-
 /**
- * Internal form state storing all the data of the form (except the validation schema).
+ * The whole internal state of the form (everything except the validation schema).
  */
-export type FormState<Values extends InitialValues> = {
-    form: Values,
-    initialValues: Values
+export type FormState<T extends FormbitValues> = {
+    form: T,
+    initialValues: T,
     errors: Errors,
     liveValidation: LiveValidation,
     isDirty: boolean,
 }
 
-/** @deprecated Use {@link FormState} instead. */
-export type Writer<Values extends InitialValues> = FormState<Values>
+// ─── Yup re-exports ────────────────────────────────────────────────────────────
 
-// ─── Yup Re-exports ─────────────────────────────────────────────────────────
+/** A validation schema built with `yup.object()`. See {@link https://github.com/jquense/yup}. */
+export type ValidationSchema<T extends FormbitValues> = ObjectSchema<T>
 
-/**
- * Type imported from the yup library.
- * It represents any validation schema created with the yup.object() method.
- *
- * Link to the Yup documentation {@link https://github.com/jquense/yup}
- */
-export type ValidationSchema<Values extends InitialValues> = ObjectSchema<Values>
-
-/**
- * Type imported from the yup library.
- * It represents the object with all the options that can be passed to the internal yup validation method.
- *
- * Link to the Yup documentation {@link https://github.com/jquense/yup}
- */
+/** Options forwarded to yup's validation methods. See {@link https://github.com/jquense/yup}. */
 export type ValidateOptions = YupValidateOptions
 
-/**
- * Type imported from the yup library.
- * It represents the error object returned when a validation fails.
- *
- * Link to the Yup documentation {@link https://github.com/jquense/yup}
- */
+/** The error object yup throws when a validation fails. See {@link https://github.com/jquense/yup}. */
 export type ValidationError = YupValidationError
 
-// ─── Callback Types ──────────────────────────────────────────────────────────
+// ─── Callbacks ───────────────────────────────────────────────────────────────
+
+/** Invoked by validation methods when the form (or the validated paths) are valid. */
+export type SuccessCallback<T extends FormbitValues> =
+    (writer: FormState<T>, setError: SetError) => void
+
+/** Invoked by validation methods when validation fails. */
+export type ErrorCallback<T extends FormbitValues> =
+    (writer: FormState<T>, setError: SetError) => void
+
+/** Invoked by `check()` when the given json is valid. */
+export type CheckSuccessCallback<T extends FormbitValues> =
+    (json: FormbitValues, writer: FormState<T>, setError: SetError) => void
+
+/** Invoked by `check()` when the given json is invalid. */
+export type CheckErrorCallback<T extends FormbitValues> =
+    (json: FormbitValues, inner: ValidationError[], writer: FormState<T>, setError: SetError) => void
 
 /**
- * Success callback invoked by some formbit methods when the operation is successful.
+ * Invoked by `submitForm()` once the whole form is valid — the place to send data
+ * to the backend. `__metadata` is stripped from `writer.form` before this runs.
  */
-export type SuccessCallback<Values extends InitialValues> = (writer: FormState<Values>, setError: SetError) => void
-
-/**
- * Invoked in case of errors raised by validation.
- */
-export type ErrorCallback<Values extends InitialValues> = (writer: FormState<Values>, setError: SetError) => void
-
-/**
- * Success callback invoked by the check method when the operation is successful.
- */
-export type CheckSuccessCallback<Values extends InitialValues> =
-    (json: Form, writer: FormState<Values>, setError: SetError) => void
-
-/** @deprecated Use {@link CheckSuccessCallback} instead. */
-export type SuccessCheckCallback<Values extends InitialValues> = CheckSuccessCallback<Values>
-
-/**
- * Invoked in case of errors raised by validation of check method.
- */
-export type CheckErrorCallback<Values extends InitialValues> =
-    (json: Form, inner: ValidationError[], writer: FormState<Values>, setError: SetError) => void
-
-/** @deprecated Use {@link CheckErrorCallback} instead. */
-export type ErrorCheckCallback<Values extends InitialValues> = CheckErrorCallback<Values>
-
-/**
- * Success callback invoked by the submit method when the validation is successful.
- * Is the right place to send your data to the backend.
- */
-export type SubmitSuccessCallback<Values extends InitialValues> =
+export type SubmitSuccessCallback<T extends FormbitValues> =
     (
-        writer: FormState<Values | Omit<Values, '__metadata'>>,
+        writer: FormState<Omit<T, '__metadata'>>,
         setError: SetError,
         clearIsDirty: () => void
     ) => void
 
-// ─── Deprecated Single-Use Aliases (kept for backward compatibility) ─────────
-
-/** @deprecated Inlined into {@link FormbitObject}. */
-export type ErrorFn = (path: string) => string | undefined
-
-/** @deprecated Inlined into {@link FormbitObject}. */
-export type IsFormValid = () => boolean
-
-/** @deprecated Inlined into {@link FormbitObject}. */
-export type IsFormInvalid = () => boolean
-
-/** @deprecated Inlined into {@link FormbitObject}. */
-export type ClearIsDirty = () => void
-
-/** @deprecated Inlined into {@link FormbitObject}. */
-export type ResetForm = () => void
-
-/** @deprecated Inlined into {@link FormbitObject}. */
-export type LiveValidationFn = (path: string) => true | undefined
-
-/** @deprecated Inlined into {@link FormbitObject}. */
-export type IsDirty = boolean
-
-// ─── Method Types ────────────────────────────────────────────────────────────
+// ─── Method signatures ─────────────────────────────────────────────────────────
 
 /** See {@link FormbitObject.check}. */
-export type Check<Values extends InitialValues> =
-    (json: Form, options?: CheckFnOptions<Values>) => ValidationError[] | undefined
+export type Check<T extends FormbitValues> =
+    (json: FormbitValues, options?: CheckFnOptions<T>) => ValidationError[] | undefined
 
 /** See {@link FormbitObject.initialize}. */
-export type Initialize<Values extends InitialValues> = (values: Partial<Values>) => void
+export type Initialize<T extends FormbitValues> = (values: Partial<T>) => void
 
 /** See {@link FormbitObject.remove}. */
-export type Remove<Values extends InitialValues> = (path: string, options?: WriteFnOptions<Values>) => void
+export type Remove<T extends FormbitValues> = (path: string, options?: WriteFnOptions<T>) => void
 
 /** See {@link FormbitObject.setError}. */
 export type SetError = (path: string, value: string) => void
 
 /** See {@link FormbitObject.setSchema}. */
-export type SetSchema<Values extends InitialValues> = (newSchema: ValidationSchema<Values>) => void
+export type SetSchema<T extends FormbitValues> = (newSchema: ValidationSchema<T>) => void
 
-/** See {@link FormbitObject.submitForm}. */
-export type SubmitForm<Values extends InitialValues> = (
-    successCallback: SubmitSuccessCallback<Values>,
-    errorCallback?: ErrorCallback<Partial<Values>>,
-    options?: ValidateOptions) => void
-
-/** See {@link FormbitObject.validate}. */
-export type Validate<Values extends InitialValues> = (path: string, options?: ValidateFnOptions<Values>) => void
-
-/** See {@link FormbitObject.validateAll}. */
-export type ValidateAll<Values extends InitialValues> = (paths: string[], options?: ValidateFnOptions<Values>) => void
-
-/** See {@link FormbitObject.validateForm}. */
-export type ValidateForm<Values extends InitialValues> = (
-    successCallback?: SuccessCallback<Values>,
-    errorCallback?: ErrorCallback<Values>,
-    options?: ValidateOptions) => void
+/** A single `[path, value]` pair accepted by `writeAll`. */
+export type WriteAllValue<T extends FormbitValues> = [keyof T | string, unknown]
 
 /** See {@link FormbitObject.write}. */
-export type Write<Values extends InitialValues> =
-    (path: keyof Values | string, value: unknown, options?: WriteFnOptions<Values>) => void
+export type Write<T extends FormbitValues> =
+    (path: keyof T | string, value: unknown, options?: WriteFnOptions<T>) => void
 
 /** See {@link FormbitObject.writeAll}. */
-export type WriteAll<Values extends InitialValues> =
-    (arr: WriteAllValue<Values>[], options?: WriteFnOptions<Values>) => void
+export type WriteAll<T extends FormbitValues> =
+    (arr: WriteAllValue<T>[], options?: WriteFnOptions<T>) => void
 
 /** See {@link FormbitObject.removeAll}. */
-export type RemoveAll<Values extends InitialValues> =
-    (arr: string[], options?: WriteFnOptions<Values>) => void
+export type RemoveAll<T extends FormbitValues> =
+    (arr: string[], options?: WriteFnOptions<T>) => void
 
-/**
- * Tuple of [key, value] pair.
- */
-export type WriteAllValue<Values extends InitialValues> = [keyof Values | string, unknown]
+/** See {@link FormbitObject.validate}. */
+export type Validate<T extends FormbitValues> = (path: string, options?: ValidateFnOptions<T>) => void
 
-// ─── Options Types ───────────────────────────────────────────────────────────
+/** See {@link FormbitObject.validateAll}. */
+export type ValidateAll<T extends FormbitValues> = (paths: string[], options?: ValidateFnOptions<T>) => void
 
-/**
- * Options object to change the behavior of the check method.
- */
-export type CheckFnOptions<Values extends InitialValues> = {
-    successCallback?: CheckSuccessCallback<Values>,
-    errorCallback?: CheckErrorCallback<Values>,
+/** See {@link FormbitObject.validateForm}. */
+export type ValidateForm<T extends FormbitValues> = (
+    successCallback?: SuccessCallback<T>,
+    errorCallback?: ErrorCallback<T>,
+    options?: ValidateOptions) => void
+
+/** See {@link FormbitObject.submitForm}. */
+export type SubmitForm<T extends FormbitValues> = (
+    successCallback: SubmitSuccessCallback<T>,
+    errorCallback?: ErrorCallback<Partial<T>>,
+    options?: ValidateOptions) => void
+
+// ─── Options ─────────────────────────────────────────────────────────────────
+
+/** Options accepted by `check()`. */
+export type CheckFnOptions<T extends FormbitValues> = {
+    successCallback?: CheckSuccessCallback<T>,
+    errorCallback?: CheckErrorCallback<T>,
     options?: ValidateOptions
 }
 
-/**
- * Options object to change the behavior of the validate methods.
- */
-export type ValidateFnOptions<Values extends InitialValues> = {
-    successCallback?: SuccessCallback<Partial<Values>>,
-    errorCallback?: ErrorCallback<Partial<Values>>,
+/** Options accepted by the `validate` methods. */
+export type ValidateFnOptions<T extends FormbitValues> = {
+    successCallback?: SuccessCallback<Partial<T>>,
+    errorCallback?: ErrorCallback<Partial<T>>,
     options?: ValidateOptions
 }
 
-/**
- * Options object to change the behavior of the write methods.
- */
-export type WriteFnOptions<Values extends InitialValues> = {
+/** Options accepted by the `write`/`remove` methods (validate options plus path control). */
+export type WriteFnOptions<T extends FormbitValues> = {
     noLiveValidation?: boolean,
     pathsToValidate?: string[]
-} & ValidateFnOptions<Values>
+} & ValidateFnOptions<T>
+
+// ─── Internal types (not part of the public surface) ──────────────────────────
+
+/** @internal */
+export type Action = keyof typeof ACTIONS
+
+/** @internal */
+export type GenericCallback<T extends FormbitValues> = SuccessCallback<T> | ErrorCallback<T>
+
+/** @internal Subset of a yup ValidationError kept by formbit's sync validation. */
+export type ValidationFormbitError = Pick<ValidationError, 'message' | 'path'>
+
+/** @internal */
+export type WriteOrRemove<T extends FormbitValues> =
+    (path: keyof T | string, value: unknown, options?: WriteFnOptions<T>, action?: Action) => void
+
+/** @internal */
+export type PrivateValidateForm<T extends FormbitValues> = (
+    successCallback?: SuccessCallback<T>,
+    errorCallback?: ErrorCallback<Partial<T>>,
+    options?: { options?: ValidateOptions }) => void
 
 // ─── FormbitObject ───────────────────────────────────────────────────────────
 
 /**
- * Object returned by useFormbit() and useFormbitContextHook().
- * It contains all the data and methods needed to handle the form.
+ * The object returned by `useFormbit()` and `useFormbitContext()`. Holds the form
+ * state and every method needed to read, mutate and validate the form.
  */
-export type FormbitObject<Values extends InitialValues> = {
+export type FormbitObject<T extends FormbitValues> = {
     // --- State ---
 
-    /**
-     * Object containing the updated form.
-     */
-    form: Partial<Values>,
+    /** The current form values. Partial: fields may be missing until validated. */
+    form: Partial<T>,
 
     /**
-     * Object including all the registered error messages since the last validation.
-     * Errors are stored using the same path of the corresponding form values.
+     * Error messages registered since the last validation, keyed by the value's dot-path.
      *
      * @example
-     * If the form object has this structure:
-     * ```json
-     * {
-     *   "age": 1
-     * }
-     * ```
-     * and age is a non valid field, errors object will look like this
-     * ```json
-     * {
-     *   "age": "Age must be greater then 18"
-     * }
-     * ```
+     * form:   { age: 1 }
+     * errors: { age: "Age must be greater than 18" }
      */
     errors: Errors,
 
-    /**
-     * Returns true if the form is Dirty (user already interacted with the form), false otherwise.
-     */
+    /** True once the user has interacted with the form. */
     isDirty: boolean,
 
-    // --- Queries ---
+    // --- Queries (never trigger validation) ---
 
-    /**
-     * Returns the error message for the given path if any.
-     * It doesn't trigger any validation.
-     */
+    /** Returns the error message registered for `path`, if any. */
     error: (path: string) => string | undefined,
 
-    /**
-     * Returns true if the form is valid.
-     * It doesn't perform any validation, it checks if any errors are present.
-     */
+    /** True if no errors are currently registered. Does not run validation. */
     isFormValid: () => boolean,
 
-    /**
-     * Returns true if the form is NOT valid.
-     * It doesn't perform any validation, it checks if any errors are present.
-     */
+    /** True if any error is currently registered. Does not run validation. */
     isFormInvalid: () => boolean,
 
-    /**
-     * Returns true if live validation is active for the given path.
-     */
+    /** True if live-validation is active for `path`. */
     liveValidation: (path: string) => true | undefined,
 
-    /**
-     * Checks the given json against the form schema and returns an array of errors.
-     * It returns undefined if the json is valid.
-     */
-    check: Check<Partial<Values>>,
+    /** Validates `json` against the current schema; returns the errors, or undefined if valid. */
+    check: Check<Partial<T>>,
 
     // --- Mutations ---
 
     /**
-     * This method updates the form state writing $value into the $path, setting isDirty to true.
-     *
-     * After writing, it validates all the paths contained into $pathsToValidate (if any)
-     * and all the fields that have the live validation active.
+     * Writes `value` at `path`, sets `isDirty`, then validates `pathsToValidate`
+     * plus every live-validated field.
      */
-    write: Write<Values>,
+    write: Write<T>,
 
     /**
-     * This method takes an array of [path, value] and updates the form state writing
-     * all those values into the specified paths.
-     *
-     * It sets isDirty to true.
-     *
-     * After writing, it validates all the paths contained into $pathToValidate and all
-     * the fields that have the live validation active.
+     * Writes every `[path, value]` pair, sets `isDirty`, then validates
+     * `pathsToValidate` plus every live-validated field.
      */
-    writeAll: WriteAll<Values>,
+    writeAll: WriteAll<T>,
 
     /**
-     * This method updates the form state deleting value, setting isDirty to true.
-     *
-     * After writing, it validates all the paths contained into pathsToValidate (if any)
-     * and all the fields that have the live validation active.
+     * Removes the value at `path`, sets `isDirty`, then validates `pathsToValidate`
+     * plus every live-validated field.
      */
-    remove: Remove<Values>,
+    remove: Remove<T>,
 
     /**
-     * This method updates the form state deleting multiple values, setting isDirty to true.
+     * Removes every given path, sets `isDirty`, then validates `pathsToValidate`
+     * plus every live-validated field.
      */
-    removeAll: RemoveAll<Values>,
+    removeAll: RemoveAll<T>,
 
-    /**
-     * Initialize the form with new initial values.
-     */
-    initialize: Initialize<Values>,
+    /** Re-initializes the form with new initial values. */
+    initialize: Initialize<T>,
 
-    /**
-     * Reset form to the initial state.
-     * Errors and liveValidation are set back to empty objects.
-     * isDirty is set back to false.
-     */
+    /** Resets form, errors, liveValidation and isDirty back to their initial state. */
     resetForm: () => void,
 
-    /**
-     * Set a message (value) to the given error path.
-     */
+    /** Sets the error message at `path`. */
     setError: SetError,
 
-    /**
-     * Override the current schema with the given one.
-     */
-    setSchema: SetSchema<Values>,
+    /** Replaces the current validation schema. */
+    setSchema: SetSchema<T>,
 
-    /**
-     * This method only validates the specified path. Does not check for fields that have the
-     * live validation active.
-     */
-    validate: Validate<Values>,
+    /** Validates only `path` (ignores live-validated fields). */
+    validate: Validate<T>,
 
-    /**
-     * This method only validates the specified paths. Does not check for fields that have the
-     * live validation active.
-     */
-    validateAll: ValidateAll<Values>,
+    /** Validates only the given `paths` (ignores live-validated fields). */
+    validateAll: ValidateAll<T>,
 
-    /**
-     * This method validates the entire form and sets the corresponding errors if any.
-     */
-    validateForm: ValidateForm<Partial<Values>>,
+    /** Validates the whole form and registers any error. */
+    validateForm: ValidateForm<Partial<T>>,
 
-    /**
-     * Perform a validation against the current form object, and execute the successCallback if the validation passes,
-     * otherwise it executes the errorCallback.
-     */
-    submitForm: SubmitForm<Values>,
+    /** Validates the whole form and, if valid, runs the success callback to submit. */
+    submitForm: SubmitForm<T>,
 }

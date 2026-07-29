@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react'
-import { Form } from 'src/types'
+import { FormbitValues } from 'src/types'
 import useFormbit from 'src/use-formbit'
 import * as Yup from 'yup'
 
@@ -85,7 +85,7 @@ describe('initialize fn', () => {
 
     act(() => result.current.initialize(newInitialValues))
 
-    expect((result.current.form as Form).__metadata).toStrictEqual(initialValues.__metadata)
+    expect((result.current.form as FormbitValues).__metadata).toStrictEqual(initialValues.__metadata)
 
     unmount()
   })
@@ -98,7 +98,7 @@ describe('initialize fn', () => {
 
     act(() => result.current.initialize(newInitialValues))
 
-    expect((result.current.form as Form).__metadata).toStrictEqual(newInitialValues.__metadata)
+    expect((result.current.form as FormbitValues).__metadata).toStrictEqual(newInitialValues.__metadata)
 
     unmount()
   })

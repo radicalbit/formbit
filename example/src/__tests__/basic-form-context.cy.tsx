@@ -1,6 +1,6 @@
 import App from '../App'
 
-describe('<BasicFormHook />', () => {
+describe('<BasicFormContext />', () => {
   beforeEach(() => {
     cy.mount(<App />)
     cy.getTab('context').click()

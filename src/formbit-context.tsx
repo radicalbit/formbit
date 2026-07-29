@@ -1,19 +1,19 @@
 import React, { useContext, createContext, PropsWithChildren } from 'react'
 import useFormbit from './use-formbit'
 import * as yup from 'yup'
-import { FormbitObject, InitialValues, ValidationSchema } from './types'
+import { FormbitObject, FormbitValues, ValidationSchema } from './types'
 import { MISSING_CONTEXT_ERROR } from './helpers/constants'
 import { once } from 'lodash'
 
-type Props<Values extends InitialValues> = {
+type Props<Values extends FormbitValues> = {
   initialValues?: Partial<Values> | {}
   schema: ValidationSchema<Values>
 } & PropsWithChildren
 
 const createFormbitContext =
-  once(<Values extends InitialValues>() => createContext<FormbitObject<Values> | undefined>(undefined))
+  once(<Values extends FormbitValues>() => createContext<FormbitObject<Values> | undefined>(undefined))
 
-export default function FormbitContextProvider<Values extends InitialValues>({
+export default function FormbitContextProvider<Values extends FormbitValues>({
   initialValues = {},
   schema,
   children
@@ -27,7 +27,7 @@ export default function FormbitContextProvider<Values extends InitialValues>({
   )
 }
 
-export const useFormbitContext = <Values extends InitialValues>() => {
+export const useFormbitContext = <Values extends FormbitValues>() => {
   const context = useContext(createFormbitContext<Values>())
 
   if (!context) {

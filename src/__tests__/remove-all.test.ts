@@ -36,4 +36,25 @@ describe('removeAll fn', () => {
 
     unmount()
   })
+
+  it('Should re-validate fields with active live-validation, like writeAll does', () => {
+    const initialValues = { firstName: 'Jane', lastName: 'Doe', age: 10 }
+
+    const { result, unmount } = renderHook(() => useFormbit({ initialValues, yup: schema }))
+
+    // Make `age` live-validated: it fails validation, so formbit marks it as live-validated.
+    act(() => result.current.validate('age'))
+    expect(result.current.liveValidation('age')).toBe(true)
+    expect(result.current.error('age')).toBeTruthy()
+
+    // Fix `age` to a valid value WITHOUT validating it explicitly.
+    act(() => result.current.write('age', 30, { noLiveValidation: true, pathsToValidate: [] }))
+
+    // Removing another field must re-run live-validation on `age` and clear its (now stale) error.
+    act(() => result.current.removeAll(['firstName']))
+
+    expect(result.current.error('age')).toBeFalsy()
+
+    unmount()
+  })
 })

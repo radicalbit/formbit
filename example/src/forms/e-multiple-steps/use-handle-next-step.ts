@@ -1,14 +1,9 @@
-import { useFormbitContext, type FormbitValues } from 'formbit'
+import { useFormbitContext } from 'formbit'
 import { useCallback } from 'react'
-
-type Context = FormbitValues & {
-    __metadata: {
-        nextStep?: () => void
-    }
-}
+import type { FormValues } from './schema'
 
 export const useHandleNextStep = (fields: string[]) => {
-  const { form: { __metadata }, validateAll, error } = useFormbitContext<Context>()
+  const { form: { __metadata }, validateAll, error } = useFormbitContext<FormValues>()
 
   const nextStep = __metadata?.nextStep
 

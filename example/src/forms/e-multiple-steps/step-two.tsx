@@ -1,23 +1,23 @@
 import { useFormbitContext } from 'formbit'
 import { Button, FormField, InputNumber, SectionTitle } from '@radicalbit/radicalbit-design-system'
 import { useAutoFocus } from '../../helpers/use-autofocus'
-import { FormData } from './schema'
+import type { FormValues } from './schema'
 import { useHandleNextStep } from './use-handle-next-step'
 
 export function StepTwo() {
-  return <>
-        <div className='flex flex-col gap-4 w-96 justify-center p-8 m-auto'>
-            <SectionTitle title='Step 2' />
+  return (
+    <div className='flex flex-col gap-4 w-96 justify-center p-8 m-auto'>
+      <SectionTitle title='Step 2' />
 
-            <Age />
+      <Age />
 
-            <Actions />
-        </div>
-    </>
+      <Actions />
+    </div>
+  )
 }
 
 function Age() {
-  const { form, error, write } = useFormbitContext<FormData>()
+  const { form, error, write } = useFormbitContext<FormValues>()
 
   const [handleOnNext] = useHandleNextStep(['age'])
 
@@ -26,42 +26,40 @@ function Age() {
   const ref = useAutoFocus<HTMLInputElement>()
 
   return (
-        <FormField label="Age" message={error('age')}>
-            <InputNumber
-                type="number"
-                placeholder="Age"
-                onChange={handleOnChangeInputNumber}
-                onPressEnter={handleOnNext}
-                value={form.age}
-                ref={ref}
-                required
-            />
-        </FormField>)
+    <FormField label="Age" message={error('age')}>
+      <InputNumber
+        type="number"
+        placeholder="Age"
+        onChange={handleOnChangeInputNumber}
+        onPressEnter={handleOnNext}
+        value={form.age}
+        ref={ref}
+        required
+      />
+    </FormField>
+  )
 }
 
 function Actions() {
-  const { form: { __metadata } } = useFormbitContext<FormData>()
+  const { form: { __metadata } } = useFormbitContext<FormValues>()
 
   const [handleOnNext, isStepInvalid] = useHandleNextStep(['age'])
 
   const prevStep = __metadata?.prevStep
 
   return (
-        <>
-            <Button
-                disabled={isStepInvalid}
-                onClick={handleOnNext}
-                type='primary'
-            >
-                Next
-            </Button>
+    <>
+      <Button
+        disabled={isStepInvalid}
+        onClick={handleOnNext}
+        type='primary'
+      >
+        Next
+      </Button>
 
-            <Button
-                onClick={prevStep}
-
-            >
-                Prev
-            </Button>
-        </>
+      <Button onClick={prevStep}>
+        Prev
+      </Button>
+    </>
   )
 }

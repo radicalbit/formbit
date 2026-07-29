@@ -24,6 +24,9 @@ export const useGetFakeUser = (): UseGetFakeUserResult => {
     setIsSuccess(false)
 
     const fakeGet = () => {
+      // Randomly fails ~20% of the time on purpose, to demo the error UI
+      // (see IsError / Retry in d-edit-like and f-remove-all). Note: this makes
+      // the Cypress tests that depend on this fetch (edit-like) non-deterministic.
       if (Math.random() < 0.2) {
         setError(new Error('Failed to fetch user'))
         setUser(undefined)

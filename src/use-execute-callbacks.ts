@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react'
-import { FormState, GenericCallback, InitialValues, SetError } from './types'
+import { FormState, GenericCallback, FormbitValues, SetError } from './types'
 import { isEmpty } from 'lodash'
 
 /**
@@ -10,8 +10,8 @@ import { isEmpty } from 'lodash'
  *
  *
  */
-export default <Values extends InitialValues>(writer: FormState<Values>, setError: SetError) => {
-  const callbacksStore = useRef<Record<string, GenericCallback<Partial<Values>> | undefined>>({})
+export default <T extends FormbitValues>(writer: FormState<T>, setError: SetError) => {
+  const callbacksStore = useRef<Record<string, GenericCallback<Partial<T>> | undefined>>({})
 
   useEffect(() => {
     if (isEmpty(callbacksStore.current)) {
@@ -32,7 +32,7 @@ export default <Values extends InitialValues>(writer: FormState<Values>, setErro
     * @param cb Callback that needs to be executed.
     *
     */
-  return useCallback((uuid: string, cb?: GenericCallback<Partial<Values>>) => {
+  return useCallback((uuid: string, cb?: GenericCallback<Partial<T>>) => {
     if (cb) {
       callbacksStore.current = { ...callbacksStore.current, [uuid]: cb }
     }

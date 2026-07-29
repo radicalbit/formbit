@@ -7,7 +7,7 @@ import {
   Check,
   FormbitObject,
   FormState,
-  InitialValues,
+  FormbitValues,
   LiveValidation,
   PrivateValidateForm,
   Remove,
@@ -29,18 +29,18 @@ import useExecuteCallbacks from './use-execute-callbacks'
 import { cloneDeep, get, isEmpty, omit, set } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
-type UseFormbitParams<Values extends InitialValues> = {
-  initialValues?: Partial<Values>,
-  yup: ValidationSchema<Values>
+type UseFormbitParams<T extends FormbitValues> = {
+  initialValues?: Partial<T>,
+  yup: ValidationSchema<T>
 }
 
-export default <Values extends InitialValues>({
+export default <T extends FormbitValues>({
   initialValues = {},
   yup: schema
-}: UseFormbitParams<Values>): FormbitObject<Values> => {
-  const schemaRef = useRef<ValidationSchema<Values>>(schema)
+}: UseFormbitParams<T>): FormbitObject<T> => {
+  const schemaRef = useRef<ValidationSchema<T>>(schema)
 
-  const [writer, setWriter] = useState<FormState<Partial<Values>>>({
+  const [writer, setWriter] = useState<FormState<Partial<T>>>({
     form: initialValues,
     initialValues,
     errors: {},
@@ -48,7 +48,7 @@ export default <Values extends InitialValues>({
     isDirty: false
   })
 
-  const initialize = useCallback((values: Partial<Values>) => {
+  const initialize = useCallback((values: Partial<T>) => {
     const { __metadata } = values
 
     if (__metadata) {
@@ -79,7 +79,7 @@ export default <Values extends InitialValues>({
     })
   }, [])
 
-  const setSchema = useCallback((newSchema: ValidationSchema<Values>) => { schemaRef.current = newSchema }, [])
+  const setSchema = useCallback((newSchema: ValidationSchema<T>) => { schemaRef.current = newSchema }, [])
 
   const setError: SetError = useCallback((path, value) => {
     setWriter((w) => {
@@ -89,9 +89,9 @@ export default <Values extends InitialValues>({
     })
   }, [])
 
-  const executeCb = useExecuteCallbacks<Partial<Values>>(writer, setError)
+  const executeCb = useExecuteCallbacks<Partial<T>>(writer, setError)
 
-  const writeOrRemove: WriteOrRemove<Values> = useCallback((
+  const writeOrRemove: WriteOrRemove<T> = useCallback((
     path,
     value,
     {
@@ -119,13 +119,13 @@ export default <Values extends InitialValues>({
         switch (action) {
           case ACTIONS.write: return set(cloneDeep(w.form), path, value)
 
-          case ACTIONS.remove: return omit<Partial<Values>>(cloneDeep(w.form), path)
+          case ACTIONS.remove: return omit<Partial<T>>(cloneDeep(w.form), path)
 
           default: return cloneDeep(w.form)
         }
       }())
 
-      const newWriter: FormState<Partial<Values>> = { ...w, form, isDirty: true }
+      const newWriter: FormState<Partial<T>> = { ...w, form, isDirty: true }
 
       if (paths.length === 0) {
         newUUID && executeCb(newUUID, successCallback)
@@ -168,13 +168,13 @@ export default <Values extends InitialValues>({
     })
   }, [executeCb])
 
-  const write: Write<Values> = useCallback((path, value, options) =>
+  const write: Write<T> = useCallback((path, value, options) =>
     writeOrRemove(path, value, options, ACTIONS.write), [writeOrRemove])
 
-  const remove: Remove<Values> = useCallback((path, options) =>
+  const remove: Remove<T> = useCallback((path, options) =>
     writeOrRemove(path, undefined, options, ACTIONS.remove), [writeOrRemove])
 
-  const writeAll: WriteAll<Values> = useCallback((
+  const writeAll: WriteAll<T> = useCallback((
     arr,
     {
       noLiveValidation = false,
@@ -244,7 +244,7 @@ export default <Values extends InitialValues>({
     })
   }, [executeCb])
 
-  const removeAll: RemoveAll<Values> = useCallback(
+  const removeAll: RemoveAll<T> = useCallback(
     (
       arr,
       {
@@ -279,12 +279,12 @@ export default <Values extends InitialValues>({
           return newWriter
         }
 
-        const cleanErrors = pathsToValidate.reduce(
+        const cleanErrors = paths.reduce(
           (acc, key) => set(acc, key, undefined),
           cloneDeep(newWriter.errors)
         )
 
-        const inner = validateSyncAll(pathsToValidate, schemaRef.current, newWriter.form, options)
+        const inner = validateSyncAll(paths, schemaRef.current, newWriter.form, options)
 
         if (isEmpty(inner)) {
           const neww = { ...newWriter, errors: cleanErrors }
@@ -312,7 +312,7 @@ export default <Values extends InitialValues>({
     [executeCb]
   )
 
-  const validate: Validate<Values> = useCallback((
+  const validate: Validate<T> = useCallback((
     path,
     {
       successCallback,
@@ -361,7 +361,7 @@ export default <Values extends InitialValues>({
     })
   }, [executeCb])
 
-  const validateAll: ValidateAll<Values> = useCallback((
+  const validateAll: ValidateAll<T> = useCallback((
     paths,
     { successCallback, errorCallback, options } = {}
   ) => {
@@ -409,7 +409,7 @@ export default <Values extends InitialValues>({
     })
   }, [executeCb])
 
-  const check: Check<Partial<Values>> = useCallback((
+  const check: Check<Partial<T>> = useCallback((
     json,
     {
       successCallback,
@@ -418,7 +418,7 @@ export default <Values extends InitialValues>({
     } = {}
   ) => {
     try {
-      schema.validateSync(json, { abortEarly: false, ...options })
+      schemaRef.current.validateSync(json, { abortEarly: false, ...options })
       successCallback?.(json, writer, setError)
 
       return undefined
@@ -433,12 +433,12 @@ export default <Values extends InitialValues>({
 
       return undefined
     }
-  }, [schema, setError, writer])
+  }, [setError, writer])
 
-  const privateValidateForm: PrivateValidateForm<Partial<Values>> = useCallback((
+  const privateValidateForm: PrivateValidateForm<Partial<T>> = useCallback((
     successCallback,
     errorCallback,
-    { isDirty: _, options } = {}
+    { options } = {}
   ) => {
     const newUUID = (function getUUID() {
       if (successCallback || errorCallback) {
@@ -484,20 +484,20 @@ export default <Values extends InitialValues>({
     })
   }, [executeCb])
 
-  const validateForm: ValidateForm<Partial<Values>> = useCallback((successCallback, errorCallback, options = {}) =>
+  const validateForm: ValidateForm<Partial<T>> = useCallback((successCallback, errorCallback, options = {}) =>
     privateValidateForm(
       successCallback,
       errorCallback,
       { options }
     ), [privateValidateForm])
 
-  const submitForm: SubmitForm<Values> =
+  const submitForm: SubmitForm<T> =
     useCallback((successCallback, errorCallback, options = {}) => {
       const fn = () => setWriter((w) => ({ ...w, isDirty: false }))
 
-      const successCallbackAndClearIsDirty: SuccessCallback<Partial<Values>> = (a, b) => {
-        // Success callback is called only if the form is valid so we can safely cast a as FormState<Values>
-        const writer = a as FormState<Values>
+      const successCallbackAndClearIsDirty: SuccessCallback<Partial<T>> = (a, b) => {
+        // Success callback is called only if the form is valid so we can safely cast a as FormState<T>
+        const writer = a as FormState<T>
 
         // __metadata is a field used to store metadata about the form and should not be submitted
         const { __metadata: _, ...form } = writer.form

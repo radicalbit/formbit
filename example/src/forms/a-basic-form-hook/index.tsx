@@ -9,7 +9,7 @@ import { ChangeEvent } from 'react'
 import { useFakeApiContext } from '../fake-api-context'
 import { useAutoFocus } from '../../helpers/use-autofocus'
 import { success } from '../../helpers/message'
-import { FormData, schema } from './schema'
+import { type FormValues, schema } from './schema'
 
 type FieldProps = {
   value?: string,
@@ -31,7 +31,7 @@ export function BasicFormHook() {
 
   const {
     form, error, write, resetForm, submitForm, isFormInvalid, isDirty
-  } = useFormbit<FormData>({ initialValues: {}, yup: schema })
+  } = useFormbit<FormValues>({ initialValues: {}, yup: schema })
 
   const handleOnChangeName = (e: ChangeEvent<HTMLInputElement>) => write('name', e.target.value)
   const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value)
