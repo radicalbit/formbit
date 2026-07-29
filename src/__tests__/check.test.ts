@@ -39,6 +39,28 @@ describe('check fn', () => {
     unmount()
   })
 
+  it('Should validate against the schema set via setSchema, not the initial one', () => {
+    const emptyInitialSchema = Yup.object()
+    const invalidJson = {
+      age: 2
+    }
+
+    const { result, unmount } = renderHook(() => useFormbit({ initialValues, yup: emptyInitialSchema }))
+
+    // With the initial (empty) schema the json is valid.
+    expect(result.current.check(invalidJson)).toBe(undefined)
+
+    act(() => result.current.setSchema(Yup.object({ age: Yup.number().min(18) })))
+
+    // After setSchema, check must use the new schema.
+    const errors = result.current.check(invalidJson)
+
+    expect(errors).toHaveLength(1)
+    expect(errors?.[0]?.path).toBe('age')
+
+    unmount()
+  })
+
   it('Should execute given successCallback only once', () => {
     const validJson = {
       age: 20

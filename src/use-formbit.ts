@@ -418,7 +418,7 @@ export default <Values extends InitialValues>({
     } = {}
   ) => {
     try {
-      schema.validateSync(json, { abortEarly: false, ...options })
+      schemaRef.current.validateSync(json, { abortEarly: false, ...options })
       successCallback?.(json, writer, setError)
 
       return undefined
@@ -433,7 +433,7 @@ export default <Values extends InitialValues>({
 
       return undefined
     }
-  }, [schema, setError, writer])
+  }, [setError, writer])
 
   const privateValidateForm: PrivateValidateForm<Partial<Values>> = useCallback((
     successCallback,
