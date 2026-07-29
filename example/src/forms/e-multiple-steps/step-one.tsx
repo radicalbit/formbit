@@ -7,17 +7,17 @@ import type { FormValues } from './schema'
 import { useHandleNextStep } from './use-handle-next-step'
 
 export function StepOne() {
-  return <>
-        <div className='flex flex-col gap-4 w-96 justify-center p-8 m-auto'>
-            <SectionTitle title='Step 1' />
+  return (
+    <div className='flex flex-col gap-4 w-96 justify-center p-8 m-auto'>
+      <SectionTitle title='Step 1' />
 
-            <Name />
+      <Name />
 
-            <Surname />
+      <Surname />
 
-            <Actions />
-        </div>
-    </>
+      <Actions />
+    </div>
+  )
 }
 
 function Name() {
@@ -30,16 +30,16 @@ function Name() {
   const ref = useAutoFocus<InputRef>()
 
   return (
-        <FormField label="Name" message={error('name')}>
-            <Input
-                placeholder="Name"
-                onChange={handleOnChangeName}
-                onPressEnter={handleOnNext}
-                value={form.name}
-                ref={ref}
-                required
-            />
-        </FormField>
+    <FormField label="Name" message={error('name')}>
+      <Input
+        placeholder="Name"
+        onChange={handleOnChangeName}
+        onPressEnter={handleOnNext}
+        value={form.name}
+        ref={ref}
+        required
+      />
+    </FormField>
   )
 }
 
@@ -51,15 +51,15 @@ function Surname() {
   const handleOnChangeSurname = (e: ChangeEvent<HTMLInputElement>) => write('surname', e.target.value)
 
   return (
-        <FormField label="Surname" message={error('surname')}>
-            <Input
-                placeholder="Surname"
-                onChange={handleOnChangeSurname}
-                onPressEnter={handleOnNext}
-                value={form.surname}
-                required
-            />
-        </FormField>
+    <FormField label="Surname" message={error('surname')}>
+      <Input
+        placeholder="Surname"
+        onChange={handleOnChangeSurname}
+        onPressEnter={handleOnNext}
+        value={form.surname}
+        required
+      />
+    </FormField>
   )
 }
 
@@ -67,12 +67,12 @@ function Actions() {
   const [handleOnNext, isStepInvalid] = useHandleNextStep(['name', 'surname'])
 
   return (
-        <Button
-            disabled={isStepInvalid}
-            onClick={handleOnNext}
-            type='primary'
-        >
-            Next
-        </Button>
+    <Button
+      disabled={isStepInvalid}
+      onClick={handleOnNext}
+      type='primary'
+    >
+      Next
+    </Button>
   )
 }

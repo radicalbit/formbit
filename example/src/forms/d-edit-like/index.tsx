@@ -16,9 +16,9 @@ import { useInitializeForm } from './use-initialize-form'
 
 export function EditLikeForm() {
   return (
-      <FormbitContextProvider initialValues={{}} schema={schema}>
-        <EditLikeInner />
-      </FormbitContextProvider>
+    <FormbitContextProvider initialValues={{}} schema={schema}>
+      <EditLikeInner />
+    </FormbitContextProvider>
   )
 }
 
