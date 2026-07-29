@@ -29,7 +29,7 @@
     "docs:merge": "node scripts/readme-merge.js",
     "docs:toc": "doctoc --maxlevel 3 README.md --github",
     "docs:clean": "rimraf docs",
-    "docs": "yarn docs:gen && yarn docs:merge && yarn docs:toc && yarn docs:clean"
+    "docs": "yarn docs:toc"
   },
   "peerDependencies": {
     "lodash": "^4.0.0",

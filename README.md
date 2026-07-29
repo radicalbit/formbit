@@ -13,6 +13,8 @@ and a built-in **Context Provider** shares the whole form across a component tre
 without prop drilling — while formbit stays out of your markup, so it works with any
 UI (Antd, MaterialUI, or plain HTML).
 
+📖 **Learn more:** [Decoupling form state from UI in React with Formbit](https://medium.com/@luca.tagliabue/decoupling-form-state-from-ui-in-react-with-formbit-%EF%B8%8F-fa3af2adfb94) — the design rationale behind the library.
+
 ## Table of contents
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -25,8 +27,7 @@ UI (Antd, MaterialUI, or plain HTML).
   - [Edit / Initialize Pattern](#edit--initialize-pattern)
   - [Multi-Step Form](#multi-step-form)
 - [Local Development](#local-development)
-- [API Reference](#api-reference)
-  - [FormbitObject](#formbitobject)
+- [API](#api)
 - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -378,60 +379,45 @@ To test your local version of formbit inside another project, we suggest using
 yarn yalc:publish   # publish the local build to the Yalc store and push to linked projects
 ```
 
-The API Reference section of this README is generated from the TypeScript types in
-`src/types/index.ts` — do not edit it by hand. After changing the public types, regenerate it with:
+## API
 
-```bash
-yarn docs
-```
+`useFormbit(...)` (and `useFormbitContext()`) returns an object with the following
+members. For full type signatures see [`src/types/index.ts`](https://github.com/radicalbit/formbit/blob/main/src/types/index.ts).
 
-<!-- START_TYPES_DOC -->
-## API Reference
+**State**
 
-### FormbitObject
+| Member     | Description                                            |
+| ---------- | ------------------------------------------------------ |
+| `form`     | The current form values.                               |
+| `errors`   | Validation error messages, keyed by dot-path.          |
+| `isDirty`  | `true` once any value has changed since the last init. |
 
-Ƭ **FormbitObject**\<`T`\>: `Object`
+**Queries**
 
-The object returned by `useFormbit()` and `useFormbitContext()`. Holds the form
-state and every method needed to read, mutate and validate the form.
+| Member                | Description                                             |
+| --------------------- | ------------------------------------------------------- |
+| `error(path)`         | The error message at `path`, if any.                    |
+| `liveValidation(path)`| Whether `path` is being re-validated on every change.   |
+| `isFormValid()`       | `true` if there are no errors.                          |
+| `isFormInvalid()`     | `true` if there is at least one error.                  |
 
-#### Type parameters
+**Mutations**
 
-| Name | Type |
-| :------ | :------ |
-| `T` | extends [`FormbitValues`](#formbitvalues) |
-
-#### Type declaration
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `check` | [`Check`](#check)\<`Partial`\<`T`\>\> | Validates `json` against the current schema; returns the errors, or undefined if valid. |
-| `error` | (`path`: `string`) => `string` \| `undefined` | - |
-| `errors` | [`Errors`](#errors) | Error messages registered since the last validation, keyed by the value's dot-path. **`Example`** ```ts form: { age: 1 } errors: { age: "Age must be greater than 18" } ``` |
-| `form` | `Partial`\<`T`\> | The current form values. Partial: fields may be missing until validated. |
-| `initialize` | [`Initialize`](#initialize)\<`T`\> | Re-initializes the form with new initial values. |
-| `isDirty` | `boolean` | True once the user has interacted with the form. |
-| `isFormInvalid` | () => `boolean` | - |
-| `isFormValid` | () => `boolean` | - |
-| `liveValidation` | (`path`: `string`) => ``true`` \| `undefined` | - |
-| `remove` | [`Remove`](#remove)\<`T`\> | Removes the value at `path`, sets `isDirty`, then validates `pathsToValidate` plus every live-validated field. |
-| `removeAll` | [`RemoveAll`](#removeall)\<`T`\> | Removes every given path, sets `isDirty`, then validates `pathsToValidate` plus every live-validated field. |
-| `resetForm` | () => `void` | - |
-| `setError` | [`SetError`](#seterror) | Sets the error message at `path`. |
-| `setSchema` | [`SetSchema`](#setschema)\<`T`\> | Replaces the current validation schema. |
-| `submitForm` | [`SubmitForm`](#submitform)\<`T`\> | Validates the whole form and, if valid, runs the success callback to submit. |
-| `validate` | [`Validate`](#validate)\<`T`\> | Validates only `path` (ignores live-validated fields). |
-| `validateAll` | [`ValidateAll`](#validateall)\<`T`\> | Validates only the given `paths` (ignores live-validated fields). |
-| `validateForm` | [`ValidateForm`](#validateform)\<`Partial`\<`T`\>\> | Validates the whole form and registers any error. |
-| `write` | [`Write`](#write)\<`T`\> | Writes `value` at `path`, sets `isDirty`, then validates `pathsToValidate` plus every live-validated field. |
-| `writeAll` | [`WriteAll`](#writeall)\<`T`\> | Writes every `[path, value]` pair, sets `isDirty`, then validates `pathsToValidate` plus every live-validated field. |
-
-#### Defined in
-
-[index.ts:186](https://github.com/radicalbit/formbit/blob/main/src/types/index.ts#L186)
-
-For the complete list of exported types (methods, callbacks, options), see [`src/types/index.ts`](https://github.com/radicalbit/formbit/blob/main/src/types/index.ts).
-<!-- END_TYPES_DOC -->
+| Member                          | Description                                                  |
+| ------------------------------- | ------------------------------------------------------------ |
+| `write(path, value, opts?)`     | Set the value at `path` and validate.                        |
+| `writeAll(entries, opts?)`      | Set several `[path, value]` pairs at once.                   |
+| `remove(path, opts?)`           | Remove the value at `path`.                                  |
+| `removeAll(paths, opts?)`       | Remove several paths at once.                                |
+| `validate(path, opts?)`         | Validate a single `path`.                                    |
+| `validateAll(paths, opts?)`     | Validate several paths.                                      |
+| `validateForm(onOk?, onErr?)`   | Validate the whole form against the schema.                  |
+| `submitForm(onOk, onErr?)`      | Validate, then run `onOk` with the completed form.           |
+| `check(json, opts?)`            | Validate an arbitrary object without touching form state.    |
+| `initialize(values)`           | Replace form and initial values (e.g. with fetched data).    |
+| `resetForm()`                   | Revert the form to its initial values.                       |
+| `setError(path, message)`       | Set an error message manually.                               |
+| `setSchema(schema)`             | Swap the validation schema at runtime.                       |
 
 ## License
 
