@@ -386,48 +386,38 @@ members. For full type signatures see [`src/types/index.ts`](https://github.com/
 
 **State**
 
-| Member     | Description                                            |
-| ---------- | ------------------------------------------------------ |
-| `form`     | The current form values.                               |
-| `errors`   | Validation error messages, keyed by dot-path.          |
-| `isDirty`  | `true` once any value has changed since the last init. |
+- `form` — the current form values
+- `errors` — validation error messages, keyed by dot-path
+- `isDirty` — `true` once any value has changed since the last init
 
 **Queries**
 
-| Member                | Description                                             |
-| --------------------- | ------------------------------------------------------- |
-| `error(path)`         | The error message at `path`, if any.                    |
-| `liveValidation(path)`| Whether `path` is being re-validated on every change.   |
-| `isFormValid()`       | `true` if there are no errors.                          |
-| `isFormInvalid()`     | `true` if there is at least one error.                  |
-| `check(json, opts?)`  | Validate an arbitrary object against the schema and return the errors, without touching form state. |
+- `error(path)` — the error message at `path`, if any
+- `liveValidation(path)` — whether `path` is re-validated on every change
+- `isFormValid()` — `true` if there are no errors
+- `isFormInvalid()` — `true` if there is at least one error
+- `check(json, opts?)` — validate an arbitrary object and return its errors, without touching form state
 
 **Writing values**
 
-| Member                      | Description                                 |
-| --------------------------- | ------------------------------------------- |
-| `write(path, value, opts?)` | Set the value at `path` and validate.       |
-| `writeAll(entries, opts?)`  | Set several `[path, value]` pairs at once.  |
-| `remove(path, opts?)`       | Remove the value at `path`.                 |
-| `removeAll(paths, opts?)`   | Remove several paths at once.               |
+- `write(path, value, opts?)` — set the value at `path` and validate
+- `writeAll(entries, opts?)` — set several `[path, value]` pairs at once
+- `remove(path, opts?)` — remove the value at `path`
+- `removeAll(paths, opts?)` — remove several paths at once
 
 **Validation**
 
-| Member                        | Description                                        |
-| ----------------------------- | -------------------------------------------------- |
-| `validate(path, opts?)`       | Validate a single `path`.                          |
-| `validateAll(paths, opts?)`   | Validate several paths.                            |
-| `validateForm(onOk?, onErr?)` | Validate the whole form against the schema.        |
-| `submitForm(onOk, onErr?)`    | Validate, then run `onOk` with the completed form. |
+- `validate(path, opts?)` — validate a single `path`
+- `validateAll(paths, opts?)` — validate several paths
+- `validateForm(onOk?, onErr?)` — validate the whole form against the schema
+- `submitForm(onOk, onErr?)` — validate, then run `onOk` with the completed form
 
 **Setup & lifecycle**
 
-| Member                    | Description                                                |
-| ------------------------- | ---------------------------------------------------------- |
-| `initialize(values)`      | Replace form and initial values (e.g. with fetched data).  |
-| `resetForm()`             | Revert the form to its initial values.                     |
-| `setError(path, message)` | Set an error message manually.                             |
-| `setSchema(schema)`       | Swap the validation schema at runtime.                     |
+- `initialize(values)` — replace form and initial values (e.g. with fetched data)
+- `resetForm()` — revert the form to its initial values
+- `setError(path, message)` — set an error message manually
+- `setSchema(schema)` — swap the validation schema at runtime
 
 ## License
 
