@@ -15,6 +15,12 @@
     ],
     /* Bundler mode */
     "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@radicalbit/radicalbit-design-system": [
+        "./node_modules/@radicalbit/radicalbit-design-system/dist/src/index.d.ts"
+      ]
+    },
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
