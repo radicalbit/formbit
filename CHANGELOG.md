@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.0.0](https://github.com/radicalbit/formbit/compare/v3.0.0...v4.0.0) (2026-09-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* modernize toolchain and dependencies, migrate example to React 19  ([#23](https://github.com/radicalbit/formbit/issues/23))
+
+### Features
+
+* modernize toolchain and dependencies, migrate example to React 19  ([#23](https://github.com/radicalbit/formbit/issues/23)) ([0672799](https://github.com/radicalbit/formbit/commit/06727993d15f20d0f625a6e7e04a55e58f66a81d))
+
 ## [3.0.0](https://github.com/radicalbit/formbit/compare/v2.1.0...v3.0.0) (2026-07-29)
 
 
