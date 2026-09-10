@@ -59,3 +59,38 @@ describe('<EditLikeForm />', () => {
     })
   })
 })
+
+describe('<EditLikeForm /> when the fake API fails', () => {
+  beforeEach(() => {
+    // Force the failure the app otherwise triggers at random, so the error
+    // and retry UI is actually covered instead of hit by chance.
+    window.__fakeApiShouldFail = true
+
+    cy.mount(<App />)
+    cy.getTab('edit').click()
+  })
+
+  it('Should render the error UI', () => {
+    cy.contains(':( Error').should('exist')
+    cy.contains('Failed').should('exist')
+    cy.get('input').should('not.exist')
+  })
+
+  it('Should render a Retry button', () => {
+    cy.button('retry').should('exist')
+  })
+
+  it('Retry should recover once the API stops failing', () => {
+    cy.button('retry').should('exist')
+
+    cy.window().then((win) => {
+      win.__fakeApiShouldFail = false
+    })
+
+    cy.button('retry').click()
+
+    cy.get('.ant-skeleton-input').should('not.exist')
+    cy.get('input').should('have.length.at.least', 3)
+    cy.contains(':( Error').should('not.exist')
+  })
+})
