@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.1.0](https://github.com/radicalbit/formbit/compare/v4.0.0...v4.1.0) (2026-09-10)
+
+
+### Features
+
+* Create dependabot.yml ([#25](https://github.com/radicalbit/formbit/issues/25)) ([d1866a4](https://github.com/radicalbit/formbit/commit/d1866a400e0363723087a6fc3a27f4dbf93eccb3))
+
+
+### Bug Fixes
+
+* dependabot directory path ([#27](https://github.com/radicalbit/formbit/issues/27)) ([1bcf26d](https://github.com/radicalbit/formbit/commit/1bcf26d23b4f7db68e606dec621de44007b3de90))
+
 ## [4.0.0](https://github.com/radicalbit/formbit/compare/v3.0.0...v4.0.0) (2026-09-10)
 
 
