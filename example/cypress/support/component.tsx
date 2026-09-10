@@ -18,7 +18,7 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 
-import { mount } from 'cypress/react18'
+import { mount } from 'cypress/react'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
@@ -30,6 +30,11 @@ Cypress.Commands.add('mount', mount)
 
 beforeEach(() => {
   cy.spy(window.console, 'log').as('console-log')
+
+  // The fake API fails at random when running the app, to demo the error UI.
+  // Default it to succeeding here so the specs are deterministic; a spec that
+  // wants the error path sets this flag to true itself.
+  window.__fakeApiShouldFail = false
 })
 
 // Example use:

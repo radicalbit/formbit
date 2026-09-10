@@ -8,7 +8,7 @@
   "extends": [
     "standard",
     "standard-react",
-    "plugin:sonarjs/recommended",
+    "plugin:sonarjs/recommended"
   ],
   "env": {
     "node": true,
@@ -23,7 +23,7 @@
   },
   "settings": {
     "react": {
-      "version": "18"
+      "version": "19"
     }
   },
   "rules": {

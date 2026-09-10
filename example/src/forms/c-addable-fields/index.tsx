@@ -1,11 +1,10 @@
-import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FormbitContextProvider, useFormbitContext } from 'formbit'
 import {
   Button,
-  FontAwesomeIcon,
   FormField, FormMultiple, Input,
   SectionTitle
 } from '@radicalbit/radicalbit-design-system'
+import { Plus, X } from 'lucide-react'
 import { InputRef } from 'rc-input'
 import { ChangeEvent, ChangeEventHandler, useRef, useState } from 'react'
 import { useAutoFocus } from '../../helpers/use-autofocus'
@@ -105,7 +104,7 @@ function FriendInput() {
 
   return (
     <FormMultiple
-      add={<FontAwesomeIcon icon={faPlus} onClick={handleAddFriend} />}
+      add={<Plus className="w-5 h-5" onClick={handleAddFriend} />}
       align="flex-end"
     >
       <FormField label="Friend Name" message={error('friends')}>
@@ -153,7 +152,7 @@ function Friend({ index }: { index: number }) {
   return (
     <FormField key={index} message={errorMessage}>
       <FormMultiple
-        remove={<FontAwesomeIcon icon={faXmark} onClick={handleOnRemoveFriend} />}
+        remove={<X className="w-5 h-5" onClick={handleOnRemoveFriend} />}
       >
         <Input
           onBlur={handleOnBlurFriendName}
