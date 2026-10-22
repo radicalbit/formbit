@@ -531,7 +531,11 @@ export default <T extends FormbitValues>({
     return objLeaves(e).some((leaf) => get(e, leaf))
   }, [writer.errors])
 
-  const error = useCallback((path: string): string | undefined => get(writer.errors, path, undefined), [writer.errors])
+  // Paths are expected to point at a leaf; a branch path returns the nested object at runtime.
+  const error = useCallback(
+    (path: string): string | undefined => get(writer.errors, path, undefined) as string | undefined,
+    [writer.errors]
+  )
 
   const liveValidation = useCallback(
     (path: string): true | undefined => get(writer.liveValidation, path, undefined),

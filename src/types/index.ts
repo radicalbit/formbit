@@ -13,14 +13,14 @@ import { ACTIONS } from '../helpers/constants'
 export type FormbitValues = Record<string, unknown> & { __metadata?: Record<string, unknown> }
 
 /**
- * Error messages registered since the last validation, stored under the same
- * dot-path as the corresponding form value.
+ * Error messages registered since the last validation, stored as a nested object
+ * that mirrors the shape of the form. Read a single message with `error(path)`.
  *
  * @example
- * form:   { age: 1 }
- * errors: { age: "Age must be greater than 18" }
+ * form:   { age: 1, friends: [{ name: '' }] }
+ * errors: { age: "Age must be greater than 18", friends: [{ name: "Name is required" }] }
  */
-export type Errors = Record<string, string>
+export type Errors = { [key: string]: string | Errors | (Errors | string | undefined)[] | undefined }
 
 /**
  * Fields currently under live-validation (re-validated on every form change).
