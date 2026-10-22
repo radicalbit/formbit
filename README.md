@@ -15,6 +15,8 @@ Formbit is a **lightweight React state form library** designed to simplify form 
   - [Context Provider](#context-provider)
   - [Edit / Initialize Pattern](#edit--initialize-pattern)
   - [Multi-Step Form](#multi-step-form)
+  - [Silent Errors (Backend Errors)](#silent-errors-backend-errors)
+  - [Live Validation](#live-validation)
 - [Local Development](#local-development)
 - [API Reference](#api-reference)
   - [FormbitObject](#formbitobject)
@@ -333,6 +335,50 @@ function MultiStepForm() {
   );
 }
 ```
+
+### Silent Errors (Backend Errors)
+
+Errors that do not come from the yup schema — typically a message returned by your backend — can be stored under the reserved `silent` key of `errors`. A silent error:
+
+- is written with `setError('silent', message)` and read with `error('silent')`;
+- never goes through yup validation;
+- is ignored by `isFormValid()` and `isFormInvalid()`, so it does not disable your submit button;
+- survives `write`, `validate` and live validation of other fields;
+- is cleared by `validateForm`, `submitForm` (whether the form is valid or not), `resetForm` and `initialize`, so every new submit starts clean.
+
+Nested paths work too, e.g. `setError('silent.email', 'Already taken')` and `error('silent.email')`.
+
+```tsx
+const { submitForm, error, isFormInvalid } = useFormbit<FormData>({ initialValues, yup: schema });
+
+const handleSubmit = () => {
+  submitForm(async ({ form }, setError, clearIsDirty) => {
+    const response = await api.createUser(form);
+
+    if (!response.ok) {
+      setError('silent', response.message);
+      return;
+    }
+
+    clearIsDirty();
+  });
+};
+
+return (
+  <>
+    {error('silent') && <div role="alert">{error('silent')}</div>}
+    <button disabled={isFormInvalid()} onClick={handleSubmit}>Submit</button>
+  </>
+);
+```
+
+### Live Validation
+
+A field that fails a validation becomes **live-validated**: from then on it is re-validated on every `write`, `writeAll`, `remove` and `removeAll`, so its error disappears as soon as the user fixes it. Check it with `liveValidation(path)`; skip it for a single write with `{ noLiveValidation: true }`. `resetForm` and `initialize` turn it off for every field.
+
+Live validation is tied to the **path**, not to the value: if you remove a value and write it back, the path is still live-validated.
+
+> **Arrays:** the path includes the index, so live validation follows the index, not the item. If `friends[1].name` is live-validated and you remove `friends[0]`, the invalid row moves to index 0 — which is not live-validated, so its error disappears until the next `validate`/`submitForm` — while `friends[1].name` stays live-validated on an index that no longer exists (and is silently skipped).
 
 ## Local Development
 For local development we suggest using [Yalc](https://github.com/wclr/yalc) to test your local version of formbit in your projects.
