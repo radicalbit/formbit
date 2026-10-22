@@ -269,10 +269,7 @@ export default <T extends FormbitValues>({
         const liveValidationPaths = noLiveValidation ? [] : Object.keys(w.liveValidation)
         const paths = pathsToValidate.concat(liveValidationPaths)
 
-        const form = arr.reduce(
-          (acc, path) => set(acc, path, undefined),
-          cloneDeep(w.form)
-        )
+        const form = omit<Partial<T>>(cloneDeep(w.form), arr)
 
         const newWriter = { ...w, form, isDirty: true }
 
