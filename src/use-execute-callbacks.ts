@@ -32,9 +32,9 @@ export default <T extends FormbitValues>(writer: FormState<T>, setError: SetErro
     * @param cb Callback that needs to be executed.
     *
     */
-  return useCallback((uuid: string, cb?: GenericCallback<Partial<T>>) => {
+  return useCallback((id: string, cb?: GenericCallback<Partial<T>>) => {
     if (cb) {
-      callbacksStore.current = { ...callbacksStore.current, [uuid]: cb }
+      callbacksStore.current = { ...callbacksStore.current, [id]: cb }
     }
   }, [])
 }
