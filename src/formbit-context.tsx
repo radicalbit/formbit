@@ -1,12 +1,12 @@
 import React, { useContext, createContext, PropsWithChildren } from 'react'
 import useFormbit from './use-formbit'
-import * as yup from 'yup'
 import { FormbitObject, FormbitValues, ValidationSchema } from './types'
 import { MISSING_CONTEXT_ERROR } from './helpers/constants'
 import { once } from 'lodash'
 
 type Props<Values extends FormbitValues> = {
-  initialValues?: Partial<Values> | {}
+  // __metadata is formbit's own field, so it is allowed even when the schema does not declare it.
+  initialValues?: Partial<Values> & Pick<FormbitValues, '__metadata'>
   schema: ValidationSchema<Values>
 } & PropsWithChildren
 
@@ -20,7 +20,7 @@ export default function FormbitContextProvider<Values extends FormbitValues>({
 }: Props<Values>) {
   const FormbitContext = createFormbitContext<Values>()
 
-  const value = useFormbit({ initialValues, yup: schema || yup.object() })
+  const value = useFormbit({ initialValues, yup: schema })
 
   return (
     <FormbitContext.Provider value={value}>{children}</FormbitContext.Provider>

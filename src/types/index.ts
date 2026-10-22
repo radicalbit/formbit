@@ -96,7 +96,7 @@ export type Initialize<T extends FormbitValues> = (values: Partial<T>) => void
 export type Remove<T extends FormbitValues> = (path: string, options?: WriteFnOptions<T>) => void
 
 /** See {@link FormbitObject.setError}. */
-export type SetError = (path: string, value: string) => void
+export type SetError = (path: string, value: string | undefined) => void
 
 /** See {@link FormbitObject.setSchema}. */
 export type SetSchema<T extends FormbitValues> = (newSchema: ValidationSchema<T>) => void
@@ -250,7 +250,7 @@ export type FormbitObject<T extends FormbitValues> = {
     /** Resets form, errors, liveValidation and isDirty back to their initial state. */
     resetForm: () => void,
 
-    /** Sets the error message at `path`. */
+    /** Sets the error message at `path`; pass `undefined` to clear it. */
     setError: SetError,
 
     /** Replaces the current validation schema. */

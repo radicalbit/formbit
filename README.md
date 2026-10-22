@@ -472,7 +472,7 @@ Resets form, errors, liveValidation and isDirty back to their initial state.
 
 > **setError**: [`SetError`](#seterror-1)
 
-Sets the error message at `path`.
+Sets the error message at `path`; pass `undefined` to clear it.
 
 ##### setSchema
 
@@ -853,7 +853,7 @@ See [FormbitObject.setError](#seterror).
 
 ###### value
 
-`string`
+`string` \| `undefined`
 
 ##### Returns
 
