@@ -7,6 +7,15 @@
   "repository": "https://github.com/radicalbit/formbit",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.modern.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "source": "src/index.ts",
   "engines": {
     "node": ">=22"
@@ -61,9 +70,7 @@
     "typedoc-plugin-markdown": "^4.13.0",
     "typescript": "^5.9.3",
     "vite": "^8.2.2",
-    "vitest": "^5.0.0"
-  },
-  "dependencies": {
+    "vitest": "^5.0.0",
     "yup": "^1.7.1"
   },
   "resolutions": {
