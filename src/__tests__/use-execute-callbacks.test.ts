@@ -58,4 +58,37 @@ describe('useExecuteCallbacks', () => {
     expect(successCallback).toHaveBeenCalledTimes(3)
     expect(errorCallback).toHaveBeenCalledTimes(1)
   })
+
+  it('Should fire each callback exactly once when two writes register callbacks in the same tick', () => {
+    const initialValues = { name: '', email: '' }
+    const cb1 = jest.fn()
+    const cb2 = jest.fn()
+
+    const { result } = renderHook(() => useFormbit({ initialValues, yup: schema }))
+
+    act(() => {
+      result.current.write('name', name, { successCallback: cb1 })
+      result.current.write('email', email, { successCallback: cb2 })
+    })
+
+    expect(cb1).toHaveBeenCalledTimes(1)
+    expect(cb2).toHaveBeenCalledTimes(1)
+    expect(cb2.mock.calls[0][0].form).toStrictEqual({ name, email })
+  })
+
+  it('Should fire each callback exactly once when validate and validateAll register callbacks in the same tick', () => {
+    const initialValues = { name, email }
+    const cb1 = jest.fn()
+    const cb2 = jest.fn()
+
+    const { result } = renderHook(() => useFormbit({ initialValues, yup: schema }))
+
+    act(() => {
+      result.current.validate('name', { successCallback: cb1 })
+      result.current.validateAll(['email'], { successCallback: cb2 })
+    })
+
+    expect(cb1).toHaveBeenCalledTimes(1)
+    expect(cb2).toHaveBeenCalledTimes(1)
+  })
 })

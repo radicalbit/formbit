@@ -20,10 +20,12 @@
         "moduleResolution": "node",
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "jsx": "preserve"
+        "jsx": "preserve",
+        "types": ["vitest/globals"]
     },
     "include": [
         "src/**/*.ts", 
         "src/**/*.tsx",
+        "vitest.setup.ts",
     ]
 }

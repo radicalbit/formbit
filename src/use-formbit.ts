@@ -27,7 +27,6 @@ import { isValidationError } from './types/helpers'
 import { validateSyncAll } from './validate-sync-all'
 import useExecuteCallbacks from './use-execute-callbacks'
 import { cloneDeep, get, isEmpty, omit, set } from 'lodash'
-import { v4 as uuidv4 } from 'uuid'
 
 type UseFormbitParams<T extends FormbitValues> = {
   initialValues?: Partial<T>,
@@ -39,6 +38,8 @@ export default <T extends FormbitValues>({
   yup: schema
 }: UseFormbitParams<T>): FormbitObject<T> => {
   const schemaRef = useRef<ValidationSchema<T>>(schema)
+
+  const callbackIdRef = useRef(0)
 
   const [writer, setWriter] = useState<FormState<Partial<T>>>({
     form: initialValues,
@@ -105,7 +106,7 @@ export default <T extends FormbitValues>({
   ) => {
     const newUUID = (function getUUID() {
       if (successCallback || errorCallback) {
-        return uuidv4()
+        return String(++callbackIdRef.current)
       }
 
       return undefined
@@ -186,7 +187,7 @@ export default <T extends FormbitValues>({
   ) => {
     const newUUID = (function getUUID() {
       if (successCallback || errorCallback) {
-        return uuidv4()
+        return String(++callbackIdRef.current)
       }
 
       return undefined
@@ -257,7 +258,7 @@ export default <T extends FormbitValues>({
     ) => {
       const newUUID = (function getUUID() {
         if (successCallback || errorCallback) {
-          return uuidv4()
+          return String(++callbackIdRef.current)
         }
 
         return undefined
@@ -267,10 +268,7 @@ export default <T extends FormbitValues>({
         const liveValidationPaths = noLiveValidation ? [] : Object.keys(w.liveValidation)
         const paths = pathsToValidate.concat(liveValidationPaths)
 
-        const form = arr.reduce(
-          (acc, path) => set(acc, path, undefined),
-          cloneDeep(w.form)
-        )
+        const form = omit<Partial<T>>(cloneDeep(w.form), arr)
 
         const newWriter = { ...w, form, isDirty: true }
 
@@ -322,7 +320,7 @@ export default <T extends FormbitValues>({
   ) => {
     const newUUID = (function getUUID() {
       if (successCallback || errorCallback) {
-        return uuidv4()
+        return String(++callbackIdRef.current)
       }
 
       return undefined
@@ -367,7 +365,7 @@ export default <T extends FormbitValues>({
   ) => {
     const newUUID = (function getUUID() {
       if (successCallback || errorCallback) {
-        return uuidv4()
+        return String(++callbackIdRef.current)
       }
 
       return undefined
@@ -442,7 +440,7 @@ export default <T extends FormbitValues>({
   ) => {
     const newUUID = (function getUUID() {
       if (successCallback || errorCallback) {
-        return uuidv4()
+        return String(++callbackIdRef.current)
       }
 
       return undefined
@@ -532,7 +530,10 @@ export default <T extends FormbitValues>({
     return objLeaves(e).some((leaf) => get(e, leaf))
   }, [writer.errors])
 
-  const error = useCallback((path: string): string | undefined => get(writer.errors, path, undefined), [writer.errors])
+  const error = useCallback(
+    (path: string): string | undefined => get(writer.errors, path, undefined) as string | undefined,
+    [writer.errors]
+  )
 
   const liveValidation = useCallback(
     (path: string): true | undefined => get(writer.liveValidation, path, undefined),

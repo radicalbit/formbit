@@ -28,4 +28,26 @@ describe('liveValidation fn', () => {
 
     unmount()
   })
+
+  it('Should keep live validation on the index, not the row, when an array shrinks', () => {
+    const friendsSchema = Yup.object({
+      friends: Yup.array(Yup.object({ name: Yup.string().required() }))
+    })
+    const friendsInitialValues = { friends: [{ name: 'a' }, { name: '' }] }
+
+    const { result, unmount } =
+      renderHook(() => useFormbit({ initialValues: friendsInitialValues, yup: friendsSchema }))
+
+    act(() => result.current.validateAll(['friends[1].name']))
+    expect(result.current.error('friends[1].name')).toBeTruthy()
+
+    // Remove the first row: the invalid row moves from index 1 to index 0.
+    act(() => result.current.write('friends', [{ name: '' }]))
+
+    expect(result.current.liveValidation('friends[1].name')).toBe(true)
+    expect(result.current.error('friends[1].name')).toBeUndefined()
+    expect(result.current.error('friends[0].name')).toBeUndefined()
+
+    unmount()
+  })
 })
