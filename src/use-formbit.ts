@@ -39,7 +39,6 @@ export default <T extends FormbitValues>({
 }: UseFormbitParams<T>): FormbitObject<T> => {
   const schemaRef = useRef<ValidationSchema<T>>(schema)
 
-  // Keys the pending callbacks in useExecuteCallbacks; only needs to be unique per hook instance.
   const callbackIdRef = useRef(0)
 
   const [writer, setWriter] = useState<FormState<Partial<T>>>({
@@ -531,7 +530,6 @@ export default <T extends FormbitValues>({
     return objLeaves(e).some((leaf) => get(e, leaf))
   }, [writer.errors])
 
-  // Paths are expected to point at a leaf; a branch path returns the nested object at runtime.
   const error = useCallback(
     (path: string): string | undefined => get(writer.errors, path, undefined) as string | undefined,
     [writer.errors]

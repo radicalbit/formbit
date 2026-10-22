@@ -5,7 +5,6 @@ import { MISSING_CONTEXT_ERROR } from './helpers/constants'
 import { once } from 'lodash'
 
 type Props<Values extends FormbitValues> = {
-  // __metadata is formbit's own field, so it is allowed even when the schema does not declare it.
   initialValues?: Partial<Values> & Pick<FormbitValues, '__metadata'>
   schema: ValidationSchema<Values>
 } & PropsWithChildren
