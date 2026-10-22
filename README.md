@@ -42,12 +42,20 @@ Formbit is a **lightweight React state form library** designed to simplify form 
 
 ## Install
 
+`yup`, `lodash` and `react` are peer dependencies: install them alongside formbit.
+
 ```bash
-npm  install  --save  formbit
+npm install @radicalbit/formbit yup lodash
 ```
 
 ```bash
-yarn  add  formbit
+yarn add @radicalbit/formbit yup lodash
+```
+
+The hook is exported both as the default export and as the named export `useFormbit`. Bundlers (Vite, webpack, …) handle either. In plain Node ESM, or with TypeScript `moduleResolution: node16`/`nodenext`, use the named one:
+
+```ts
+import { useFormbit } from '@radicalbit/formbit';
 ```
 
 ## Getting Started
@@ -378,7 +386,7 @@ A field that fails a validation becomes **live-validated**: from then on it is r
 
 Live validation is tied to the **path**, not to the value: if you remove a value and write it back, the path is still live-validated.
 
-> **Arrays:** the path includes the index, so live validation follows the index, not the item. If `friends[1].name` is live-validated and you remove `friends[0]`, the invalid row moves to index 0 — which is not live-validated, so its error disappears until the next `validate`/`submitForm` — while `friends[1].name` stays live-validated on an index that no longer exists (and is silently skipped).
+> **Arrays:** the path includes the index, so live validation follows the index, not the item. If `friends[1].name` is live-validated and you drop the first row by writing a shorter array (e.g. `write('friends', friends.filter((_, i) => i !== 0))`), the invalid row moves to index 0 — which is not live-validated, so its error disappears until the next `validate`/`submitForm` — while `friends[1].name` stays live-validated on an index that no longer exists (and is silently skipped).
 
 ## Local Development
 For local development we suggest using [Yalc](https://github.com/wclr/yalc) to test your local version of formbit in your projects.
