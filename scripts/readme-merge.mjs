@@ -3,7 +3,7 @@ import { readFile, writeFile } from 'fs'
 const START_COMMENT = '<!-- START_TYPES_DOC -->'
 const END_COMMENT = '<!-- END_TYPES_DOC -->'
 
-const sourceFile = './docs/modules.md'
+const sourceFile = './docs/globals.md'
 const destinationFile = './README.md'
 
 // ── Category definitions ──────────────────────────────────────────────
@@ -53,13 +53,13 @@ const GROUPS = [
 
 // ── Helpers ───────────────────────────────────────────────────────────
 
-/** Split the typedoc modules.md into individual type blocks */
+/** Split the typedoc globals.md into individual type blocks */
 function parseBlocks(raw) {
   // Remove the leading "## Type Aliases" heading if present
   const cleaned = raw.replace(/^## Type Aliases\s*\n/, '')
 
-  // Split on the ___ separator that typedoc inserts between entries
-  const chunks = cleaned.split(/\n___\n/)
+  // Split on the *** separator that typedoc-plugin-markdown v4 inserts between entries
+  const chunks = cleaned.split(/\n\*\*\*\n/)
 
   const blocks = []
   for (const chunk of chunks) {
@@ -81,9 +81,9 @@ function isDeprecated(content) {
   return content.includes('**`Deprecated`**')
 }
 
-/** Demote ### to #### (for types inside groups) */
+/** Demote every heading by one level (for types inside groups), so a type's own sub-sections stay below it */
 function demoteHeadings(content) {
-  return content.replace(/^### /gm, '#### ')
+  return content.replace(/^(#{3,5}) /gm, '$1# ')
 }
 
 /** Fix internal links: modules.md# -> # */

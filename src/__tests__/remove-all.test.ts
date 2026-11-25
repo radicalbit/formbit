@@ -11,7 +11,7 @@ const schema = Yup.object({
 describe('removeAll fn', () => {
   it('Should remove the given fields from the form', () => {
     const initialValues = { firstName: 'Jane', lastName: 'Doe', age: 23 }
-    const expectedValues = { firstName: undefined, lastName: undefined, age: 23 }
+    const expectedValues = { age: 23 }
 
     const { result, unmount } = renderHook(() => useFormbit({ initialValues, yup: schema }))
 
@@ -24,7 +24,7 @@ describe('removeAll fn', () => {
 
   it('Should remove just the given fields from the form', () => {
     const initialValues = { firstName: 'Jane', lastName: 'Doe', age: 17 }
-    const expectedValues = { firstName: undefined, lastName: undefined, age: 24 }
+    const expectedValues = { age: 24 }
 
     const { result, unmount } = renderHook(() => useFormbit({ initialValues, yup: schema }))
 
@@ -56,5 +56,34 @@ describe('removeAll fn', () => {
     expect(result.current.error('age')).toBeFalsy()
 
     unmount()
+  })
+
+  it('Should delete only the nested leaf', () => {
+    const initialValues = { address: { city: 'Milan', zip: '20100' } }
+
+    const { result, unmount } = renderHook(() => useFormbit({ initialValues, yup: Yup.object() }))
+
+    act(() => result.current.removeAll(['address.city']))
+
+    expect(result.current.form).toStrictEqual({ address: { zip: '20100' } })
+
+    unmount()
+  })
+
+  it('Should behave like remove for a single path', () => {
+    const initialValues = { firstName: 'Jane', lastName: 'Doe', age: 23 }
+
+    const { result: withRemoveAll, unmount: unmountRemoveAll } =
+      renderHook(() => useFormbit({ initialValues, yup: schema }))
+    const { result: withRemove, unmount: unmountRemove } =
+      renderHook(() => useFormbit({ initialValues, yup: schema }))
+
+    act(() => withRemoveAll.current.removeAll(['firstName']))
+    act(() => withRemove.current.remove('firstName'))
+
+    expect(withRemoveAll.current.form).toStrictEqual(withRemove.current.form)
+
+    unmountRemoveAll()
+    unmountRemove()
   })
 })

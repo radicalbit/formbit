@@ -29,4 +29,16 @@ describe('setError fn', () => {
 
     unmount()
   })
+
+  it('Should clear an error when set to undefined', () => {
+    const { result, unmount } = renderHook(() => useFormbit({ initialValues, yup }))
+
+    act(() => result.current.setError('age', 'Age is mandatory'))
+    act(() => result.current.setError('age', undefined))
+
+    expect(result.current.error('age')).toBeUndefined()
+    expect(result.current.isFormValid()).toBe(true)
+
+    unmount()
+  })
 })

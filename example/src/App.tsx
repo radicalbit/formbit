@@ -5,6 +5,7 @@ import { AddableFieldsForm } from './forms/c-addable-fields'
 import { EditLikeForm } from './forms/d-edit-like'
 import { MultipleStepsForm } from './forms/e-multiple-steps'
 import { WriteRemoveAllForm } from './forms/f-remove-all'
+import { BackendErrorsForm } from './forms/g-backend-errors'
 import { FakeApiProvider } from './forms/fake-api-context'
 import Logo from './img/LogoRB_PositivoBN.png'
 
@@ -15,6 +16,7 @@ enum EXAMPLES {
   ADDABLE = 'addable',
   EDIT = 'edit',
   WRITEREMOVEALL = 'write-remove-all',
+  BACKEND = 'backend-errors',
 }
 
 const QUERY_PARAM = 'example'
@@ -81,6 +83,11 @@ function App() {
                 label: 'Write/Remove All Form',
                 key: EXAMPLES.WRITEREMOVEALL,
                 children: <WriteRemoveAllForm />
+              },
+              {
+                label: 'Backend Errors',
+                key: EXAMPLES.BACKEND,
+                children: <BackendErrorsForm />
               }
             ]} />
         </FakeApiProvider>

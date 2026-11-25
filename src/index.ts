@@ -2,7 +2,9 @@ import useFormbit from './use-formbit'
 import FormbitContextProvider, { useFormbitContext } from './formbit-context'
 
 export default useFormbit
-export { FormbitContextProvider, useFormbitContext }
+// Named twin of the default export: plain-Node ESM consumers of the CJS build
+// get the whole exports object from a default import, so they need this one.
+export { useFormbit, FormbitContextProvider, useFormbitContext }
 
 export type {
   // Core value types

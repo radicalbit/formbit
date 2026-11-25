@@ -57,4 +57,27 @@ describe('useFormbitContext', () => {
 
     unmount()
   })
+
+  it('Should reject initialValues that are not an object', () => {
+    const wrapper = ({ children }: PropsWithChildren) =>
+      // @ts-expect-error initialValues must be a partial of the form values
+      <FormbitContextProvider initialValues={5} schema={schema}>
+        {children}
+      </FormbitContextProvider>
+
+    expect(wrapper).toBeDefined()
+  })
+
+  it('Should accept __metadata in initialValues even when the schema does not declare it', () => {
+    const wrapper = ({ children }: PropsWithChildren) =>
+      <FormbitContextProvider initialValues={{ __metadata: { step: 0 } }} schema={schema}>
+        {children}
+      </FormbitContextProvider>
+
+    const { result, unmount } = renderHook(() => useFormbitContext(), { wrapper })
+
+    expect(result.current.form.__metadata).toStrictEqual({ step: 0 })
+
+    unmount()
+  })
 })
