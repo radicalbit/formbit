@@ -1,5 +1,22 @@
 # Changelog
 
+## [5.0.0](https://github.com/radicalbit/formbit/compare/v4.0.0...v5.0.0) (2026-11-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* removeAll no longer leaves removed keys set to undefined; they are deleted from form.
+
+### Features
+
+* Create dependabot.yml ([#25](https://github.com/radicalbit/formbit/issues/25)) ([d1866a4](https://github.com/radicalbit/formbit/commit/d1866a400e0363723087a6fc3a27f4dbf93eccb3))
+* formbit 5.0 — Node packaging, accurate types, silent errors docs ([#29](https://github.com/radicalbit/formbit/issues/29)) ([0596faa](https://github.com/radicalbit/formbit/commit/0596faab121f028dcf949eb882e5e3d6b8350684))
+
+
+### Bug Fixes
+
+* dependabot directory path ([#27](https://github.com/radicalbit/formbit/issues/27)) ([1bcf26d](https://github.com/radicalbit/formbit/commit/1bcf26d23b4f7db68e606dec621de44007b3de90))
+
 ## [4.0.0](https://github.com/radicalbit/formbit/compare/v3.0.0...v4.0.0) (2026-09-10)
 
 
